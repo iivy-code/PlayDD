@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1117">
+  <title>แฟลชการ์ดตารางธาตุ 118 ธาตุ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1117; --surface: #161b22; --text: #e6edf3; --muted: #8b949e;
+      --accent: #58a6ff; --border: #30363d; --green: #238636; --red: #da3633;
+      --alkali: #7c3aed; --alkaline: #1d4ed8; --transition: #0e7490; --post: #065f46;
+      --metalloid: #92400e; --nonmetal: #166534; --halogen: #9a3412; --noble: #4c1d95;
+      --lanthanide: #831843; --actinide: #7f1d1d; --unknown: #374151;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 50% -10%, #172334 0, var(--bg) 35%); color: var(--text); font-family: "Sarabun", sans-serif; }
+    button { font: inherit; }
+    button:focus-visible, .flashcard:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .app { width: min(1440px, 100%); margin: auto; padding: 22px clamp(14px, 3vw, 40px) 48px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+    .brand h1 { margin: 0; font-size: clamp(1.35rem, 3vw, 2rem); letter-spacing: -.02em; }
+    .brand p { margin: 4px 0 0; color: var(--muted); }
+    .mode-switch { display: flex; gap: 7px; padding: 5px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+    .btn, .tab { border: 1px solid var(--border); border-radius: 8px; background: #21262d; color: var(--text); padding: 9px 14px; cursor: pointer; transition: .18s ease; }
+    .btn:hover, .tab:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .btn.active, .tab.active { color: #07111c; background: var(--accent); border-color: var(--accent); font-weight: 700; }
+    .view { display: none; }
+    .view.active { display: block; }
+    .filters { margin: 20px 0 14px; padding: 15px; background: color-mix(in srgb, var(--surface) 90%, transparent); border: 1px solid var(--border); border-radius: 14px; }
+    .filter-row { display: flex; align-items: flex-start; gap: 12px; }
+    .filter-row + .filter-row { margin-top: 12px; }
+    .filter-label { flex: 0 0 74px; padding-top: 8px; color: var(--muted); font-size: .9rem; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tab { padding: 7px 11px; font-size: .88rem; }
+    .progress-panel { max-width: 900px; margin: 18px auto; }
+    .progress-top { display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-size: .94rem; }
+    .progress-track { height: 8px; margin-top: 8px; overflow: hidden; border-radius: 999px; background: #21262d; }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #238636, #56d364); transition: width .3s ease; }
+    .card-stage { min-height: 620px; display: grid; place-items: center; padding: 12px 0; perspective: 1600px; }
+    .flashcard { width: min(820px, 96vw); height: clamp(500px, 62vh, 560px); position: relative; border: 0; padding: 0; background: transparent; cursor: pointer; perspective: 1600px; }
+    .card-inner { display: block; width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.4,0,.2,1); }
+    .flashcard.flipped .card-inner { transform: rotateY(180deg); }
+    .card-face { display: block; width: 100%; height: 100%; position: absolute; inset: 0; overflow: hidden; border: 2px solid rgba(255,255,255,.16); border-radius: 22px; box-shadow: 0 12px 45px rgba(0,0,0,.62); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .card-front { display: grid; grid-template-rows: auto 1fr auto; padding: clamp(30px, 5vw, 52px); color: #10141a; background: linear-gradient(145deg, #fff 0%, #edf3f8 100%); }
+    .front-no { justify-self: start; font-size: clamp(1.7rem, 3vw, 2.25rem); font-weight: 700; }
+    .front-symbol { align-self: center; font-size: clamp(125px, 20vw, 180px); line-height: .95; font-weight: 700; text-shadow: 0 5px 16px rgba(13,17,23,.14); }
+    .front-hint { color: #57606a; font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 600; }
+    .card-back { transform: rotateY(180deg); padding: clamp(28px, 4vw, 46px); color: #fff; text-align: left; }
+    .back-head { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; }
+    .back-symbol { flex: 0 0 auto; font-size: clamp(5rem, 10vw, 7rem); line-height: .9; font-weight: 700; }
+    .back-title { min-width: 0; }
+    .back-title h2 { margin: 0; font-size: clamp(1.9rem, 4vw, 2.5rem); line-height: 1.2; }
+    .back-title p { margin: 5px 0 0; opacity: .84; font-size: clamp(1.15rem, 2.5vw, 1.45rem); }
+    .category-pill { display: inline-block; margin-top: 10px; padding: 5px 12px; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; background: rgba(0,0,0,.22); font-size: 1rem; }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
+    .detail { padding: 13px 16px; border-radius: 11px; background: rgba(0,0,0,.22); font-size: 1.15rem; }
+    .detail span { display: block; margin-bottom: 2px; opacity: .75; font-size: .9rem; }
+    .fact { margin: 17px 0 0; padding: 15px 17px; border-left: 4px solid rgba(255,255,255,.85); background: rgba(0,0,0,.2); border-radius: 0 11px 11px 0; font-size: 1.08rem; line-height: 1.65; }
+    .answer-actions { min-height: 57px; display: flex; justify-content: center; gap: 12px; margin-top: 16px; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: .2s ease; }
+    .answer-actions.visible { opacity: 1; pointer-events: auto; transform: none; }
+    .answer-btn { min-width: 210px; min-height: 52px; border: 0; color: #fff; font-size: 1.08rem; font-weight: 700; }
+    .known { background: var(--green); } .review { background: var(--red); }
+    .deck-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 9px; }
+    .empty, .summary { max-width: 560px; margin: 60px auto; padding: 35px; text-align: center; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+    .summary-score { font-size: 4rem; color: var(--accent); font-weight: 700; }
+    .stars { color: #f2cc60; font-size: 2rem; letter-spacing: 4px; }
+    .table-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: 20px 0 12px; }
+    .table-toolbar strong { margin-right: 5px; }
+    .table-scroll { overflow-x: auto; padding: 8px 8px 20px; border: 1px solid var(--border); border-radius: 14px; background: #0a0e13; }
+    .periodic-grid { min-width: 1100px; display: grid; grid-template-columns: repeat(18, minmax(53px, 1fr)); grid-template-rows: repeat(10, 78px); gap: 4px; }
+    .element-cell { position: relative; min-width: 0; border: 1px solid rgba(255,255,255,.18); border-radius: 7px; color: #fff; cursor: pointer; transition: .18s ease; }
+    .element-cell:hover, .element-cell:focus-visible { z-index: 10; transform: scale(1.15); border-color: #fff; box-shadow: 0 5px 20px rgba(0,0,0,.6); outline: 0; }
+    .element-cell.dim { opacity: .12; filter: grayscale(.8); }
+    .cell-no { position: absolute; top: 4px; left: 5px; font-size: .65rem; opacity: .82; }
+    .cell-symbol { display: block; padding-top: 14px; text-align: center; font-size: 1.55rem; line-height: 1; font-weight: 700; }
+    .cell-th { display: block; margin-top: 4px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; font-size: .57rem; }
+    .cell-mass { position: absolute; right: 4px; bottom: 3px; font-size: .55rem; opacity: .75; }
+    .series-label { align-self: center; color: var(--muted); text-align: right; font-size: .72rem; padding-right: 5px; }
+    .placeholder { display: grid; place-items: center; border: 1px dashed var(--border); border-radius: 7px; color: var(--muted); font-size: .65rem; text-align: center; }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 15px 3px 0; color: var(--muted); font-size: .78rem; }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .swatch { width: 11px; height: 11px; border-radius: 3px; }
+    .modal { position: fixed; inset: 0; z-index: 50; display: none; place-items: center; padding: 18px; background: rgba(1,4,9,.82); backdrop-filter: blur(5px); }
+    .modal.open { display: grid; }
+    .modal-card { width: min(550px, 100%); max-height: 90vh; overflow: auto; position: relative; border: 1px solid rgba(255,255,255,.25); border-radius: 18px; padding: 28px; box-shadow: 0 6px 28px rgba(0,0,0,.5); }
+    .modal-close { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.35); border-radius: 8px; color: #fff; background: rgba(0,0,0,.25); cursor: pointer; font-size: 1.25rem; }
+    [data-cat="alkali"] { background: var(--alkali); } [data-cat="alkaline"] { background: var(--alkaline); }
+    [data-cat="transition"] { background: var(--transition); } [data-cat="post"] { background: var(--post); }
+    [data-cat="metalloid"] { background: var(--metalloid); } [data-cat="nonmetal"] { background: var(--nonmetal); }
+    [data-cat="halogen"] { background: var(--halogen); } [data-cat="noble"] { background: var(--noble); }
+    [data-cat="lanthanide"] { background: var(--lanthanide); } [data-cat="actinide"] { background: var(--actinide); }
+    [data-cat="unknown"] { background: var(--unknown); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 720px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .mode-switch { width: 100%; } .mode-switch .btn { flex: 1; }
+      .filter-row { display: block; } .filter-label { display: block; padding: 0 0 7px; }
+      .progress-top { align-items: flex-start; flex-direction: column; gap: 3px; }
+      .card-stage { min-height: 570px; padding-top: 4px; }
+      .flashcard { width: 100%; height: 540px; }
+      .card-front { padding: 28px 24px; }
+      .front-symbol { font-size: clamp(120px, 42vw, 165px); }
+      .card-back { padding: 26px 20px; }
+      .back-head { gap: 16px; margin-bottom: 18px; }
+      .back-symbol { font-size: 4.5rem; }
+      .back-title h2 { font-size: 1.65rem; }
+      .back-title p { font-size: 1.08rem; }
+      .detail-grid { gap: 9px; }
+      .detail { padding: 11px; font-size: 1rem; }
+      .fact { margin-top: 12px; padding: 12px 14px; font-size: .98rem; }
+      .answer-actions { gap: 8px; }
+      .answer-btn { flex: 1; min-width: 0; padding-inline: 8px; font-size: .96rem; }
+    }
+    @media (max-width: 420px) {
+      .app { padding-inline: 10px; }
+      .flashcard { height: 520px; }
+      .back-head { align-items: flex-start; }
+      .back-symbol { font-size: 3.8rem; }
+      .back-title h2 { font-size: 1.45rem; }
+      .card-back { overflow-y: auto; }
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand"><h1>แฟลชการ์ดตารางธาตุ</h1><p>เรียนรู้ธาตุครบทั้ง 118 ชนิด</p></div>
+      <nav class="mode-switch" aria-label="เลือกโหมด">
+        <button class="btn active" data-mode="flash">แฟลชการ์ด</button>
+        <button class="btn" data-mode="table">ตารางธาตุ</button>
+      </nav>
+    </header>
+
+    <section id="flashView" class="view active">
+      <div class="filters">
+        <div class="filter-row"><div class="filter-label">เลือกชุด</div><div id="setFilters" class="tabs"></div></div>
+        <div class="filter-row"><div class="filter-label">เลือกหมวด</div><div id="categoryFilters" class="tabs"></div></div>
+      </div>
+      <div class="progress-panel">
+        <div class="progress-top"><span id="progressText">ตอบแล้ว 0 จาก 20</span><span id="counterText">จำได้ 0 · ทบทวน 0 · เหลือ 20</span></div>
+        <div class="progress-track" role="progressbar" aria-label="ความคืบหน้า" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progressFill" class="progress-fill"></div></div>
+      </div>
+      <div id="flashContent">
+        <div class="card-stage">
+          <button id="flashcard" class="flashcard" aria-label="พลิกบัตรเพื่อดูคำตอบ">
+            <span class="card-inner">
+              <span class="card-face card-front"><span id="frontNo" class="front-no"></span><span id="frontSymbol" class="front-symbol"></span><span class="front-hint">คลิกเพื่อดูคำตอบ</span></span>
+              <span id="cardBack" class="card-face card-back"></span>
+            </span>
+          </button>
+        </div>
+        <div id="answerActions" class="answer-actions">
+          <button class="btn answer-btn known" data-answer="known">จำได้แล้ว ✓</button>
+          <button class="btn answer-btn review" data-answer="review">ต้องทบทวน ✕</button>
+        </div>
+        <div class="deck-nav">
+          <button id="prevBtn" class="btn">ก่อนหน้า</button><button id="nextBtn" class="btn">ถัดไป</button>
+          <button id="shuffleBtn" class="btn">สลับลำดับ</button><button id="resetBtn" class="btn">เริ่มใหม่</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tableView" class="view">
+      <div class="table-toolbar"><strong>เน้นหมวด:</strong><div id="highlightFilters" class="tabs"></div></div>
+      <div class="table-scroll"><div id="periodicGrid" class="periodic-grid" aria-label="ตารางธาตุ"></div></div>
+      <div id="legend" class="legend"></div>
+    </section>
+  </main>
+
+  <div id="elementModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div id="modalCard" class="modal-card"><button id="modalClose" class="modal-close" aria-label="ปิดหน้าต่าง">×</button><div id="modalBody"></div></div>
+  </div>
+
+  <script>
+    // === ELEMENT DATA ===
+    const RAW_ELEMENTS = [
+      [1,"H","ไฮโดรเจน","Hydrogen","nonmetal","1.008",1,1,"แก๊ส","1766"],[2,"He","ฮีเลียม","Helium","noble","4.0026",1,18,"แก๊ส","1868"],
+      [3,"Li","ลิเทียม","Lithium","alkali","6.94",2,1,"ของแข็ง","1817"],[4,"Be","เบริลเลียม","Beryllium","alkaline","9.0122",2,2,"ของแข็ง","1798"],
+      [5,"B","โบรอน","Boron","metalloid","10.81",2,13,"ของแข็ง","1808"],[6,"C","คาร์บอน","Carbon","nonmetal","12.011",2,14,"ของแข็ง","โบราณ"],
+      [7,"N","ไนโตรเจน","Nitrogen","nonmetal","14.007",2,15,"แก๊ส","1772"],[8,"O","ออกซิเจน","Oxygen","nonmetal","15.999",2,16,"แก๊ส","1774"],
+      [9,"F","ฟลูออรีน","Fluorine","halogen","18.998",2,17,"แก๊ส","1886"],[10,"Ne","นีออน","Neon","noble","20.180",2,18,"แก๊ส","1898"],
+      [11,"Na","โซเดียม","Sodium","alkali","22.990",3,1,"ของแข็ง","1807"],[12,"Mg","แมกนีเซียม","Magnesium","alkaline","24.305",3,2,"ของแข็ง","1755"],
+      [13,"Al","อะลูมิเนียม","Aluminium","post","26.982",3,13,"ของแข็ง","1825"],[14,"Si","ซิลิคอน","Silicon","metalloid","28.085",3,14,"ของแข็ง","1824"],
+      [15,"P","ฟอสฟอรัส","Phosphorus","nonmetal","30.974",3,15,"ของแข็ง","1669"],[16,"S","กำมะถัน","Sulfur","nonmetal","32.06",3,16,"ของแข็ง","โบราณ"],
+      [17,"Cl","คลอรีน","Chlorine","halogen","35.45",3,17,"แก๊ส","1774"],[18,"Ar","อาร์กอน","Argon","noble","39.948",3,18,"แก๊ส","1894"],
+      [19,"K","โพแทสเซียม","Potassium","alkali","39.098",4,1,"ของแข็ง","1807"],[20,"Ca","แคลเซียม","Calcium","alkaline","40.078",4,2,"ของแข็ง","1808"],
+      [21,"Sc","สแกนเดียม","Scandium","transition","44.956",4,3,"ของแข็ง","1879"],[22,"Ti","ไทเทเนียม","Titanium","transition","47.867",4,4,"ของแข็ง","1791"],
+      [23,"V","วาเนเดียม","Vanadium","transition","50.942",4,5,"ของแข็ง","1801"],[24,"Cr","โครเมียม","Chromium","transition","51.996",4,6,"ของแข็ง","1797"],
+      [25,"Mn","แมงกานีส","Manganese","transition","54.938",4,7,"ของแข็ง","1774"],[26,"Fe","เหล็ก","Iron","transition","55.845",4,8,"ของแข็ง","โบราณ"],
+      [27,"Co","โคบอลต์","Cobalt","transition","58.933",4,9,"ของแข็ง","1735"],[28,"Ni","นิกเกิล","Nickel","transition","58.693",4,10,"ของแข็ง","1751"],
+      [29,"Cu","ทองแดง","Copper","transition","63.546",4,11,"ของแข็ง","โบราณ"],[30,"Zn","สังกะสี","Zinc","transition","65.38",4,12,"ของแข็ง","โบราณ"],
+      [31,"Ga","แกลเลียม","Gallium","post","69.723",4,13,"ของแข็ง","1875"],[32,"Ge","เจอร์เมเนียม","Germanium","metalloid","72.630",4,14,"ของแข็ง","1886"],
+      [33,"As","สารหนู","Arsenic","metalloid","74.922",4,15,"ของแข็ง","โบราณ"],[34,"Se","ซีลีเนียม","Selenium","nonmetal","78.971",4,16,"ของแข็ง","1817"],
+      [35,"Br","โบรมีน","Bromine","halogen","79.904",4,17,"ของเหลว","1826"],[36,"Kr","คริปทอน","Krypton","noble","83.798",4,18,"แก๊ส","1898"],
+      [37,"Rb","รูบิเดียม","Rubidium","alkali","85.468",5,1,"ของแข็ง","1861"],[38,"Sr","สตรอนเชียม","Strontium","alkaline","87.62",5,2,"ของแข็ง","1790"],
+      [39,"Y","อิตเทรียม","Yttrium","transition","88.906",5,3,"ของแข็ง","1794"],[40,"Zr","เซอร์โคเนียม","Zirconium","transition","91.224",5,4,"ของแข็ง","1789"],
+      [41,"Nb","ไนโอเบียม","Niobium","transition","92.906",5,5,"ของแข็ง","1801"],[42,"Mo","โมลิบดีนัม","Molybdenum","transition","95.95",5,6,"ของแข็ง","1778"],
+      [43,"Tc","เทคนีเชียม","Technetium","transition","[98]",5,7,"ของแข็ง","1937"],[44,"Ru","รูทีเนียม","Ruthenium","transition","101.07",5,8,"ของแข็ง","1844"],
+      [45,"Rh","โรเดียม","Rhodium","transition","102.91",5,9,"ของแข็ง","1803"],[46,"Pd","แพลเลเดียม","Palladium","transition","106.42",5,10,"ของแข็ง","1803"],
+      [47,"Ag","เงิน","Silver","transition","107.87",5,11,"ของแข็ง","โบราณ"],[48,"Cd","แคดเมียม","Cadmium","transition","112.41",5,12,"ของแข็ง","1817"],
+      [49,"In","อินเดียม","Indium","post","114.82",5,13,"ของแข็ง","1863"],[50,"Sn","ดีบุก","Tin","post","118.71",5,14,"ของแข็ง","โบราณ"],
+      [51,"Sb","พลวง","Antimony","metalloid","121.76",5,15,"ของแข็ง","โบราณ"],[52,"Te","เทลลูเรียม","Tellurium","metalloid","127.60",5,16,"ของแข็ง","1782"],
+      [53,"I","ไอโอดีน","Iodine","halogen","126.90",5,17,"ของแข็ง","1811"],[54,"Xe","ซีนอน","Xenon","noble","131.29",5,18,"แก๊ส","1898"],
+      [55,"Cs","ซีเซียม","Caesium","alkali","132.91",6,1,"ของแข็ง","1860"],[56,"Ba","แบเรียม","Barium","alkaline","137.33",6,2,"ของแข็ง","1808"],
+      [57,"La","แลนทานัม","Lanthanum","lanthanide","138.91",6,3,"ของแข็ง","1839"],[58,"Ce","ซีเรียม","Cerium","lanthanide","140.12",6,3,"ของแข็ง","1803"],
+      [59,"Pr","เพรซีโอดิเมียม","Praseodymium","lanthanide","140.91",6,3,"ของแข็ง","1885"],[60,"Nd","นีโอดิเมียม","Neodymium","lanthanide","144.24",6,3,"ของแข็ง","1885"],
+      [61,"Pm","โพรมีเทียม","Promethium","lanthanide","[145]",6,3,"ของแข็ง","1945"],[62,"Sm","ซาแมเรียม","Samarium","lanthanide","150.36",6,3,"ของแข็ง","1879"],
+      [63,"Eu","ยูโรเพียม","Europium","lanthanide","151.96",6,3,"ของแข็ง","1901"],[64,"Gd","แกโดลิเนียม","Gadolinium","lanthanide","157.25",6,3,"ของแข็ง","1880"],
+      [65,"Tb","เทอร์เบียม","Terbium","lanthanide","158.93",6,3,"ของแข็ง","1843"],[66,"Dy","ดิสโพรเซียม","Dysprosium","lanthanide","162.50",6,3,"ของแข็ง","1886"],
+      [67,"Ho","โฮลเมียม","Holmium","lanthanide","164.93",6,3,"ของแข็ง","1878"],[68,"Er","เออร์เบียม","Erbium","lanthanide","167.26",6,3,"ของแข็ง","1843"],
+      [69,"Tm","ทูเลียม","Thulium","lanthanide","168.93",6,3,"ของแข็ง","1879"],[70,"Yb","อิตเทอร์เบียม","Ytterbium","lanthanide","173.05",6,3,"ของแข็ง","1878"],
+      [71,"Lu","ลูทีเชียม","Lutetium","lanthanide","174.97",6,3,"ของแข็ง","1907"],[72,"Hf","แฮฟเนียม","Hafnium","transition","178.49",6,4,"ของแข็ง","1923"],
+      [73,"Ta","แทนทาลัม","Tantalum","transition","180.95",6,5,"ของแข็ง","1802"],[74,"W","ทังสเตน","Tungsten","transition","183.84",6,6,"ของแข็ง","1783"],
+      [75,"Re","รีเนียม","Rhenium","transition","186.21",6,7,"ของแข็ง","1925"],[76,"Os","ออสเมียม","Osmium","transition","190.23",6,8,"ของแข็ง","1803"],
+      [77,"Ir","อิริเดียม","Iridium","transition","192.22",6,9,"ของแข็ง","1803"],[78,"Pt","แพลทินัม","Platinum","transition","195.08",6,10,"ของแข็ง","โบราณ"],
+      [79,"Au","ทองคำ","Gold","transition","196.97",6,11,"ของแข็ง","โบราณ"],[80,"Hg","ปรอท","Mercury","transition","200.59",6,12,"ของเหลว","โบราณ"],
+      [81,"Tl","แทลเลียม","Thallium","post","204.38",6,13,"ของแข็ง","1861"],[82,"Pb","ตะกั่ว","Lead","post","207.2",6,14,"ของแข็ง","โบราณ"],
+      [83,"Bi","บิสมัท","Bismuth","post","208.98",6,15,"ของแข็ง","โบราณ"],[84,"Po","พอโลเนียม","Polonium","post","[209]",6,16,"ของแข็ง","1898"],
+      [85,"At","แอสทาทีน","Astatine","halogen","[210]",6,17,"ของแข็ง","1940"],[86,"Rn","เรดอน","Radon","noble","[222]",6,18,"แก๊ส","1900"],
+      [87,"Fr","แฟรนเซียม","Francium","alkali","[223]",7,1,"ของแข็ง","1939"],[88,"Ra","เรเดียม","Radium","alkaline","[226]",7,2,"ของแข็ง","1898"],
+      [89,"Ac","แอกทิเนียม","Actinium","actinide","[227]",7,3,"ของแข็ง","1899"],[90,"Th","ทอเรียม","Thorium","actinide","232.04",7,3,"ของแข็ง","1829"],
+      [91,"Pa","โพรแทกทิเนียม","Protactinium","actinide","231.04",7,3,"ของแข็ง","1913"],[92,"U","ยูเรเนียม","Uranium","actinide","238.03",7,3,"ของแข็ง","1789"],
+      [93,"Np","เนปทูเนียม","Neptunium","actinide","[237]",7,3,"ของแข็ง","1940"],[94,"Pu","พลูโทเนียม","Plutonium","actinide","[244]",7,3,"ของแข็ง","1940"],
+      [95,"Am","อะเมริเซียม","Americium","actinide","[243]",7,3,"ของแข็ง","1944"],[96,"Cm","คูเรียม","Curium","actinide","[247]",7,3,"ของแข็ง","1944"],
+      [97,"Bk","เบอร์คีเลียม","Berkelium","actinide","[247]",7,3,"ของแข็ง","1949"],[98,"Cf","แคลิฟอร์เนียม","Californium","actinide","[251]",7,3,"ของแข็ง","1950"],
+      [99,"Es","ไอน์สไตเนียม","Einsteinium","actinide","[252]",7,3,"ของแข็ง","1952"],[100,"Fm","เฟอร์เมียม","Fermium","actinide","[257]",7,3,"ของแข็ง","1952"],
+      [101,"Md","เมนเดลีเวียม","Mendelevium","actinide","[258]",7,3,"ของแข็ง","1955"],[102,"No","โนเบเลียม","Nobelium","actinide","[259]",7,3,"ของแข็ง","1966"],
+      [103,"Lr","ลอว์เรนเซียม","Lawrencium","actinide","[266]",7,3,"ของแข็ง","1961"],[104,"Rf","รัทเทอร์ฟอร์เดียม","Rutherfordium","transition","[267]",7,4,"ของแข็ง","1964"],
+      [105,"Db","ดุบเนียม","Dubnium","transition","[268]",7,5,"ของแข็ง","1967"],[106,"Sg","ซีบอร์เกียม","Seaborgium","transition","[269]",7,6,"ของแข็ง","1974"],
+      [107,"Bh","โบห์เรียม","Bohrium","transition","[270]",7,7,"ของแข็ง","1981"],[108,"Hs","ฮัสเซียม","Hassium","transition","[269]",7,8,"ของแข็ง","1984"],
+      [109,"Mt","ไมต์เนอเรียม","Meitnerium","unknown","[278]",7,9,"ไม่ทราบ","1982"],[110,"Ds","ดาร์มสตัดเทียม","Darmstadtium","unknown","[281]",7,10,"ไม่ทราบ","1994"],
+      [111,"Rg","เรินต์เกเนียม","Roentgenium","unknown","[282]",7,11,"ไม่ทราบ","1994"],[112,"Cn","โคเปอร์นิเซียม","Copernicium","post","[285]",7,12,"ไม่ทราบ","1996"],
+      [113,"Nh","นิโฮเนียม","Nihonium","post","[286]",7,13,"ไม่ทราบ","2004"],[114,"Fl","ฟเลอโรเวียม","Flerovium","post","[289]",7,14,"ไม่ทราบ","1998"],
+      [115,"Mc","มอสโกเวียม","Moscovium","post","[290]",7,15,"ไม่ทราบ","2003"],[116,"Lv","ลิเวอร์มอเรียม","Livermorium","post","[293]",7,16,"ไม่ทราบ","2000"],
+      [117,"Ts","เทนเนสซีน","Tennessine","halogen","[294]",7,17,"ไม่ทราบ","2010"],[118,"Og","โอกาเนสซอน","Oganesson","noble","[294]",7,18,"ไม่ทราบ","2002"]
+    ];
+    const ELEMENTS = RAW_ELEMENTS.map(([no,sym,th,en,cat,mass,period,group,state,disc]) => ({
+      no, sym, th, en, cat, mass, period, group, state, disc,
+      fact: `${th} (${sym}) เป็นธาตุลำดับที่ ${no} ในตารางธาตุ มีมวลอะตอมประมาณ ${mass} และจัดอยู่ในคาบที่ ${period}`
+    }));
+
+    const CATEGORIES = {
+      all:"ทุกหมวด", alkali:"โลหะแอลคาไล", alkaline:"โลหะแอลคาไลน์เอิร์ท", transition:"โลหะแทรนซิชัน",
+      post:"โลหะหลังแทรนซิชัน", metalloid:"กึ่งโลหะ", nonmetal:"อโลหะ", halogen:"แฮโลเจน",
+      noble:"แก๊สมีตระกูล", lanthanide:"แลนทาไนด์", actinide:"แอกทิไนด์", unknown:"สมบัติยังไม่แน่ชัด"
+    };
+    const SETS = [{id:"1",label:"ชุด 1",min:1,max:20},{id:"2",label:"ชุด 2",min:21,max:40},{id:"3",label:"ชุด 3",min:41,max:60},
+      {id:"4",label:"ชุด 4",min:61,max:80},{id:"5",label:"ชุด 5",min:81,max:100},{id:"6",label:"ชุด 6",min:101,max:118},{id:"all",label:"ทั้งหมด",min:1,max:118}];
+
+    // === APPLICATION STATE ===
+    let selectedSet = "1";
+    let selectedCategory = "all";
+    let highlightedCategory = "all";
+    let deck = [];
+    let currentIndex = 0;
+    let results = new Map();
+    let isFlipped = false;
+    let lastFocusedCell = null;
+
+    // === DOM HELPERS ===
+    const $ = id => document.getElementById(id);
+    const FLASH_CONTENT_TEMPLATE = $("flashContent").innerHTML;
+    const makeButton = (label, active, onClick) => {
+      const button = document.createElement("button");
+      button.className = `tab${active ? " active" : ""}`;
+      button.textContent = label;
+      button.addEventListener("click", onClick);
+      return button;
+    };
+    const categoryLabel = cat => CATEGORIES[cat] || CATEGORIES.unknown;
+    const detailMarkup = el => `
+      <div class="back-head"><div class="back-symbol">${el.sym}</div><div class="back-title">
+        <h2 id="modalTitle">${el.no}. ${el.th}</h2><p>${el.en}</p><span class="category-pill">${categoryLabel(el.cat)}</span>
+      </div></div>
+      <div class="detail-grid">
+        <div class="detail"><span>มวลอะตอม</span>${el.mass}</div><div class="detail"><span>คาบ / หมู่</span>${el.period} / ${el.group}</div>
+        <div class="detail"><span>สถานะที่อุณหภูมิห้อง</span>${el.state}</div><div class="detail"><span>ค้นพบ</span>${el.disc}</div>
+      </div><p class="fact">${el.fact}</p>`;
+
+    // === FILTER RENDERING ===
+    function renderFilters() {
+      $("setFilters").replaceChildren(...SETS.map(set => makeButton(`${set.label}${set.id === "all" ? " 118 ธาตุ" : ` (${set.min}–${set.max})`}`, selectedSet === set.id, () => {
+        selectedSet = set.id; renderFilters(); rebuildDeck();
+      })));
+      $("categoryFilters").replaceChildren(...Object.entries(CATEGORIES).map(([key,label]) => makeButton(label, selectedCategory === key, () => {
+        selectedCategory = key; renderFilters(); rebuildDeck();
+      })));
+      $("highlightFilters").replaceChildren(...Object.entries(CATEGORIES).map(([key,label]) => makeButton(label, highlightedCategory === key, () => {
+        highlightedCategory = key; renderFilters(); applyHighlight();
+      })));
+    }
+
+    // === FLASHCARD RENDERING ===
+    function rebuildDeck() {
+      if (!$("flashcard")) {
+        $("flashContent").innerHTML = FLASH_CONTENT_TEMPLATE;
+        bindFlashControls();
+      }
+      const set = SETS.find(item => item.id === selectedSet);
+      deck = ELEMENTS.filter(el => el.no >= set.min && el.no <= set.max && (selectedCategory === "all" || el.cat === selectedCategory));
+      currentIndex = 0; results = new Map(); isFlipped = false;
+      renderCard(); updateProgress();
+    }
+    function renderCard() {
+      const content = $("flashContent");
+      if (!deck.length) {
+        content.innerHTML = `<div class="empty"><h2>ไม่พบธาตุในตัวกรองนี้</h2><p>ลองเลือกชุดหรือหมวดอื่น</p></div>`;
+        return;
+      }
+      if (results.size === deck.length) { renderSummary(); return; }
+      const el = deck[currentIndex];
+      $("frontNo").textContent = el.no;
+      $("frontSymbol").textContent = el.sym;
+      $("cardBack").dataset.cat = el.cat;
+      $("cardBack").innerHTML = detailMarkup(el);
+      $("flashcard").classList.toggle("flipped", isFlipped);
+      $("answerActions").classList.toggle("visible", isFlipped);
+      $("flashcard").setAttribute("aria-label", isFlipped ? `ด้านคำตอบของ ${el.th}` : `พลิกบัตรสัญลักษณ์ ${el.sym}`);
+      updateNavButtons();
+    }
+    function flipCard() {
+      if (!deck.length || results.size === deck.length) return;
+      isFlipped = !isFlipped;
+      $("flashcard").classList.toggle("flipped", isFlipped);
+      $("answerActions").classList.toggle("visible", isFlipped);
+    }
+    function moveCard(direction) {
+      if (!deck.length) return;
+      currentIndex = (currentIndex + direction + deck.length) % deck.length;
+      isFlipped = false; renderCard();
+    }
+    function answerCard(status) {
+      if (!isFlipped) return;
+      results.set(deck[currentIndex].no, status);
+      updateProgress();
+      if (results.size === deck.length) { renderSummary(); return; }
+      let next = currentIndex;
+      do { next = (next + 1) % deck.length; } while (results.has(deck[next].no));
+      currentIndex = next; isFlipped = false; renderCard();
+    }
+    function updateProgress() {
+      const total = deck.length;
+      const known = [...results.values()].filter(value => value === "known").length;
+      const review = results.size - known;
+      const percent = total ? Math.round(results.size / total * 100) : 0;
+      $("progressText").textContent = `ตอบแล้ว ${results.size} จาก ${total}`;
+      $("counterText").textContent = `จำได้ ${known} · ทบทวน ${review} · เหลือ ${total - results.size}`;
+      $("progressFill").style.width = `${percent}%`;
+      document.querySelector(".progress-track").setAttribute("aria-valuenow", percent);
+    }
+    function updateNavButtons() {
+      const result = results.get(deck[currentIndex].no);
+      document.querySelectorAll("[data-answer]").forEach(button => {
+        button.style.boxShadow = button.dataset.answer === result ? "0 0 0 3px #fff" : "none";
+      });
+    }
+    function shuffleDeck() {
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+      currentIndex = 0; isFlipped = false; renderCard();
+    }
+    function renderSummary() {
+      const known = [...results.values()].filter(value => value === "known").length;
+      const score = Math.round(known / deck.length * 100);
+      const stars = Math.max(1, Math.ceil(score / 20));
+      $("flashContent").innerHTML = `<div class="summary"><h2>เรียนจบชุดแล้ว</h2><div class="summary-score">${score}%</div>
+        <div class="stars" aria-label="${stars} ดาว">${"★".repeat(stars)}${"☆".repeat(5-stars)}</div>
+        <p>จำได้ ${known} ธาตุ · ต้องทบทวน ${deck.length-known} ธาตุ</p><button id="replayBtn" class="btn active">เล่นอีกครั้ง</button></div>`;
+      $("replayBtn").addEventListener("click", rebuildDeck);
+    }
+
+    // === PERIODIC TABLE RENDERING ===
+    function tablePosition(el) {
+      if (el.cat === "lanthanide") return {row:9,col:el.no - 54};
+      if (el.cat === "actinide") return {row:10,col:el.no - 86};
+      return {row:el.period,col:el.group};
+    }
+    function renderPeriodicTable() {
+      const grid = $("periodicGrid");
+      const nodes = [];
+      [[6,3,"57–71"],[7,3,"89–103"]].forEach(([row,col,text]) => {
+        const mark = document.createElement("div"); mark.className = "placeholder"; mark.textContent = text;
+        mark.style.gridRow = row; mark.style.gridColumn = col; nodes.push(mark);
+      });
+      [["แลนทาไนด์",9],["แอกทิไนด์",10]].forEach(([label,row]) => {
+        const item = document.createElement("div"); item.className = "series-label"; item.textContent = label;
+        item.style.gridRow = row; item.style.gridColumn = "1 / span 2"; nodes.push(item);
+      });
+      ELEMENTS.forEach(el => {
+        if ((el.no >= 57 && el.no <= 71) || (el.no >= 89 && el.no <= 103)) {
+          // Elements in the f-block appear only in the separated rows.
+        }
+        const pos = tablePosition(el);
+        const cell = document.createElement("button");
+        cell.className = "element-cell"; cell.dataset.cat = el.cat; cell.dataset.no = el.no;
+        cell.style.gridRow = pos.row; cell.style.gridColumn = pos.col;
+        cell.setAttribute("aria-label", `${el.no} ${el.th} ${el.en}`);
+        cell.innerHTML = `<span class="cell-no">${el.no}</span><span class="cell-symbol">${el.sym}</span><span class="cell-th">${el.th}</span><span class="cell-mass">${el.mass}</span>`;
+        cell.addEventListener("click", () => openModal(el, cell)); nodes.push(cell);
+      });
+      grid.replaceChildren(...nodes);
+      $("legend").replaceChildren(...Object.entries(CATEGORIES).filter(([key]) => key !== "all").map(([key,label]) => {
+        const item = document.createElement("span"); item.className = "legend-item";
+        item.innerHTML = `<span class="swatch" data-cat="${key}"></span>${label}`; return item;
+      }));
+      applyHighlight();
+    }
+    function applyHighlight() {
+      document.querySelectorAll(".element-cell").forEach(cell => cell.classList.toggle("dim", highlightedCategory !== "all" && cell.dataset.cat !== highlightedCategory));
+    }
+    function openModal(el, source) {
+      lastFocusedCell = source;
+      $("modalCard").dataset.cat = el.cat;
+      $("modalBody").innerHTML = detailMarkup(el);
+      $("elementModal").classList.add("open");
+      document.body.style.overflow = "hidden";
+      $("modalClose").focus();
+    }
+    function closeModal() {
+      $("elementModal").classList.remove("open");
+      document.body.style.overflow = "";
+      if (lastFocusedCell) lastFocusedCell.focus();
+    }
+
+    // === EVENT HANDLERS ===
+    function bindFlashControls() {
+      $("flashcard").addEventListener("click", flipCard);
+      $("prevBtn").addEventListener("click", () => moveCard(-1));
+      $("nextBtn").addEventListener("click", () => moveCard(1));
+      $("shuffleBtn").addEventListener("click", shuffleDeck);
+      $("resetBtn").addEventListener("click", rebuildDeck);
+      document.querySelectorAll("[data-answer]").forEach(button => button.addEventListener("click", () => answerCard(button.dataset.answer)));
+    }
+    document.querySelectorAll("[data-mode]").forEach(button => button.addEventListener("click", () => {
+      document.querySelectorAll("[data-mode]").forEach(item => item.classList.toggle("active", item === button));
+      $("flashView").classList.toggle("active", button.dataset.mode === "flash");
+      $("tableView").classList.toggle("active", button.dataset.mode === "table");
+    }));
+    bindFlashControls();
+    $("modalClose").addEventListener("click", closeModal);
+    $("elementModal").addEventListener("click", event => { if (event.target === $("elementModal")) closeModal(); });
+    document.addEventListener("keydown", event => {
+      if ($("elementModal").classList.contains("open")) { if (event.key === "Escape") closeModal(); return; }
+      if (!$("flashView").classList.contains("active")) return;
+      if (event.key === "ArrowRight") moveCard(1);
+      if (event.key === "ArrowLeft") moveCard(-1);
+      if (event.code === "Space" && !event.target.matches("button")) { event.preventDefault(); flipCard(); }
+    });
+
+    // === INITIALIZATION ===
+    renderFilters();
+    renderPeriodicTable();
+    rebuildDeck();
+  </script>
+</body>
+</html>

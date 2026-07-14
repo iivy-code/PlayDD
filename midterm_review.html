@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Additional Mathematics 1 — Midterm Review</title>
+<style>
+  @font-face { font-family:'Sarabun'; src: local('Sarabun'); }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:#F2F2F2; color:#1A1A1A; line-height:1.6;
+  }
+  header {
+    background:#1E2761; color:#fff; padding:22px 24px;
+  }
+  header h1 { margin:0; font-size:20px; font-weight:700; }
+  header p { margin:4px 0 0; font-size:12.5px; color:#CADCFC; }
+
+  nav.tabs {
+    display:flex; flex-wrap:wrap; gap:0; background:#fff;
+    border-bottom:1px solid #ddd; position:sticky; top:0; z-index:10;
+  }
+  nav.tabs button {
+    flex:1; min-width:110px; padding:13px 10px; border:none; background:#fff;
+    font-family:inherit; font-size:13px; font-weight:600; color:#36454F;
+    cursor:pointer; border-bottom:3px solid transparent;
+  }
+  nav.tabs button.active { color:#1E2761; border-bottom:3px solid #1E2761; background:#F5F7FC; }
+  nav.tabs button:hover { background:#F5F7FC; }
+
+  main { max-width:880px; margin:0 auto; padding:20px 16px 60px; }
+  section.view { display:none; }
+  section.view.active { display:block; }
+
+  /* ---- Summary styles ---- */
+  .topic-card {
+    background:#fff; border:1px solid #e2e2e2; border-radius:6px;
+    margin-bottom:12px; overflow:hidden;
+  }
+  .topic-head {
+    padding:14px 16px; cursor:pointer; display:flex; justify-content:space-between;
+    align-items:center; background:#fff;
+  }
+  .topic-head:hover { background:#F5F7FC; }
+  .topic-head .num { color:#1E2761; font-weight:700; font-size:12px; margin-right:8px; }
+  .topic-head h3 { margin:0; font-size:14.5px; color:#1A1A1A; display:inline; font-weight:700; }
+  .topic-head .arrow { color:#1E2761; font-size:13px; transition:transform .15s; }
+  .topic-body {
+    padding:0 16px; max-height:0; overflow:hidden; transition:max-height .25s ease, padding .25s ease;
+    font-size:13.5px; color:#333;
+  }
+  .topic-card.open .topic-body { padding:0 16px 16px; max-height:2000px; }
+  .topic-card.open .arrow { transform:rotate(90deg); }
+  .topic-body table { width:100%; border-collapse:collapse; margin:8px 0; font-size:12.5px; }
+  .topic-body th, .topic-body td { border:1px solid #ddd; padding:5px 8px; text-align:center; }
+  .topic-body th { background:#1E2761; color:#fff; font-weight:600; }
+  .rule-box {
+    background:#F5F7FC; border-left:3px solid #1E2761; padding:8px 12px;
+    margin:8px 0; font-size:13px;
+  }
+  .example-box {
+    background:#FBFBFB; border:1px dashed #ccc; padding:8px 12px; margin:6px 0; font-size:12.5px;
+  }
+  .topic-body ul, .topic-body ol { margin:6px 0; padding-left:22px; }
+  .topic-body li { margin-bottom:4px; }
+
+  /* ---- Quiz styles ---- */
+  .quiz-header {
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;
+    flex-wrap:wrap; gap:8px;
+  }
+  .quiz-header .level-badge {
+    display:inline-block; padding:3px 10px; border-radius:12px; font-size:11.5px; font-weight:700;
+    color:#fff;
+  }
+  .badge-easy { background:#2E8B57; }
+  .badge-medium { background:#B8860B; }
+  .badge-hard { background:#B03A2E; }
+
+  .progress-bar { height:6px; background:#e0e0e0; border-radius:3px; overflow:hidden; margin-bottom:16px;}
+  .progress-fill { height:100%; background:#1E2761; width:0%; transition:width .2s; }
+
+  .q-card { background:#fff; border:1px solid #e2e2e2; border-radius:6px; padding:20px; }
+  .q-meta { font-size:11.5px; color:#888; margin-bottom:6px; }
+  .q-text { font-size:15px; font-weight:600; margin-bottom:14px; color:#1A1A1A; }
+  .choice {
+    display:block; width:100%; text-align:left; padding:10px 12px; margin-bottom:8px;
+    border:1px solid #ccc; border-radius:5px; background:#fff; cursor:pointer;
+    font-family:inherit; font-size:13.5px; color:#1A1A1A; transition:.12s;
+  }
+  .choice:hover { border-color:#1E2761; background:#F5F7FC; }
+  .choice.selected { border-color:#1E2761; background:#E9EEFA; }
+  .choice.correct { border-color:#2E8B57; background:#E6F4EC; font-weight:600; }
+  .choice.incorrect { border-color:#B03A2E; background:#FBEAE8; font-weight:600; }
+  .choice[disabled] { cursor:default; }
+
+  .solution-box {
+    display:none; margin-top:14px; padding:12px 14px; background:#F5F7FC;
+    border-left:3px solid #1E2761; border-radius:4px; font-size:13px;
+  }
+  .solution-box.show { display:block; }
+  .solution-box .label { font-weight:700; color:#1E2761; margin-bottom:4px; font-size:12.5px; }
+  .solution-box .steps { white-space:pre-line; color:#333; }
+
+  .q-nav { display:flex; justify-content:space-between; margin-top:16px; gap:8px; }
+  .btn {
+    padding:9px 18px; border:1px solid #1E2761; background:#1E2761; color:#fff;
+    border-radius:5px; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer;
+  }
+  .btn.secondary { background:#fff; color:#1E2761; }
+  .btn:disabled { opacity:.4; cursor:default; }
+
+  .jump-grid { display:flex; flex-wrap:wrap; gap:6px; margin:14px 0; }
+  .jump-btn {
+    width:30px; height:30px; border-radius:4px; border:1px solid #ccc; background:#fff;
+    font-size:11.5px; cursor:pointer; color:#555;
+  }
+  .jump-btn.answered { background:#CADCFC; border-color:#1E2761; color:#1E2761; font-weight:700; }
+  .jump-btn.current { outline:2px solid #1E2761; }
+
+  .score-panel {
+    background:#fff; border:1px solid #e2e2e2; border-radius:6px; padding:20px; text-align:center;
+    margin-bottom:16px;
+  }
+  .score-panel .big { font-size:34px; font-weight:700; color:#1E2761; }
+  .score-panel .sub { font-size:13px; color:#666; margin-top:4px; }
+
+  .intro-text { font-size:13px; color:#555; margin-bottom:16px; }
+  footer { text-align:center; font-size:11px; color:#999; padding:20px 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Additional Mathematics 1 (MA21201) — Midterm Review</h1>
+  <p>Suankularb Wittayalai Thonburi School · Unit 1: Selected Topics in Mathematics · Unit 2: Numbers and Numerals</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="summary">📘 Summary</button>
+  <button class="tab-btn" data-tab="easy">Easy Set</button>
+  <button class="tab-btn" data-tab="medium">Medium Set</button>
+  <button class="tab-btn" data-tab="hard">Hard Set</button>
+</nav>
+
+<main>
+
+<!-- ============ SUMMARY VIEW ============ -->
+<section class="view active" id="view-summary">
+  <p class="intro-text">Tap a topic to expand/collapse — plain-language summaries covering everything that could appear on the exam.</p>
+  <div id="summary-container"></div>
+</section>
+
+<!-- ============ QUIZ VIEWS (populated by JS) ============ -->
+<section class="view" id="view-easy"></section>
+<section class="view" id="view-medium"></section>
+<section class="view" id="view-hard"></section>
+
+</main>
+
+<footer>Additional Mathematics 1 (MA21201) — Midterm Review Prep</footer>
+
+<script>
+/* =========================================================
+   SUMMARY DATA
+========================================================= */
+const summaryTopics = [
+{
+  t:"1.1 Triangle Inequality",
+  html:`
+  <div class="rule-box"><b>Main rule:</b> The sum of any two sides of a triangle must always be <b>greater than</b> the third side.<br>
+  If the sides are a, b, c (c is the longest) → a + b &gt; c</div>
+  <ul>
+    <li>Used to check whether three given lengths can form a triangle</li>
+    <li>Quick check: add the <b>two shortest sides</b> and compare to the longest side</li>
+  </ul>
+  <div class="example-box"><b>Example:</b> 3, 4, 5 → 3+4=7 &gt; 5 ✅ Possible<br>
+  4, 5, 9 → 4+5=9, not greater than 9 ❌ Not possible (equal doesn't count)</div>
+  <div class="rule-box"><b>Finding the third side:</b> If two sides are a and b (a&lt;b), the third side (x) must satisfy:
+  <br><b>b − a &lt; x &lt; a + b</b></div>
+  <div class="example-box"><b>Example:</b> Sides 3 and 13 → 13−3=10, 13+3=16 → 10 &lt; x &lt; 16 → x can be 11 to 15 (integers)</div>`
+},
+{
+  t:"1.2 Even–Odd Rule (Interior/Exterior Points of a Curve)",
+  html:`
+  <div class="rule-box"><b>Main rule:</b> Draw a ray from the point of interest out to infinity, then count how many times it crosses the curve.
+  <ul><li><b>Odd</b> number of crossings → the point is <b>Interior</b></li>
+  <li><b>Even</b> number of crossings → the point is <b>Exterior</b></li></ul></div>
+  <p>A simple closed curve is a loop that connects back to itself without crossing itself.</p>
+  <div class="example-box"><b>Example:</b> A ray from point A crosses the curve 5 times (odd) → A is interior<br>
+  A ray from point B crosses the curve 4 times (even) → B is exterior</div>`
+},
+{
+  t:"1.3 Tangram",
+  html:`
+  <p>A tangram has 7 pieces: 2 large triangles, 1 medium triangle, 2 small triangles, 1 square, 1 parallelogram.</p>
+  <div class="rule-box"><b>Area logic:</b> Let the smallest triangle = 1 unit of area
+  <ul><li>Small triangle = 1 unit</li>
+  <li>Medium triangle = square = parallelogram = 2 units</li>
+  <li>Large triangle = 4 units (each)</li>
+  <li>Total area = 4+4+2+1+1+2+2 = 16 units</li></ul></div>
+  <div class="example-box">So each large triangle = total area × 4/16 = 1/4 of the total area</div>`
+},
+{
+  t:"1.4 Prime Numbers and Trial Division",
+  html:`
+  <div class="rule-box"><b>A prime number</b> is divisible only by 1 and itself (exactly 2 divisors).</div>
+  <p><b>Trial Division method</b> to check if N is prime:</p>
+  <ol>
+    <li>Find the largest integer K such that K×K ≤ N</li>
+    <li>Divide N by every prime number from 2 up to K</li>
+    <li>If any of them divides evenly → N is not prime</li>
+    <li>If none divides evenly → N is prime</li>
+  </ol>
+  <div class="example-box"><b>Example, 113:</b> K=10 (since 10×10=100≤113, but 11×11=121&gt;113) → test 2,3,5,7 → none divides evenly → 113 is prime</div>
+  <div class="rule-box"><b>Sieve of Eratosthenes:</b> Cross out multiples of 2, 3, 5, 7,... in order. The numbers that remain unmarked are all the primes.</div>`
+},
+{
+  t:"1.5 Greatest Common Divisor via the Euclidean Algorithm",
+  html:`
+  <div class="rule-box"><b>Idea:</b> Divide a by b to get remainder r → replace a with b and b with r → repeat until the remainder is 0 → the last non-zero divisor is the GCD.</div>
+  <div class="example-box"><b>Example, GCD(126, 162):</b><br>
+  162 = 126×1 + 36<br>
+  126 = 36×3 + 18<br>
+  36 = 18×2 + 0 → remainder is now 0<br>
+  <b>GCD = 18</b> (the last divisor before the remainder hit 0)</div>`
+},
+{
+  t:"1.6 The GCD–LCM Relationship",
+  html:`
+  <div class="rule-box"><b>Key formula:</b> GCD(a,b) × LCM(a,b) = a × b</div>
+  <p>Use this to find the LCM from the GCD (or vice versa) without computing the LCM directly.</p>
+  <div class="example-box"><b>Example:</b> The GCD and LCM of two numbers are 24 and 504 respectively. If one number is 72, find the other.<br>
+  24 × 504 = 72 × b<br>
+  b = (24×504)/72 = 168</div>`
+},
+{
+  t:"2.1 Roman Numerals",
+  html:`
+  <table><tr><th>I</th><th>V</th><th>X</th><th>L</th><th>C</th><th>D</th><th>M</th></tr>
+  <tr><td>1</td><td>5</td><td>10</td><td>50</td><td>100</td><td>500</td><td>1000</td></tr></table>
+  <ul>
+    <li>Smaller value <b>after</b> a larger one → add (e.g. VI = 5+1 = 6)</li>
+    <li>Smaller value <b>before</b> a larger one → subtract (e.g. IV = 5−1 = 4)</li>
+    <li>No symbol may repeat more than 3 times in a row; V, L, and D are never repeated</li>
+    <li>I may only precede V and X | X may only precede L and C | C may only precede D and M</li>
+    <li>A bar (vinculum) over a symbol multiplies its value by 1,000</li>
+    <li>There is no symbol for "0"</li>
+  </ul>
+  <div class="example-box"><b>Example:</b> 1,840 = MDCCCXL (1000+500+300+40)<br>
+  944 = CMXLIV (900+40+4)</div>`
+},
+{
+  t:"2.2.1 Decimal (Base-10) System",
+  html:`
+  <div class="rule-box">Each place has a place value that is a power of 10: ...,10³,10²,10¹,1</div>
+  <div class="example-box"><b>Expanded form:</b><br>
+  1,372,895 = (1×10⁶)+(3×10⁵)+(7×10⁴)+(2×10³)+(8×10²)+(9×10)+5</div>`
+},
+{
+  t:"2.2.2 Pental (Quinary, Base-5) System",
+  html:`
+  <div class="rule-box">Uses only the digits 0–4. Place values: ...,5³=125, 5²=25, 5¹=5, 1</div>
+  <p><b>Base 5 → Base 10:</b> multiply each digit by its place value, then add.</p>
+  <div class="example-box">132₅ = (1×25)+(3×5)+(2×1) = 25+15+2 = <b>42</b></div>
+  <p><b>Base 10 → Base 5:</b> divide repeatedly by 5, record each remainder, then read the remainders bottom-to-top.</p>
+  <div class="example-box">472 → 472÷5=94 r2 → 94÷5=18 r4 → 18÷5=3 r3 → 3÷5=0 r3<br>
+  Read the remainders bottom-to-top: <b>472 = 3342₅</b></div>`
+},
+{
+  t:"2.2.3 Binary (Base-2) System",
+  html:`
+  <div class="rule-box">Uses only the digits 0–1 (the foundation of computer systems). Place values: ...,2⁵=32,2⁴=16,2³=8,2²=4,2¹=2,1</div>
+  <div class="example-box"><b>Base 2 → Base 10:</b><br>
+  101110₂ = (1×32)+(0×16)+(1×8)+(1×4)+(1×2)+(0×1) = 32+8+4+2 = <b>46</b></div>
+  <div class="example-box"><b>Base 10 → Base 2:</b> divide repeatedly by 2, record each remainder, read bottom-to-top<br>
+  75 → 75÷2=37r1, 37÷2=18r1, 18÷2=9r0, 9÷2=4r1, 4÷2=2r0, 2÷2=1r0, 1÷2=0r1<br>
+  <b>75 = 1001011₂</b></div>`
+}
+];
+
+const sc = document.getElementById('summary-container');
+summaryTopics.forEach((topic, i)=>{
+  const card = document.createElement('div');
+  card.className = 'topic-card';
+  card.innerHTML = `
+    <div class="topic-head" onclick="this.parentElement.classList.toggle('open')">
+      <div><span class="num">${String(i+1).padStart(2,'0')}</span><h3>${topic.t}</h3></div>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="topic-body">${topic.html}</div>`;
+  sc.appendChild(card);
+});
+
+/* =========================================================
+   QUIZ DATA — EASY (20)
+========================================================= */
+const easyQ = [
+{q:"Can a triangle be formed with sides 3, 4, and 5 units?", c:["Yes, it can be formed","No, it cannot be formed"], a:0, s:"Add the two shorter sides and compare to the longest: 3+4=7, which is greater than 5 → by the Triangle Inequality, it can be formed."},
+{q:"Can a triangle be formed with sides 2, 3, and 7 units?", c:["Yes, it can be formed","No, it cannot be formed"], a:1, s:"2+3 = 5, which is less than 7 → this violates the Triangle Inequality → it cannot be formed."},
+{q:"The rule stating \"the sum of two sides of a triangle must be greater than the third side\" is called what?", c:["Even-Odd Rule","Triangle Inequality Theorem","Euclidean Algorithm","Sieve of Eratosthenes"], a:1, s:"This theorem's name is the Triangle Inequality Theorem."},
+{q:"If a ray from point P crosses a closed curve 3 times (an odd number), where is point P located?", c:["Interior","Exterior","Exactly on the curve","Cannot be determined"], a:0, s:"By the Even-Odd Rule, an odd number of crossings means the point is inside (interior) the curve."},
+{q:"If a ray from point Q crosses a closed curve 4 times (an even number), where is point Q located?", c:["Interior","Exterior","Exactly on the curve","Cannot be determined"], a:1, s:"An even number of crossings means the point is outside (exterior) the curve."},
+{q:"How many positive divisors does a prime number have?", c:["1","2","3","It depends on the number"], a:1, s:"A prime number is divisible only by 1 and itself, so it always has exactly 2 divisors."},
+{q:"Is 17 a prime number?", c:["Yes, it is prime","No, it is composite"], a:0, s:"17 is only divisible by 1 and 17 (K=4, so testing 2 and 3 is enough — neither divides evenly) → 17 is prime."},
+{q:"Is 21 a prime number?", c:["Yes, it is prime","No, it is composite"], a:1, s:"21 = 3×7, so it has more than 2 divisors → it is composite, not prime."},
+{q:"Which of the following lists the first 5 prime numbers?", c:["1, 2, 3, 5, 7","2, 3, 5, 7, 11","2, 4, 6, 8, 10","3, 5, 7, 9, 11"], a:1, s:"The first 5 prime numbers are 2, 3, 5, 7, 11 (1 is not counted as prime)."},
+{q:"What is GCD(8, 12)?", c:["2","4","6","24"], a:1, s:"Divisors of 8 are 1,2,4,8; divisors of 12 are 1,2,3,4,6,12. The largest shared divisor is 4."},
+{q:"What is LCM(8, 12)?", c:["4","16","24","96"], a:2, s:"The smallest common multiple of 8 and 12 is 24 (8×3=24, 12×2=24)."},
+{q:"Which formula correctly relates GCD and LCM of a, b?", c:["GCD(a,b) + LCM(a,b) = a+b","GCD(a,b) × LCM(a,b) = a×b","GCD(a,b) − LCM(a,b) = a−b","GCD(a,b) ÷ LCM(a,b) = a÷b"], a:1, s:"The standard identity is GCD(a,b) × LCM(a,b) = a × b, true for any positive integers a, b."},
+{q:"How do you write 7 in Roman numerals?", c:["VII","IIV","VI","IIX"], a:0, s:"7 = 5+1+1 = V+I+I = VII"},
+{q:"What is the Arabic-numeral value of XII?", c:["7","10","12","22"], a:2, s:"X=10, I=1, I=1 → 10+1+1 = 12 (smaller values after a larger one are added)."},
+{q:"Which Roman numeral symbol represents 1000?", c:["C","D","L","M"], a:3, s:"M is the Roman numeral symbol for 1000."},
+{q:"In the number 4,562, which place is the digit 5 in, and what is its value?", c:["Tens place, value 50","Hundreds place, value 500","Thousands place, value 5000","Units place, value 5"], a:1, s:"4,562 → the digit 5 is the 3rd digit from the right (hundreds place) → value = 5×100 = 500."},
+{q:"In the base-5 (quinary) number system, what is the largest digit that can be used?", c:["3","4","5","9"], a:1, s:"Base-5 only uses the digits 0,1,2,3,4 — the largest digit is 4."},
+{q:"Convert the binary number 101₂ to base-10.", c:["3","4","5","6"], a:2, s:"101₂ = (1×4)+(0×2)+(1×1) = 4+0+1 = 5"},
+{q:"What base is the everyday number system (Decimal) we normally use?", c:["Base 2","Base 5","Base 8","Base 10"], a:3, s:"The decimal system uses digits 0–9, so its base is 10."},
+{q:"What base is the Binary system that computers use?", c:["Base 2","Base 8","Base 10","Base 16"], a:0, s:"The binary system uses only the digits 0 and 1, so its base is 2."}
+];
+
+/* =========================================================
+   QUIZ DATA — MEDIUM (20)
+========================================================= */
+const mediumQ = [
+{q:"Can a triangle with sides 6.4, 4, and 10.3 units be formed?", c:["Yes, because 6.4+4 > 10.3","No, because 6.4+4 < 10.3","Yes, but only because 6.4+10.3 > 4","Not enough information"], a:0, s:"Check the two shorter sides against the longest: 6.4+4 = 10.4, which is greater than 10.3 (even if only barely) → it can be formed."},
+{q:"A triangle has two sides of length 5 and 9 units. If the third side is an integer, how many possible lengths are there?", c:["7 values","8 values","9 values","10 values"], a:2, s:"The range is |9-5| < x < 9+5 → 4 < x < 14 → x = 5,6,7,8,9,10,11,12,13, giving 9 values."},
+{q:"Use trial division to check whether 91 is prime.", c:["It is prime","It is not prime, since 91 = 7×13","It is not prime, since 91 = 3×30.3","Not enough information"], a:1, s:"K=9 (9×9=81≤91) → test the primes 2,3,5,7 → 91÷7 = 13 exactly → 91 = 7×13, so it is not prime."},
+{q:"Use the Euclidean Algorithm to find GCD(48, 18).", c:["GCD = 3","GCD = 6","GCD = 9","GCD = 12"], a:1, s:"48 = 18×2+12 → 18 = 12×1+6 → 12 = 6×2+0 (remainder is 0) → GCD = 6"},
+{q:"Find LCM(15, 20) using GCD×LCM = a×b, given GCD(15,20)=5.", c:["40","60","75","100"], a:1, s:"GCD×LCM=a×b → 5×LCM=15×20=300 → LCM = 300/5 = 60"},
+{q:"Use the Sieve of Eratosthenes to count the prime numbers less than or equal to 30.", c:["8 primes","9 primes","10 primes","11 primes"], a:2, s:"Primes ≤30 are 2,3,5,7,11,13,17,19,23,29 — that's 10 primes."},
+{q:"Write 49 as a Roman numeral.", c:["IL","XLIX","XLVIIII","IIL"], a:1, s:"49 = 50−1 = XL(40)+IX(9) = XLIX (X before L subtracts 10; I before X subtracts 1)."},
+{q:"What is the Arabic-numeral value of CDXLIV?", c:["444","454","644","944"], a:0, s:"CD=400, XL=40, IV=4 → 400+40+4 = 444"},
+{q:"Write 3,206 in expanded form.", c:["(3×100)+(2×10)+0+6","(3×1000)+(2×100)+(0×10)+6","(3×1000)+(2×10)+6","(3×10000)+(2×100)+6"], a:1, s:"3,206 = 3 thousands + 2 hundreds + 0 tens + 6 units = (3×1000)+(2×100)+(0×10)+6"},
+{q:"In the number 27,451, what is the value of the digit 7?", c:["7","70","700","7,000"], a:3, s:"27,451 → the digit 7 is the 4th digit from the right (thousands place) → value = 7×1000 = 7,000"},
+{q:"Convert 234 (base-10) to base-5.", c:["1414₅","1341₅","1424₅","1434₅"], a:0, s:"234÷5=46 r4 → 46÷5=9 r1 → 9÷5=1 r4 → 1÷5=0 r1 → read remainders bottom-to-top: 1414₅"},
+{q:"Check the previous answer: what is 1414₅ converted back to base-10?", c:["224","234","244","254"], a:1, s:"1414₅ = (1×125)+(4×25)+(1×5)+4 = 125+100+5+4 = 234 ✓ matches the original value"},
+{q:"Convert the binary number 11010₂ to base-10.", c:["24","25","26","28"], a:2, s:"11010₂ = (1×16)+(1×8)+(0×4)+(1×2)+(0×1) = 16+8+0+2+0 = 26"},
+{q:"Convert 26 (base-10) to base-2.", c:["11001₂","11010₂","10110₂","11100₂"], a:1, s:"26÷2=13r0 → 13÷2=6r1 → 6÷2=3r0 → 3÷2=1r1 → 1÷2=0r1 → read bottom-to-top: 11010₂"},
+{q:"In a tangram, the total area is 32 units, and the two large triangles together make up half the total area. What is their combined area?", c:["8 units","16 units","20 units","24 units"], a:1, s:"Half of 32 = 16 units"},
+{q:"A ray from point P crosses a closed curve 5 times. Where is P located?", c:["Interior (odd)","Exterior (even)","Exactly on the curve","Cannot be determined"], a:0, s:"5 is odd → by the Even-Odd Rule, P is in the interior of the curve."},
+{q:"The Even-Odd Rule is also known by what other name?", c:["Euclidean Algorithm","Crossing Number Algorithm","Sieve Method","Trial Division"], a:1, s:"The Even-Odd Rule is also called the Crossing Number Algorithm (based on how many times the ray crosses the curve)."},
+{q:"The GCD and LCM of two numbers are 6 and 72 respectively. If one number is 18, what is the other?", c:["12","20","24","30"], a:2, s:"GCD×LCM=a×b → 6×72=18×b → 432=18×b → b=432/18=24"},
+{q:"In Roman numerals, which symbols can the letter I precede (to subtract)?", c:["Only V and X","Only L and C","V, X, and L","Any symbol"], a:0, s:"Subtraction rule: I may only precede V, X | X may only precede L, C | C may only precede D, M"}
+];
+
+/* =========================================================
+   QUIZ DATA — HARD (20)
+========================================================= */
+const hardQ = [
+{q:"A triangle has two sides of length 3 and 13 units. If the third side is an integer, how many values are possible, and what are they?", c:["4 values: 12,13,14,15","5 values: 11,12,13,14,15","6 values: 10,11,12,13,14,15","5 values: 10,11,12,13,14"], a:1, s:"The range is |13-3| < x < 13+3 → 10 < x < 16 → integer values of x are 11,12,13,14,15 — 5 values total."},
+{q:"Use trial division to check whether 391 is prime (what K should be used, and what is the conclusion?)", c:["K=19, 391 is prime","K=19, 391=17×23, not prime","K=20, 391=13×30.08, not prime","K=18, 391 is prime"], a:1, s:"√391≈19.8 → K=19 → test primes 2,3,5,7,11,13,17,19 → 391÷17=23 exactly → 391=17×23, so it is not prime."},
+{q:"Find GCD(336, 210) using the Euclidean Algorithm, showing every step. What is the result?", c:["GCD=21","GCD=42","GCD=14","GCD=84"], a:1, s:"336=210×1+126 → 210=126×1+84 → 126=84×1+42 → 84=42×2+0 (remainder=0) → GCD=42"},
+{q:"From the previous question, GCD(336,210)=42. Find LCM(336,210).", c:["840","1,260","1,680","3,360"], a:2, s:"GCD×LCM=a×b → 42×LCM=336×210=70,560 → LCM=70,560/42=1,680"},
+{q:"Find the GCD of 24, 36, and 60 (three numbers) by applying the Euclidean Algorithm pairwise.", c:["6","8","12","18"], a:2, s:"GCD(24,36): 36=24×1+12, 24=12×2+0 → GCD=12 | GCD(12,60): 60=12×5+0 → GCD=12 → so GCD(24,36,60)=12"},
+{q:"The LCM of two numbers is 180 and the GCD is 6. If one number is 30, what is the other?", c:["24","30","36","42"], a:2, s:"GCD×LCM=a×b → 6×180=30×b → 1080=30×b → b=1080/30=36"},
+{q:"Write 2,025 as a Roman numeral.", c:["MMXXV","MMXXIV","MMXV","MXXV"], a:0, s:"2025 = 2000(MM) + 25(XXV) = MMXXV"},
+{q:"Write 3,949 as a Roman numeral.", c:["MMMCMXLIX","MMMDCCCCXLIX","MMMCMLIX","MMMCMXLIV"], a:0, s:"3949 = 3000(MMM) + 900(CM) + 40(XL) + 9(IX) = MMMCMXLIX"},
+{q:"What is the Arabic-numeral value of X̄CDLXI (the bar over X means X×1000)?", c:["10,461","1,461","10,946","461,010"], a:0, s:"X̄ = 10×1000 = 10,000, and CDLXI = 400+50+10+1 = 461 → total = 10,000+461 = 10,461"},
+{q:"Convert 894 (base-10) to base-5, showing every division step.", c:["12034₅","12043₅","12304₅","11234₅"], a:0, s:"894÷5=178r4 → 178÷5=35r3 → 35÷5=7r0 → 7÷5=1r2 → 1÷5=0r1 → read remainders bottom-to-top: 12034₅"},
+{q:"Check the answer: what does 12034₅ convert back to in base-10?", c:["884","894","904","914"], a:1, s:"12034₅=(1×625)+(2×125)+(0×25)+(3×5)+4 = 625+250+0+15+4 = 894 ✓"},
+{q:"Convert the binary number 101110₂ to base-10, writing out the expanded form.", c:["44","45","46","48"], a:2, s:"101110₂=(1×32)+(0×16)+(1×8)+(1×4)+(1×2)+(0×1)=32+0+8+4+2+0=46"},
+{q:"Convert 75 (base-10) to base-2, showing every step of dividing by 2.", c:["1001010₂","1001011₂","1000111₂","1011001₂"], a:1, s:"75÷2=37r1→37÷2=18r1→18÷2=9r0→9÷2=4r1→4÷2=2r0→2÷2=1r0→1÷2=0r1 → read bottom-to-top: 1001011₂"},
+{q:"Compute 1123₅ + 2101₅ and write the answer in base-5.", c:["3214₅","3224₅","3324₅","3124₅"], a:1, s:"Convert to base-10 first: 1123₅=125+25+10+3=163, 2101₅=250+25+0+1=276 → sum=439 → convert back to base-5: 439÷5=87r4→87÷5=17r2→17÷5=3r2→3÷5=0r3 → 3224₅"},
+{q:"How many three-digit numbers greater than 500 have a tens digit equal to twice the units digit?", c:["20 numbers","24 numbers","25 numbers","30 numbers"], a:1, s:"Units digit can be 0-4 (so 2×units stays a single digit) → 5 options (units=0,1,2,3,4 → tens=0,2,4,6,8). Hundreds digit can be 5-9 → 5 options. Total = 5×5=25. But when hundreds=5, tens=0, units=0, the number is exactly 500, which is not greater than 500 (it's equal) — this case must be excluded → 25−1 = 24 numbers."},
+{q:"A ray from point A crosses a closed curve 7 times, and a ray from point B crosses it 8 times. Where are A and B located, respectively?", c:["A interior, B interior","A exterior, B interior","A interior, B exterior","A exterior, B exterior"], a:2, s:"7 is odd → A is interior | 8 is even → B is exterior"},
+{q:"A tangram has a total area of 1 unit. If the smallest piece has area 1/16 and another piece is 4 times larger, what is that piece's area?", c:["1/8","1/4","1/2","3/16"], a:1, s:"Smallest piece = 1/16 → 4 times 1/16 = 4/16 = 1/4"},
+{q:"Use the Sieve of Eratosthenes to find all prime numbers between 100 and 120.", c:["101,103,107,109,113 (5 primes)","101,103,107,109,113,119 (6 primes)","103,107,109,113 (4 primes)","101,107,109,113 (4 primes)"], a:0, s:"Check each: 101✓,103✓,105=3×35✗,107✓,109✓,111=3×37✗,113✓,115=5×23✗,117=3×39✗,119=7×17✗ → 101,103,107,109,113, a total of 5 primes."},
+{q:"Find GCD(1024, 768) using the Euclidean Algorithm, then express the answer as a power of 2.", c:["GCD=128=2⁷","GCD=256=2⁸","GCD=512=2⁹","GCD=64=2⁶"], a:1, s:"1024=768×1+256 → 768=256×3+0 (remainder=0) → GCD=256 → 256=2⁸"}
+];
+
+/* =========================================================
+   QUIZ BUILDER
+========================================================= */
+function buildQuiz(containerId, data, level, badgeClass, badgeLabel){
+  const container = document.getElementById(containerId);
+  let current = 0;
+  const answered = new Array(data.length).fill(null); // stores selected index
+
+  container.innerHTML = `
+    <div class="quiz-header">
+      <div><span class="level-badge ${badgeClass}">${badgeLabel}</span> <b style="margin-left:8px;font-size:14px;">20 Questions</b></div>
+      <div id="${level}-score-live" style="font-size:13px;color:#555;">Answered 0/20</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="${level}-progress"></div></div>
+    <div id="${level}-jump" class="jump-grid"></div>
+    <div class="q-card">
+      <div class="q-meta" id="${level}-meta">Question 1 / 20</div>
+      <div class="q-text" id="${level}-qtext"></div>
+      <div id="${level}-choices"></div>
+      <div class="solution-box" id="${level}-solution">
+        <div class="label">💡 Answer &amp; Solution</div>
+        <div class="steps" id="${level}-steps"></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn secondary" id="${level}-prev">← Previous</button>
+        <button class="btn secondary" id="${level}-restart">Restart</button>
+        <button class="btn" id="${level}-next">Next →</button>
+      </div>
+    </div>
+    <div id="${level}-summary-panel" style="display:none;"></div>
+  `;
+
+  const jumpEl = document.getElementById(level+'-jump');
+  data.forEach((_, i)=>{
+    const b = document.createElement('button');
+    b.className='jump-btn';
+    b.textContent = i+1;
+    b.onclick = ()=>{ current = i; render(); };
+    jumpEl.appendChild(b);
+  });
+
+  function updateJump(){
+    const btns = jumpEl.querySelectorAll('.jump-btn');
+    btns.forEach((b,i)=>{
+      b.classList.toggle('answered', answered[i]!==null);
+      b.classList.toggle('current', i===current);
+    });
+  }
+
+  function updateProgress(){
+    const count = answered.filter(a=>a!==null).length;
+    document.getElementById(level+'-progress').style.width = (count/data.length*100)+'%';
+    document.getElementById(level+'-score-live').textContent = `Answered ${count}/${data.length}`;
+  }
+
+  function render(){
+    const item = data[current];
+    document.getElementById(level+'-meta').textContent = `Question ${current+1} / ${data.length}`;
+    document.getElementById(level+'-qtext').textContent = item.q;
+    const choiceBox = document.getElementById(level+'-choices');
+    choiceBox.innerHTML = '';
+    const sol = document.getElementById(level+'-solution');
+    sol.classList.remove('show');
+
+    item.c.forEach((choiceText, idx)=>{
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.textContent = String.fromCharCode(65+idx) + '.  ' + choiceText;
+      if(answered[current]!==null){
+        btn.disabled = true;
+        if(idx===item.a) btn.classList.add('correct');
+        else if(idx===answered[current]) btn.classList.add('incorrect');
+      }
+      btn.onclick = ()=>{
+        if(answered[current]!==null) return;
+        answered[current]=idx;
+        render();
+        updateJump();
+        updateProgress();
+      };
+      choiceBox.appendChild(btn);
+    });
+
+    if(answered[current]!==null){
+      document.getElementById(level+'-steps').textContent = item.s;
+      sol.classList.add('show');
+    }
+
+    document.getElementById(level+'-prev').disabled = current===0;
+    document.getElementById(level+'-next').textContent = current===data.length-1 ? 'See Results →' : 'Next →';
+    updateJump();
+    updateProgress();
+  }
+
+  document.getElementById(level+'-prev').onclick = ()=>{ if(current>0){current--; render();} };
+  document.getElementById(level+'-next').onclick = ()=>{
+    if(current<data.length-1){ current++; render(); }
+    else { showSummary(); }
+  };
+  document.getElementById(level+'-restart').onclick = ()=>{
+    answered.fill(null); current=0;
+    document.getElementById(level+'-summary-panel').style.display='none';
+    document.querySelector(`#view-${level} .q-card`).style.display='block';
+    render();
+  };
+
+  function showSummary(){
+    const correctCount = data.reduce((acc,item,i)=> acc + (answered[i]===item.a?1:0), 0);
+    const answeredCount = answered.filter(a=>a!==null).length;
+    document.querySelector(`#view-${level} .q-card`).style.display='none';
+    const panel = document.getElementById(level+'-summary-panel');
+    panel.style.display='block';
+    panel.innerHTML = `
+      <div class="score-panel">
+        <div class="big">${correctCount} / ${data.length}</div>
+        <div class="sub">${correctCount} correct out of ${answeredCount} answered (${Math.round(correctCount/data.length*100)}%)</div>
+        <button class="btn" style="margin-top:14px;" onclick="document.getElementById('${level}-restart').click()">Retake This Set</button>
+      </div>`;
+  }
+
+  render();
+}
+
+buildQuiz('view-easy', easyQ, 'easy', 'badge-easy', 'Easy');
+buildQuiz('view-medium', mediumQ, 'medium', 'badge-medium', 'Medium');
+buildQuiz('view-hard', hardQ, 'hard', 'badge-hard', 'Hard');
+
+/* =========================================================
+   TAB SWITCHING
+========================================================= */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('view-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>

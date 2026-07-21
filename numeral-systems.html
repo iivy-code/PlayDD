@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M.1 Additional Mathematics — Numeral Systems (Study Guide &amp; Answer Key)</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-light:#CADCFC;
+    --accent:#FFFFFF;
+    --ink:#1A1A1A;
+    --grey-bg:#F5F5F5;
+    --border:#D9DEEA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    margin:0;
+    background:#FFFFFF;
+    line-height:1.6;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px 80px;}
+  header.hero{
+    background:var(--navy);
+    color:#fff;
+    padding:40px 24px;
+    margin-bottom:32px;
+  }
+  header.hero .inner{max-width:920px;margin:0 auto;}
+  header.hero h1{font-size:26px;margin:0 0 8px;font-weight:700;}
+  header.hero p{margin:0;font-size:14px;color:var(--navy-light);}
+  header.hero .meta{margin-top:16px;font-size:12px;color:var(--navy-light);letter-spacing:.03em;text-transform:uppercase;}
+
+  nav.toc{
+    background:var(--grey-bg);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:20px 24px;
+    margin-bottom:36px;
+  }
+  nav.toc h2{font-size:14px;margin:0 0 10px;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;}
+  nav.toc ol{margin:0;padding-left:20px;columns:2;column-gap:32px;}
+  nav.toc li{margin-bottom:6px;font-size:13.5px;}
+  nav.toc a{color:var(--ink);text-decoration:none;}
+  nav.toc a:hover{color:var(--navy);text-decoration:underline;}
+
+  section{margin-bottom:48px;}
+  h2.section-title{
+    font-size:19px;
+    color:var(--navy);
+    border-bottom:2px solid var(--navy);
+    padding-bottom:8px;
+    margin:0 0 18px;
+    font-weight:700;
+  }
+  h3.sub{font-size:15.5px;color:var(--navy);margin:26px 0 10px;font-weight:600;}
+
+  .concept-box{
+    background:var(--grey-bg);
+    border-left:4px solid var(--navy);
+    padding:14px 18px;
+    margin:14px 0;
+    font-size:14px;
+  }
+  .concept-box ul{margin:6px 0 0;padding-left:20px;}
+  .concept-box li{margin-bottom:4px;}
+
+  table.place-value{
+    border-collapse:collapse;
+    width:100%;
+    margin:14px 0;
+    font-size:13.5px;
+  }
+  table.place-value th, table.place-value td{
+    border:1px solid var(--border);
+    padding:8px 10px;
+    text-align:center;
+  }
+  table.place-value th{background:var(--navy);color:#fff;font-weight:600;}
+  table.place-value td.label{background:var(--grey-bg);font-weight:600;text-align:left;}
+
+  table.qa{
+    width:100%;
+    border-collapse:collapse;
+    margin:10px 0 26px;
+    font-size:14px;
+  }
+  table.qa th{
+    background:var(--navy);
+    color:#fff;
+    text-align:left;
+    padding:9px 12px;
+    font-weight:600;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  table.qa td{
+    border-bottom:1px solid var(--border);
+    padding:10px 12px;
+    vertical-align:top;
+  }
+  table.qa tr:nth-child(even) td{background:#FAFBFD;}
+  td.q-num{width:36px;font-weight:600;color:var(--navy);}
+  td.q-item{width:22%;font-weight:600;}
+  td.q-answer{width:20%;color:var(--navy);font-weight:700;white-space:nowrap;}
+  td.q-explain{font-size:13px;color:#333;}
+
+  .note{
+    font-size:12.5px;
+    color:#555;
+    background:#FFF8E6;
+    border:1px solid #EAD9A0;
+    border-radius:4px;
+    padding:10px 14px;
+    margin:12px 0 20px;
+  }
+  .note strong{color:#8a6d00;}
+
+  footer{
+    margin-top:60px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:#777;
+    text-align:center;
+  }
+
+  code, .mono{font-family:'Sarabun',monospace;}
+  .sub-index{font-size:10px;vertical-align:sub;}
+
+  @media (max-width:640px){
+    nav.toc ol{columns:1;}
+    table.qa{font-size:13px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <h1>Numeral Systems — Study Guide &amp; Answer Key</h1>
+    <p>Additional Mathematics 1 (MA21201) — Department of Mathematics, Suankularb Wittayalai Thonburi School</p>
+    <div class="meta">M.1 Exam Prep · Positional Numeral Systems (Decimal · Quinary · Binary · Roman Numerals)</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">1. Positional Numeral Systems — Overview</a></li>
+    <li><a href="#s2">2. Decimal (Base-10) System</a></li>
+    <li><a href="#s3">3. Quinary (Base-5) System</a></li>
+    <li><a href="#s4">4. Binary (Base-2) System</a></li>
+    <li><a href="#s5">5. Roman Numerals</a></li>
+  </ol>
+</nav>
+
+<!-- ===================== SECTION 1 ===================== -->
+<section id="s1">
+  <h2 class="section-title">1. Positional Numeral Systems — Overview</h2>
+  <div class="concept-box">
+    <ul>
+      <li>In a <strong>positional (place value) system</strong>, the position of a digit determines its value.</li>
+      <li>The <strong>Babylonian system (base 60)</strong> was the first positional system — its influence survives in 60 minutes/hour and 360° in a circle.</li>
+      <li>The modern positional system, including <strong>zero as a placeholder</strong>, was developed in India around the 7th century.</li>
+      <li>A <strong>base (radix)</strong> is the number of digits a system uses. Decimal = base 10 (digits 0–9).</li>
+      <li>A subscript distinguishes bases, e.g. <span class="mono">100<span class="sub-index">2</span></span> (binary) ≠ <span class="mono">100<span class="sub-index">10</span></span> (decimal) ≠ <span class="mono">100<span class="sub-index">16</span></span> (hex).</li>
+      <li><strong>Binary (base 2)</strong> is used in computers because it's easy to implement electronically. <strong>Octal (base 8)</strong> and <strong>hexadecimal (base 16)</strong> represent binary values more compactly for humans (e.g. memory addresses, web colour codes).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== SECTION 2 ===================== -->
+<section id="s2">
+  <h2 class="section-title">2. Decimal (Base-10) System</h2>
+  <p>Each place value is a power of 10, increasing right to left starting at 10⁰ = 1.</p>
+
+  <table class="place-value">
+    <tr><th>Position</th><td>...</td><td>7th</td><td>6th</td><td>5th</td><td>4th</td><td>3rd</td><td>2nd</td><td>1st</td></tr>
+    <tr><td class="label">Place value</td><td>...</td><td>10⁶</td><td>10⁵</td><td>10⁴</td><td>10³</td><td>10²</td><td>10¹</td><td>1</td></tr>
+  </table>
+
+  <h3 class="sub">Example 1 — Find the value of digit 5</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Number</th><th>Answer</th><th>Explanation</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">5</td><td class="q-answer">5</td><td class="q-explain">5 is in the 1st (ones) place → value = 5 × 1</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">56</td><td class="q-answer">50</td><td class="q-explain">5 is in the 2nd (tens) place → value = 5 × 10</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">85</td><td class="q-answer">5</td><td class="q-explain">5 is in the 1st (ones) place → value = 5 × 1</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">135</td><td class="q-answer">5</td><td class="q-explain">5 is in the 1st (ones) place → value = 5 × 1</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">253</td><td class="q-answer">50</td><td class="q-explain">5 is in the 2nd (tens) place → value = 5 × 10</td></tr>
+    <tr><td class="q-num">6</td><td class="q-item">5,138</td><td class="q-answer">5,000</td><td class="q-explain">5 is in the 4th (thousands) place → value = 5 × 1,000</td></tr>
+  </table>
+
+  <h3 class="sub">Example 2 — Expanded form</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Number</th><th colspan="2">Expanded form</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">21</td><td colspan="2" class="q-explain">(2 × 10) + (1 × 1)</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">336</td><td colspan="2" class="q-explain">(3 × 10²) + (3 × 10) + (6 × 1)</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">4,073</td><td colspan="2" class="q-explain">(4 × 10³) + (0 × 10²) + (7 × 10) + (3 × 1)</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">10,180</td><td colspan="2" class="q-explain">(1 × 10⁴) + (0 × 10³) + (1 × 10²) + (8 × 10) + (0 × 1)</td></tr>
+  </table>
+
+  <h3 class="sub">Example 3 — Convert expanded form back to a number</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Expanded form</th><th>Answer</th><th>Working</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">(4×10²)+3</td><td class="q-answer">403</td><td class="q-explain">400 + 3</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">(2×10³)+(7×10)</td><td class="q-answer">2,070</td><td class="q-explain">2,000 + 70</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">(7×10³)+(4×10²)+(0×10)+3</td><td class="q-answer">7,403</td><td class="q-explain">7,000 + 400 + 0 + 3</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">(5×10⁴)+(6×10²)+(9×1)</td><td class="q-answer">50,609</td><td class="q-explain">50,000 + 600 + 9</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">(7×10⁴)+(5×10³)+(7×10²)</td><td class="q-answer">75,700</td><td class="q-explain">70,000 + 5,000 + 700</td></tr>
+    <tr><td class="q-num">6</td><td class="q-item">(5×10⁶)+(2×10⁴)+(8×10³)+(7×10)</td><td class="q-answer">5,028,070</td><td class="q-explain">5,000,000 + 20,000 + 8,000 + 70</td></tr>
+    <tr><td class="q-num">7</td><td class="q-item">(2×10⁵)+(5×10³)+(8×10)</td><td class="q-answer">205,080</td><td class="q-explain">200,000 + 5,000 + 80</td></tr>
+  </table>
+
+  <h3 class="sub">Exercises 2.2.1 — Q1: Expanded form</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Number</th><th colspan="2">Expanded form</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">2,075</td><td colspan="2" class="q-explain">(2×10³)+(0×10²)+(7×10)+(5×1)</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">17,931</td><td colspan="2" class="q-explain">(1×10⁴)+(7×10³)+(9×10²)+(3×10)+(1×1)</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">502,021</td><td colspan="2" class="q-explain">(5×10⁵)+(0×10⁴)+(2×10³)+(0×10²)+(2×10)+(1×1)</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">3,216,504</td><td colspan="2" class="q-explain">(3×10⁶)+(2×10⁵)+(1×10⁴)+(6×10³)+(5×10²)+(0×10)+(4×1)</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">4,120,459,004</td><td colspan="2" class="q-explain">(4×10⁹)+(1×10⁸)+(2×10⁷)+(0×10⁶)+(4×10⁵)+(5×10⁴)+(9×10³)+(0×10²)+(0×10)+(4×1)</td></tr>
+  </table>
+
+  <h3 class="sub">Exercises 2.2.1 — Q2: Number from expanded form</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Expanded form</th><th>Answer</th><th>Working</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">9+(5×10²)+(4×10³)</td><td class="q-answer">4,509</td><td class="q-explain">9 + 500 + 4,000</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">(9×10)+(2×10⁴)+(6×10²)+1+(3×10⁵)</td><td class="q-answer">320,691</td><td class="q-explain">90 + 20,000 + 600 + 1 + 300,000</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">(4×10⁶)+(2×10⁴)+(5×10³)</td><td class="q-answer">4,025,000</td><td class="q-explain">4,000,000 + 20,000 + 5,000</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">(3×10)+(7×10⁴)+(9×10⁵)+2+(1×10⁶)+(5×10³)+(8×10²)</td><td class="q-answer">1,975,832</td><td class="q-explain">30 + 70,000 + 900,000 + 2 + 1,000,000 + 5,000 + 800</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">(7×10⁷)+(9×10⁵)+(3×10²)+(4×10)+5</td><td class="q-answer">70,900,345</td><td class="q-explain">70,000,000 + 900,000 + 300 + 40 + 5</td></tr>
+  </table>
+</section>
+
+<!-- ===================== SECTION 3 ===================== -->
+<section id="s3">
+  <h2 class="section-title">3. Quinary (Base-5) System</h2>
+  <div class="concept-box">
+    <ul>
+      <li><strong>Quinary</strong> is a base-5 numeral system — possibly originating from counting on the five fingers of one hand.</li>
+      <li>Uses five numerals: <strong>0, 1, 2, 3, 4</strong>. Each place value is a power of 5.</li>
+    </ul>
+  </div>
+  <table class="place-value">
+    <tr><th>Position</th><td>...</td><td>6th</td><td>5th</td><td>4th</td><td>3rd</td><td>2nd</td><td>1st</td></tr>
+    <tr><td class="label">Place value</td><td>...</td><td>5⁵ = 3,125</td><td>5⁴ = 625</td><td>5³ = 125</td><td>5² = 25</td><td>5¹ = 5</td><td>1</td></tr>
+  </table>
+</section>
+
+<!-- ===================== SECTION 4 ===================== -->
+<section id="s4">
+  <h2 class="section-title">4. Binary (Base-2) System</h2>
+  <div class="concept-box">
+    <ul>
+      <li><strong>Binary</strong> uses only two digits: <strong>0 and 1</strong>. It is the foundation of all digital/computing systems.</li>
+      <li>Each place value is a power of 2, increasing right to left.</li>
+    </ul>
+  </div>
+  <table class="place-value">
+    <tr><th>Position</th><td>...</td><td>6th</td><td>5th</td><td>4th</td><td>3rd</td><td>2nd</td><td>1st</td></tr>
+    <tr><td class="label">Place value</td><td>...</td><td>2⁵ = 32</td><td>2⁴ = 16</td><td>2³ = 8</td><td>2² = 4</td><td>2¹ = 2</td><td>1</td></tr>
+  </table>
+
+  <h3 class="sub">Worked Example — 11001₂ and 101110₂</h3>
+  <div class="concept-box">
+    <strong>11001₂</strong>: digits are 1(16) 1(8) 0(4) 0(2) 1(1) → 16 + 8 + 0 + 0 + 1 = <strong>25</strong><br>
+    <strong>101110₂</strong>: (1×2⁵)+(0×2⁴)+(1×2³)+(1×2²)+(1×2¹)+(0×2⁰) = 32+0+8+4+2+0 = <strong>46</strong>
+  </div>
+
+  <h3 class="sub">Exercises 2.2.3 — Q1: Expanded form → Base-10</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Binary</th><th>Answer</th><th>Working</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">1010₂</td><td class="q-answer">10</td><td class="q-explain">(1×2³)+(0×2²)+(1×2¹)+(0×2⁰) = 8+0+2+0</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">1011₂</td><td class="q-answer">11</td><td class="q-explain">(1×2³)+(0×2²)+(1×2¹)+(1×2⁰) = 8+0+2+1</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">10011₂</td><td class="q-answer">19</td><td class="q-explain">(1×2⁴)+(0×2³)+(0×2²)+(1×2¹)+(1×2⁰) = 16+0+0+2+1</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">10101₂</td><td class="q-answer">21</td><td class="q-explain">(1×2⁴)+(0×2³)+(1×2²)+(0×2¹)+(1×2⁰) = 16+0+4+0+1</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">11011₂</td><td class="q-answer">27</td><td class="q-explain">(1×2⁴)+(1×2³)+(0×2²)+(1×2¹)+(1×2⁰) = 16+8+0+2+1</td></tr>
+    <tr><td class="q-num">6</td><td class="q-item">101110₂</td><td class="q-answer">46</td><td class="q-explain">(1×2⁵)+(0×2⁴)+(1×2³)+(1×2²)+(1×2¹)+(0×2⁰) = 32+0+8+4+2+0</td></tr>
+  </table>
+
+  <h3 class="sub">Exercises 2.2.3 — Q2: Base-10 → Binary</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Number</th><th>Answer</th><th>Working</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">47</td><td class="q-answer">101111₂</td><td class="q-explain">47 = 32+8+4+2+1 → place values used: 32(1) 16(0) 8(1) 4(1) 2(1) 1(1)</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">59</td><td class="q-answer">111011₂</td><td class="q-explain">59 = 32+16+8+2+1 → place values used: 32(1) 16(1) 8(1) 4(0) 2(1) 1(1)</td></tr>
+  </table>
+
+  <h3 class="sub">Exercises — Q3: Difference between the underlined "1" place value and its face value (1)</h3>
+  <p style="font-size:13.5px;color:#444;">In each number below, the <u>underlined 1</u> is the left-most digit (the highest place value in the number). Difference = (place value of that 1) − (face value of 1, which is always 1).</p>
+  <table class="qa">
+    <tr><th>#</th><th>Binary</th><th>Underlined 1 is in...</th><th>Answer</th><th>Working</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item"><u>1</u>10₂</td><td>3rd place (2² = 4)</td><td class="q-answer">3</td><td class="q-explain">4 − 1 = 3</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item"><u>1</u>010₂</td><td>4th place (2³ = 8)</td><td class="q-answer">7</td><td class="q-explain">8 − 1 = 7</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item"><u>1</u>011₂</td><td>4th place (2³ = 8)</td><td class="q-answer">7</td><td class="q-explain">8 − 1 = 7</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item"><u>1</u>110₂</td><td>4th place (2³ = 8)</td><td class="q-answer">7</td><td class="q-explain">8 − 1 = 7</td></tr>
+    <tr><td class="q-num">7</td><td class="q-item"><u>1</u>1011₂</td><td>5th place (2⁴ = 16)</td><td class="q-answer">15</td><td class="q-explain">16 − 1 = 15</td></tr>
+    <tr><td class="q-num">8</td><td class="q-item"><u>1</u>1010₂</td><td>5th place (2⁴ = 16)</td><td class="q-answer">15</td><td class="q-explain">16 − 1 = 15</td></tr>
+    <tr><td class="q-num">9</td><td class="q-item"><u>1</u>01001₂</td><td>6th place (2⁵ = 32)</td><td class="q-answer">31</td><td class="q-explain">32 − 1 = 31</td></tr>
+    <tr><td class="q-num">10</td><td class="q-item"><u>1</u>00111₂</td><td>6th place (2⁵ = 32)</td><td class="q-answer">31</td><td class="q-explain">32 − 1 = 31</td></tr>
+  </table>
+  <div class="note"><strong>Note:</strong> Items 5–6 were not legible in the scanned page and are omitted here — please cross-check against the original workbook page if needed.</div>
+</section>
+
+<!-- ===================== SECTION 5 ===================== -->
+<section id="s5">
+  <h2 class="section-title">5. Roman Numerals</h2>
+  <div class="concept-box">
+    <ul>
+      <li>Originated in ancient Rome; used in Europe well into the late Middle Ages. Still seen today on clock faces, monument dates, book chapters, and film/TV copyright dates.</li>
+      <li><strong>Seven main symbols:</strong></li>
+    </ul>
+    <table class="place-value" style="margin-top:6px;">
+      <tr><th>I</th><th>V</th><th>X</th><th>L</th><th>C</th><th>D</th><th>M</th></tr>
+      <tr><td>1</td><td>5</td><td>10</td><td>50</td><td>100</td><td>500</td><td>1000</td></tr>
+    </table>
+    <ul>
+      <li><strong>Addition</strong> when a smaller symbol follows a larger one; <strong>subtraction</strong> when a smaller symbol precedes a larger one.</li>
+      <li>Only <strong>I, X, C</strong> can precede another symbol to indicate subtraction: I before V or X only; X before L or C only; C before D or M only.</li>
+      <li>A symbol cannot repeat more than <strong>three times</strong> in a row. Only <strong>one</strong> symbol may precede another (no double-subtraction). <strong>V, L, D</strong> are never repeated.</li>
+      <li>A <strong>bar (vinculum)</strong> over a numeral multiplies its value by 1,000.</li>
+      <li>There is <strong>no symbol for zero</strong> in the Roman system.</li>
+    </ul>
+  </div>
+
+  <h3 class="sub">Example 1 — Arabic → Roman Numerals</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Number</th><th>Roman Numeral</th><th>Working</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">37</td><td class="q-answer">XXXVII</td><td class="q-explain">30 + 7 = XXX + VII</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">54</td><td class="q-answer">LIV</td><td class="q-explain">50 + 4 = L + IV</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">56</td><td class="q-answer">LVI</td><td class="q-explain">50 + 5 + 1 = L + V + I</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">91</td><td class="q-answer">XCI</td><td class="q-explain">90 + 1 = XC + I</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">228</td><td class="q-answer">CCXXVIII</td><td class="q-explain">200 + 20 + 8 = CC + XX + VIII</td></tr>
+    <tr><td class="q-num">6</td><td class="q-item">349</td><td class="q-answer">CCCXLIX</td><td class="q-explain">300 + 40 + 9 = CCC + XL + IX</td></tr>
+    <tr><td class="q-num">7</td><td class="q-item">472</td><td class="q-answer">CDLXXII</td><td class="q-explain">400 + 70 + 2 = CD + LXX + II</td></tr>
+    <tr><td class="q-num">8</td><td class="q-item">555</td><td class="q-answer">DLV</td><td class="q-explain">500 + 50 + 5 = D + L + V</td></tr>
+    <tr><td class="q-num">9</td><td class="q-item">613</td><td class="q-answer">DCXIII</td><td class="q-explain">600 + 13 = DC + XIII</td></tr>
+    <tr><td class="q-num">10</td><td class="q-item">766</td><td class="q-answer">DCCLXVI</td><td class="q-explain">700 + 60 + 6 = DCC + LX + VI</td></tr>
+    <tr><td class="q-num">11</td><td class="q-item">932</td><td class="q-answer">CMXXXII</td><td class="q-explain">900 + 32 = CM + XXXII</td></tr>
+    <tr><td class="q-num">12</td><td class="q-item">1,840</td><td class="q-answer">MDCCCXL</td><td class="q-explain">1000 + 800 + 40 = M + DCCC + XL</td></tr>
+    <tr><td class="q-num">13</td><td class="q-item">2,025</td><td class="q-answer">MMXXV</td><td class="q-explain">2000 + 25 = MM + XXV</td></tr>
+    <tr><td class="q-num">14</td><td class="q-item">5,649</td><td class="q-answer">V̄DCXLIX</td><td class="q-explain">5,000 + 649 = V̄ (5×1000) + DCXLIX</td></tr>
+    <tr><td class="q-num">15</td><td class="q-item">12,345</td><td class="q-answer">X̄MMCCCXLV</td><td class="q-explain">12,000 + 345 = X̄MM (10,000+2,000) + CCCXLV</td></tr>
+  </table>
+
+  <h3 class="sub">Example 2 — Roman → Arabic Numerals</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Roman</th><th>Answer</th><th>Working</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">XXII</td><td class="q-answer">22</td><td class="q-explain">10+10+1+1</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">XLV</td><td class="q-answer">45</td><td class="q-explain">(50−10)+5</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">LXVI</td><td class="q-answer">66</td><td class="q-explain">50+10+5+1</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">LXXIX</td><td class="q-answer">79</td><td class="q-explain">50+10+10+(10−1)</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">XCVII</td><td class="q-answer">97</td><td class="q-explain">(100−10)+5+1+1</td></tr>
+    <tr><td class="q-num">6</td><td class="q-item">CXLV</td><td class="q-answer">145</td><td class="q-explain">100+(50−10)+5</td></tr>
+    <tr><td class="q-num">7</td><td class="q-item">CCCXI</td><td class="q-answer">311</td><td class="q-explain">100+100+100+10+1</td></tr>
+    <tr><td class="q-num">8</td><td class="q-item">CDVIII</td><td class="q-answer">408</td><td class="q-explain">(500−100)+5+1+1+1</td></tr>
+    <tr><td class="q-num">9</td><td class="q-item">DCXXXIV</td><td class="q-answer">634</td><td class="q-explain">500+100+10+10+10+(5−1)</td></tr>
+    <tr><td class="q-num">10</td><td class="q-item">DCCLXXXVIII</td><td class="q-answer">788</td><td class="q-explain">500+100+100+50+10+10+10+5+1+1+1</td></tr>
+    <tr><td class="q-num">11</td><td class="q-item">CMLIX</td><td class="q-answer">959</td><td class="q-explain">(1000−100)+50+(10−1)</td></tr>
+    <tr><td class="q-num">12</td><td class="q-item">MMDXXIV</td><td class="q-answer">2,524</td><td class="q-explain">1000+1000+500+10+10+(5−1)</td></tr>
+    <tr><td class="q-num">13</td><td class="q-item">MMMDXLIV</td><td class="q-answer">3,544</td><td class="q-explain">1000+1000+1000+500+(50−10)+(5−1)</td></tr>
+    <tr><td class="q-num">14</td><td class="q-item">X̄X̄MCMXCIII</td><td class="q-answer">21,993</td><td class="q-explain">20,000 (X̄X̄ = 2×10,000) + MCMXCIII (1,993)</td></tr>
+  </table>
+  <div class="note"><strong>Note on item 14:</strong> if your workbook shows only one bar (e.g. one X̄ rather than two), the value would instead be 10,000 + 1,993 = 11,993. Please confirm the exact overline against your original page.</div>
+
+  <h3 class="sub">Exercises — Roman → Arabic Numerals (extended list)</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Roman</th><th>Answer</th><th>#</th><th>Roman</th><th>Answer</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">CXXIV</td><td class="q-answer">124</td><td class="q-num">2</td><td class="q-item">CCXI</td><td class="q-answer">211</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">CCLXII</td><td class="q-answer">262</td><td class="q-num">4</td><td class="q-item">CCCXXXVII</td><td class="q-answer">337</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">CCCXCI</td><td class="q-answer">391</td><td class="q-num">6</td><td class="q-item">CCCL</td><td class="q-answer">350</td></tr>
+    <tr><td class="q-num">7</td><td class="q-item">CDXLIV</td><td class="q-answer">444</td><td class="q-num">8</td><td class="q-item">CDXIX</td><td class="q-answer">419</td></tr>
+    <tr><td class="q-num">9</td><td class="q-item">DXCIII</td><td class="q-answer">593</td><td class="q-num">10</td><td class="q-item">DXLV</td><td class="q-answer">545</td></tr>
+    <tr><td class="q-num">11</td><td class="q-item">DCLXXVI</td><td class="q-answer">676</td><td class="q-num">12</td><td class="q-item">DCCXCIX</td><td class="q-answer">799</td></tr>
+    <tr><td class="q-num">13</td><td class="q-item">CMLXV</td><td class="q-answer">965</td><td class="q-num">14</td><td class="q-item">CMXLIV</td><td class="q-answer">944</td></tr>
+    <tr><td class="q-num">15</td><td class="q-item">MXL</td><td class="q-answer">1,040</td><td class="q-num">16</td><td class="q-item">MDLXXII</td><td class="q-answer">1,572</td></tr>
+    <tr><td class="q-num">17</td><td class="q-item">MCMXCIII</td><td class="q-answer">1,993</td><td class="q-num">18</td><td class="q-item">MMCDXLI</td><td class="q-answer">2,441</td></tr>
+    <tr><td class="q-num">19</td><td class="q-item">MMMCMLXXIV</td><td class="q-answer">3,974</td><td class="q-num">20</td><td class="q-item">V̄MCXXXI</td><td class="q-answer">6,131</td></tr>
+    <tr><td class="q-num">21</td><td class="q-item">X̄CDLXI</td><td class="q-answer">10,461</td><td class="q-num">22</td><td class="q-item">L̄CXIX</td><td class="q-answer">50,119</td></tr>
+    <tr><td class="q-num">23</td><td class="q-item">C̄D̄X̄DCCXI</td><td class="q-answer">410,711</td><td class="q-num">24</td><td class="q-item">D̄X̄CDLXX</td><td class="q-answer">510,470</td></tr>
+    <tr><td class="q-num">25</td><td class="q-item">M̄CCVIII</td><td class="q-answer">1,000,208</td><td class="q-num">26</td><td class="q-item">M̄M̄M̄V̄CMXXIV</td><td class="q-answer">3,005,924</td></tr>
+  </table>
+  <div class="note"><strong>Note on items 20–26:</strong> these use the bar (vinculum, ×1,000) convention. The bar's exact scope was hard to confirm from the photo — the values above assume the bar covers the full run of numerals shown before the un-barred remainder. Please verify against the printed page.</div>
+
+  <h3 class="sub">Q3 — Find the missing symbol (□)</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Statement</th><th>□ =</th><th>Explanation</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">1,366 = MCCC□XVI</td><td class="q-answer">L</td><td class="q-explain">MCCC (1300) + L (50) + XVI (16) = 1,366</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">1,745 = M□CCXLV</td><td class="q-answer">D</td><td class="q-explain">M (1000) + D (500) + CC (200) + XLV (45) = 1,745</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">1,910 = M□MX</td><td class="q-answer">C</td><td class="q-explain">M (1000) + CM (900) + X (10) = 1,910</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">2,131 = MM□XXXI</td><td class="q-answer">C</td><td class="q-explain">MM (2000) + C (100) + XXXI (31) = 2,131</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">3,325 = MMMCCCX□V</td><td class="q-answer">X</td><td class="q-explain">MMMCCC (3300) + XX (20) + V (5) = 3,325</td></tr>
+    <tr><td class="q-num">6</td><td class="q-item">3,482 = MMMCDLXXX□I</td><td class="q-answer">I</td><td class="q-explain">MMMCDLXXX (3480) + II (2) = 3,482</td></tr>
+  </table>
+
+  <h3 class="sub">Q4 — Why is each number written INCORRECTLY?</h3>
+  <table class="qa">
+    <tr><th>#</th><th>Written as</th><th>Reason it is incorrect</th><th>Correct form</th></tr>
+    <tr><td class="q-num">1</td><td class="q-item">LXXXX = 90</td><td class="q-explain">X is repeated 4 times — a symbol can repeat at most <strong>3</strong> times in a row.</td><td class="q-answer">XC</td></tr>
+    <tr><td class="q-num">2</td><td class="q-item">ID = 499</td><td class="q-explain">I may only precede <strong>V or X</strong> for subtraction — never D. Only I, X, C may precede a larger symbol at all.</td><td class="q-answer">CDXCIX</td></tr>
+    <tr><td class="q-num">3</td><td class="q-item">ĪIDLIV = 2,554</td><td class="q-explain">Only <strong>one</strong> symbol may precede another to show subtraction — "II" before D is a double subtraction, which isn't allowed.</td><td class="q-answer">MMDLIV</td></tr>
+    <tr><td class="q-num">4</td><td class="q-item">XXC = 80</td><td class="q-explain">Two X's precede C — again, only a single smaller symbol may precede a larger one.</td><td class="q-answer">LXXX</td></tr>
+    <tr><td class="q-num">5</td><td class="q-item">VIL = 56</td><td class="q-explain">V and I cannot precede L — only I, X, C are allowed to precede a larger symbol for subtraction.</td><td class="q-answer">LVI</td></tr>
+    <tr><td class="q-num">6</td><td class="q-item">LCVX = 55</td><td class="q-explain">Symbols must be arranged from largest to smallest value with valid subtractive pairs only — this ordering is invalid.</td><td class="q-answer">LV</td></tr>
+  </table>
+
+  <h3 class="sub">Q5 — Word problem</h3>
+  <div class="concept-box">
+    <p style="margin:0 0 8px;"><strong>Tae has V̄LVI cookies. Tarn has X̄MV̄DXLIV cookies.</strong> If they combine their cookies and pack them into boxes of LXXX (80) cookies each, how many boxes will they have?</p>
+    <ul>
+      <li>Tae: V̄LVI = 5,000 + 56 = <strong>5,056</strong> cookies</li>
+      <li>Tarn: X̄MV̄DXLIV = 10,000 + 1,000 + 500 + 40 + 4 = <strong>11,544</strong> cookies <em>(read left to right as shown in the text — please confirm bar placement against the original)</em></li>
+      <li>Total = 5,056 + 11,544 = <strong>16,600</strong> cookies</li>
+      <li>LXXX = 80 cookies per box</li>
+      <li>16,600 ÷ 80 = <strong>207.5 → 207 full boxes</strong> (with 40 cookies left over)</li>
+    </ul>
+  </div>
+  <div class="note"><strong>Note:</strong> Tarn's numeral (X̄MV̄DXLIV) contains an unusual bar placement that was difficult to confirm from the photo. Please double-check the original page — if the numeral differs, only the total and final division step need to be recalculated.</div>
+</section>
+
+<footer>
+  Digitized study guide compiled from Additional Mathematics 1 (MA21201), Department of Mathematics, Suankularb Wittayalai Thonburi School — for M.1 exam preparation.
+</footer>
+
+</div>
+</body>
+</html>

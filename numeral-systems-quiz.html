@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numeral Systems Quiz — Roman, Base-10, Base-5, Base-2</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-light:#CADCFC;
+    --ink:#1A1A1A;
+    --grey-bg:#F5F5F5;
+    --border:#D9DEEA;
+    --green:#1B7A3D;
+    --green-bg:#E6F4EA;
+    --red:#B3261E;
+    --red-bg:#FDECEA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    margin:0;
+    background:#FFFFFF;
+    line-height:1.6;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 80px;}
+
+  header.hero{
+    background:var(--navy);
+    color:#fff;
+    padding:36px 24px;
+    margin-bottom:28px;
+  }
+  header.hero .inner{max-width:880px;margin:0 auto;}
+  header.hero h1{font-size:24px;margin:0 0 8px;font-weight:700;}
+  header.hero p{margin:0;font-size:13.5px;color:var(--navy-light);}
+
+  nav.toc{
+    background:var(--grey-bg);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:16px 22px;
+    margin-bottom:32px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 24px;
+    align-items:center;
+  }
+  nav.toc span.label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);font-weight:700;}
+  nav.toc a{color:var(--ink);text-decoration:none;font-size:13.5px;border-bottom:1px dotted var(--navy);}
+  nav.toc a:hover{color:var(--navy);}
+
+  .score-bar{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    padding:10px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13.5px;
+    max-width:880px;
+    margin:0 auto 20px;
+  }
+  .score-bar strong{color:var(--navy);}
+  .reset-btn{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:7px 16px;
+    border-radius:3px;
+    font-family:inherit;
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  .reset-btn:hover{opacity:.9;}
+
+  section{margin-bottom:44px;}
+  h2.section-title{
+    font-size:19px;
+    color:var(--navy);
+    border-bottom:2px solid var(--navy);
+    padding-bottom:8px;
+    margin:0 0 18px;
+    font-weight:700;
+  }
+
+  .q-card{
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:18px 20px;
+    margin-bottom:16px;
+    background:#fff;
+  }
+  .q-head{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .q-num{
+    flex:0 0 auto;
+    background:var(--navy);
+    color:#fff;
+    width:26px;height:26px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:700;
+  }
+  .q-text{font-size:15px;font-weight:600;padding-top:2px;}
+
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:4px;
+  }
+  .opt{
+    border:1px solid var(--border);
+    background:var(--grey-bg);
+    padding:9px 12px;
+    border-radius:4px;
+    font-family:inherit;
+    font-size:14px;
+    text-align:left;
+    cursor:pointer;
+    color:var(--ink);
+    transition:background .12s;
+  }
+  .opt:hover{background:var(--navy-light);}
+  .opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:600;}
+  .opt.incorrect{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:600;}
+  .opt[disabled]{cursor:default;}
+  .opt[disabled]:hover{background:inherit;}
+
+  .explain{
+    display:none;
+    margin-top:12px;
+    padding:12px 14px;
+    background:var(--grey-bg);
+    border-left:4px solid var(--navy);
+    font-size:13.5px;
+    border-radius:0 4px 4px 0;
+  }
+  .explain.show{display:block;}
+  .explain strong{color:var(--navy);}
+
+  footer{
+    margin-top:50px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:#777;
+    text-align:center;
+  }
+
+  @media (max-width:560px){
+    .options{grid-template-columns:1fr;}
+    .score-bar{flex-direction:column;gap:8px;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <h1>Numeral Systems Quiz</h1>
+    <p>Additional Mathematics 1 (MA21201) — 40 questions, 10 per topic. Click an answer to see if it's correct, with a full explanation.</p>
+  </div>
+</header>
+
+<div class="score-bar">
+  <div>Score: <strong id="scoreDisplay">0 / 0</strong></div>
+  <button class="reset-btn" onclick="resetQuiz()">Reset Quiz</button>
+</div>
+
+<div class="wrap">
+
+<nav class="toc">
+  <span class="label">Jump to:</span>
+  <a href="#roman">Roman Numerals</a>
+  <a href="#base10">Base 10</a>
+  <a href="#base5">Base 5 (Quinary)</a>
+  <a href="#base2">Base 2 (Binary)</a>
+</nav>
+
+<section id="roman">
+  <h2 class="section-title">Roman Numerals</h2>
+  <div id="roman-questions"></div>
+</section>
+
+<section id="base10">
+  <h2 class="section-title">Base 10 (Decimal)</h2>
+  <div id="base10-questions"></div>
+</section>
+
+<section id="base5">
+  <h2 class="section-title">Base 5 (Quinary)</h2>
+  <div id="base5-questions"></div>
+</section>
+
+<section id="base2">
+  <h2 class="section-title">Base 2 (Binary)</h2>
+  <div id="base2-questions"></div>
+</section>
+
+<footer>
+  Numeral Systems Quiz — for M.1 exam preparation.
+</footer>
+
+</div>
+
+<script>
+const quizData = {
+  roman: [
+    {q:"What is XIV in Arabic (base-10) numerals?", opts:["14","16","24","6"], correct:0,
+     explain:"XIV = X (10) + IV (4) = 14. I precedes V to subtract 1 from 5."},
+    {q:"What is the correct Roman numeral for 49?", opts:["IL","XXXXIX","XLIX","LI"], correct:2,
+     explain:"49 = 40 + 9 = XL + IX = XLIX. 'IL' is invalid because I may only precede V or X, never L."},
+    {q:"Which symbol(s) can precede X to indicate subtraction?", opts:["I only","I and V","C only","V and I"], correct:0,
+     explain:"Only I, X, and C may precede a larger symbol for subtraction. I can precede V or X only — so only I may precede X."},
+    {q:"What value does the symbol M represent?", opts:["1,000","500","5,000","100"], correct:0,
+     explain:"M = 1,000. The seven main Roman symbols are I=1, V=5, X=10, L=50, C=100, D=500, M=1,000."},
+    {q:"At most how many times can a symbol like X repeat in a row?", opts:["2","3","4","Unlimited"], correct:1,
+     explain:"A symbol cannot repeat more than three times in a row (e.g. XXX = 30 is fine, but XXXX is invalid — it should be XL)."},
+    {q:"What is LXXVIII in Arabic numerals?", opts:["68","78","88","58"], correct:1,
+     explain:"LXXVIII = 50 + 10 + 10 + 5 + 1 + 1 + 1 = 78."},
+    {q:"Which of the following is written INCORRECTLY?", opts:["IV","IX","IIII","XL"], correct:2,
+     explain:"IIII repeats I four times, which is not allowed. The correct way to write 4 is IV."},
+    {q:"What does a bar (vinculum) placed above a Roman numeral mean?", opts:["Divide the value by 1,000","Multiply the value by 1,000","Multiply the value by 100","The value is negative"], correct:1,
+     explain:"A bar above a numeral multiplies its value by 1,000, e.g. V̄ = 5,000."},
+    {q:"What is 944 written in Roman numerals?", opts:["CMLXIV","CMXLIV","DCCCXLIV","CMXLVI"], correct:1,
+     explain:"944 = 900 + 40 + 4 = CM + XL + IV = CMXLIV."},
+    {q:"Which three symbols are NEVER repeated?", opts:["I, X, C","V, L, D","M, C, X","I, V, X"], correct:1,
+     explain:"V, L, and D are never repeated. Only I, X, C, and M may be repeated (up to three times in a row)."}
+  ],
+  base10: [
+    {q:"What is the place value of the digit 7 in 7,342?", opts:["7","70","700","7,000"], correct:3,
+     explain:"7 is in the thousands (4th) place, so its value is 7 × 1,000 = 7,000."},
+    {q:"Which is the correct expanded form of 4,205?", opts:["(4×10³)+(2×10²)+5","(4×10³)+(2×10²)+(0×10)+5","(4×10²)+(2×10)+5","(4×10⁴)+(2×10²)+5"], correct:1,
+     explain:"4,205 = 4,000 + 200 + 0 + 5 = (4×10³)+(2×10²)+(0×10)+5, including the 0 in the tens place."},
+    {q:"(3×10²)+(5×10)+8 is equal to which number?", opts:["385","358","350","3,508"], correct:1,
+     explain:"300 + 50 + 8 = 358."},
+    {q:"What is the base (radix) of the decimal system?", opts:["5","2","10","16"], correct:2,
+     explain:"The decimal system uses 10 digits (0–9), so its base is 10."},
+    {q:"How many digits does the decimal system use in total?", opts:["8","9","10","16"], correct:2,
+     explain:"The decimal system uses ten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9."},
+    {q:"What is the value of the digit 6 in 60,912?", opts:["6","60","6,000","60,000"], correct:3,
+     explain:"6 is in the ten-thousands (5th) place, so its value is 6 × 10,000 = 60,000."},
+    {q:"What number is represented by (5×10⁴)+(6×10²)+(9×1)?", opts:["5,609","50,609","506,009","56,009"], correct:1,
+     explain:"50,000 + 600 + 9 = 50,609."},
+    {q:"Which is the full expanded form of 9,003?", opts:["(9×10³)+3","(9×10³)+(0×10²)+(0×10)+3","(9×10²)+3","(9×10⁴)+3"], correct:1,
+     explain:"9,003 = 9,000 + 0 + 0 + 3, so the full expanded form includes every place: (9×10³)+(0×10²)+(0×10)+3."},
+    {q:"In the decimal place-value table, what is the place value of the 5th position?", opts:["10³","10⁴","10⁵","10⁶"], correct:1,
+     explain:"The 1st position = 10⁰, so the 5th position = 10⁴ (ten-thousands)."},
+    {q:"In which of these numbers does the digit 5 have a value of exactly 500?", opts:["5,213","1,528","8,451","953"], correct:1,
+     explain:"In 1,528, the digit 5 is in the hundreds place, so its value is 5 × 100 = 500."}
+  ],
+  base5: [
+    {q:"How many digits does the quinary (base-5) system use?", opts:["4","5","2","10"], correct:1,
+     explain:"Quinary uses five digits: 0, 1, 2, 3, 4."},
+    {q:"The quinary (base-5) system is also known as:", opts:["Binary","Decimal","Pental","Hexadecimal"], correct:2,
+     explain:"Quinary is also called the Pental system."},
+    {q:"What is the place value of the 3rd position in base 5?", opts:["5","25","125","15"], correct:1,
+     explain:"The 3rd position = 5², and 5² = 25."},
+    {q:"What is 5⁴ equal to?", opts:["125","625","25","3,125"], correct:1,
+     explain:"5⁴ = 5×5×5×5 = 625."},
+    {q:"Which of the following is NOT a valid digit in base 5?", opts:["0","3","4","5"], correct:3,
+     explain:"Base-5 digits only go from 0 to 4 — 5 is not a valid digit (it would be written as '10' in base 5)."},
+    {q:"Convert 23₅ to base 10.", opts:["13","10","15","8"], correct:0,
+     explain:"23₅ = (2×5) + 3 = 10 + 3 = 13."},
+    {q:"Convert 104₅ to base 10.", opts:["25","29","54","20"], correct:1,
+     explain:"104₅ = (1×5²)+(0×5¹)+(4×5⁰) = 25 + 0 + 4 = 29."},
+    {q:"The quinary system may have originated from counting on:", opts:["The fingers of one hand","The planets","Days of the week","The seasons of the year"], correct:0,
+     explain:"A possible origin of the quinary system is counting using the five fingers on one hand."},
+    {q:"What is the value of 5⁰?", opts:["0","1","5","10"], correct:1,
+     explain:"Any non-zero base raised to the power 0 equals 1, so 5⁰ = 1."},
+    {q:"Which numeral system uses the place values 1, 5, 25, 125, 625...?", opts:["Binary","Decimal","Quinary","Roman"], correct:2,
+     explain:"These are powers of 5 (5⁰, 5¹, 5², 5³, 5⁴), which are the place values of the quinary (base-5) system."}
+  ],
+  base2: [
+    {q:"How many digits does the binary system use?", opts:["2","8","10","16"], correct:0,
+     explain:"Binary uses only two digits: 0 and 1."},
+    {q:"What is 1011₂ in base 10?", opts:["9","11","13","15"], correct:1,
+     explain:"1011₂ = (1×2³)+(0×2²)+(1×2¹)+(1×2⁰) = 8+0+2+1 = 11."},
+    {q:"What is 25 written in binary?", opts:["10101","11001","11010","10011"], correct:1,
+     explain:"25 = 16+8+1 → place values used: 16(1) 8(1) 4(0) 2(0) 1(1) = 11001₂."},
+    {q:"What is the place value of the 4th position in binary?", opts:["4","8","16","2"], correct:1,
+     explain:"The 1st position = 2⁰, so the 4th position = 2³ = 8."},
+    {q:"Why is binary used in almost all computers and electronic devices?", opts:["It's easier for humans to read","It's easier to implement efficiently in electronic circuits","It uses fewer digits than decimal numbers need","It was the first system ever invented"], correct:1,
+     explain:"Binary (base 2) is used because two states (on/off, 0/1) are easy and reliable to implement efficiently in electronic circuits."},
+    {q:"What is 2⁵ equal to?", opts:["16","32","64","10"], correct:1,
+     explain:"2⁵ = 2×2×2×2×2 = 32."},
+    {q:"Convert 110010₂ to base 10.", opts:["44","48","50","52"], correct:2,
+     explain:"110010₂ = (1×32)+(1×16)+(0×8)+(0×4)+(1×2)+(0×1) = 32+16+0+0+2+0 = 50."},
+    {q:"What is the correct expanded form of 1101₂?", opts:["(1×2³)+(1×2²)+(1×2¹)+(0×2⁰)","(1×2³)+(1×2²)+(0×2¹)+(1×2⁰)","(1×2²)+(1×2¹)+(0×2⁰)+(1×2⁻¹)","(1×2⁴)+(1×2²)+(0×2¹)+(1×2⁰)"], correct:1,
+     explain:"1101₂ has digits 1,1,0,1 in positions 2³,2²,2¹,2⁰ → (1×2³)+(1×2²)+(0×2¹)+(1×2⁰) = 8+4+0+1 = 13."},
+    {q:"Which bases are commonly used to represent binary numbers more compactly for humans?", opts:["Base 3 and Base 12","Base 5 only","Base 8 and Base 16","Base 4 and Base 6"], correct:2,
+     explain:"Octal (base 8) and hexadecimal (base 16) are used to represent binary values compactly — for example in memory addresses and web colour codes."},
+    {q:"What is 47 written in binary?", opts:["101110","101111","110111","101101"], correct:1,
+     explain:"47 = 32+8+4+2+1 → place values used: 32(1) 16(0) 8(1) 4(1) 2(1) 1(1) = 101111₂."}
+  ]
+};
+
+let totalAnswered = 0;
+let totalCorrect = 0;
+
+function buildQuestions(sectionKey, containerId){
+  const container = document.getElementById(containerId);
+  quizData[sectionKey].forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+
+    const head = document.createElement('div');
+    head.className = 'q-head';
+    head.innerHTML = `<div class="q-num">${idx+1}</div><div class="q-text">${item.q}</div>`;
+    card.appendChild(head);
+
+    const optsWrap = document.createElement('div');
+    optsWrap.className = 'options';
+
+    const explainDiv = document.createElement('div');
+    explainDiv.className = 'explain';
+    explainDiv.innerHTML = `<strong>Explanation:</strong> ${item.explain}`;
+
+    item.opts.forEach((optText, optIdx) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.textContent = optText;
+      btn.onclick = () => {
+        if (btn.dataset.locked) return;
+        const allBtns = optsWrap.querySelectorAll('.opt');
+        allBtns.forEach(b => { b.disabled = true; b.dataset.locked = "1"; });
+
+        if (optIdx === item.correct) {
+          btn.classList.add('correct');
+          totalCorrect++;
+        } else {
+          btn.classList.add('incorrect');
+          allBtns[item.correct].classList.add('correct');
+        }
+        totalAnswered++;
+        explainDiv.classList.add('show');
+        updateScore();
+      };
+      optsWrap.appendChild(btn);
+    });
+
+    card.appendChild(optsWrap);
+    card.appendChild(explainDiv);
+    container.appendChild(card);
+  });
+}
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent = `${totalCorrect} / ${totalAnswered}`;
+}
+
+function resetQuiz(){
+  totalAnswered = 0;
+  totalCorrect = 0;
+  updateScore();
+  ['roman-questions','base10-questions','base5-questions','base2-questions'].forEach(id=>{
+    document.getElementById(id).innerHTML = '';
+  });
+  buildQuestions('roman','roman-questions');
+  buildQuestions('base10','base10-questions');
+  buildQuestions('base5','base5-questions');
+  buildQuestions('base2','base2-questions');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+buildQuestions('roman','roman-questions');
+buildQuestions('base10','base10-questions');
+buildQuestions('base5','base5-questions');
+buildQuestions('base2','base2-questions');
+</script>
+
+</body>
+</html>

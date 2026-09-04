@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>M.1 English Final Exam Prep — Unit 3-4</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-dark:#0D1B2A;
+    --grey-bg:#F5F5F5;
+    --border:#CADCFC;
+    --text:#1A1A1A;
+    --green:#2E7D45;
+    --green-bg:#E3F5E9;
+    --red:#C0392B;
+    --red-bg:#FCEAEA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    font-size:11pt;
+    color:var(--text);
+    background:#fff;
+    margin:0;
+    padding:0;
+    line-height:1.6;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:32px 24px 80px;}
+  h1{font-size:18pt;font-weight:700;color:var(--navy);border-bottom:3px solid var(--navy);padding-bottom:10px;margin-bottom:4px;}
+  .subtitle{color:#555;font-size:11pt;margin-bottom:28px;}
+  h2{font-size:14pt;font-weight:700;color:var(--navy);margin-top:0;border-left:5px solid var(--navy);padding-left:10px;}
+  h3{font-size:12pt;font-weight:600;color:#2C3E50;margin-top:22px;}
+  table{border-collapse:collapse;width:100%;margin:12px 0 20px;}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;font-size:10.5pt;}
+  th{background:var(--navy);color:#fff;font-weight:600;}
+  tr:nth-child(even){background:var(--grey-bg);}
+  .rule-box{background:var(--grey-bg);border:1px solid var(--border);border-left:4px solid var(--navy);padding:14px 18px;margin:10px 0 20px;border-radius:2px;}
+  .rule-box code{background:#fff;border:1px solid var(--border);padding:1px 6px;border-radius:3px;color:var(--navy);font-weight:600;}
+  .divider{border:none;border-top:2px solid var(--border);margin:36px 0;}
+  .note{font-size:10pt;color:#555;font-style:italic;}
+  .passage{background:var(--grey-bg);border:1px solid var(--border);padding:12px 16px;margin:10px 0 18px;font-style:italic;border-radius:3px;}
+
+  .page{display:none;}
+  .page.active{display:block;}
+  .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;}
+  @media (max-width:640px){.menu-grid{grid-template-columns:1fr;}}
+  .menu-card{border:1px solid var(--border);border-radius:6px;padding:22px 20px;cursor:pointer;background:#fff;transition:box-shadow .15s, border-color .15s;}
+  .menu-card:hover{border-color:var(--navy);box-shadow:0 2px 10px rgba(30,39,97,0.15);}
+  .menu-card .tag{display:inline-block;font-size:9.5pt;font-weight:700;color:#fff;background:var(--navy);padding:3px 10px;border-radius:3px;margin-bottom:10px;}
+  .menu-card h3{margin:0 0 6px;font-size:13pt;color:var(--navy);}
+  .menu-card p{margin:0;color:#555;font-size:10pt;}
+  .back-btn{display:inline-block;margin-bottom:14px;cursor:pointer;color:var(--navy);font-weight:600;font-size:10.5pt;border:1px solid var(--navy);border-radius:4px;padding:6px 14px;background:#fff;}
+  .back-btn:hover{background:var(--navy);color:#fff;}
+
+  /* score bar */
+  .score-bar{position:sticky;top:0;background:#fff;border-bottom:2px solid var(--navy);padding:10px 4px;margin-bottom:18px;font-weight:600;color:var(--navy);z-index:10;display:flex;justify-content:space-between;align-items:center;font-size:10.5pt;}
+  .reset-btn{font-size:9.5pt;font-weight:600;color:var(--navy);border:1px solid var(--navy);border-radius:4px;padding:4px 10px;background:#fff;cursor:pointer;}
+  .reset-btn:hover{background:var(--navy);color:#fff;}
+
+  /* questions */
+  .q{margin:14px 0;padding:12px 14px;border:1px solid #e5e5e5;border-radius:4px;}
+  .q-num{font-weight:700;color:var(--navy);margin-right:6px;}
+  .opts{margin:10px 0 0;}
+  .opt-btn{display:block;width:100%;text-align:left;margin:6px 0;padding:9px 12px;border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer;font-family:inherit;font-size:10.5pt;color:var(--text);}
+  .opt-btn:hover:not(:disabled){border-color:var(--navy);background:#F5F8FF;}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn.opt-correct{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:600;}
+  .opt-btn.opt-wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:600;}
+  .feedback{display:none;margin-top:10px;padding:10px 12px;border-left:3px solid var(--navy);background:#EEF2FA;font-size:10.5pt;border-radius:2px;}
+  .feedback.fb-correct{border-left-color:var(--green);background:var(--green-bg);}
+  .feedback.fb-wrong{border-left-color:var(--red);background:var(--red-bg);}
+
+  /* summary box */
+  .summary-box{display:none;margin-top:26px;padding:24px;border:2px solid var(--navy);border-radius:8px;background:var(--grey-bg);text-align:center;}
+  .summary-box.show{display:block;}
+  .summary-box .score-big{font-size:30pt;font-weight:700;color:var(--navy);margin:6px 0;}
+  .summary-box .score-msg{font-size:12pt;font-weight:600;color:#2C3E50;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>M.1 English — Final Exam Prep</h1>
+<div class="subtitle">Unit 3: Music (Question Forms &amp; Word Stress) · Unit 4: Science (Vocabulary &amp; Simple Past)</div>
+
+<!-- MENU -->
+<div id="page-menu" class="page active">
+  <a href="index.html" class="back-btn" style="text-decoration:none;">&larr; กลับหน้าเลือกวิชา</a>
+  <h2>เลือกหัวข้อที่ต้องการทำ</h2>
+  <div class="menu-grid">
+    <div class="menu-card" onclick="showPage('page-summary')">
+      <span class="tag">SUMMARY</span>
+      <h3>1. สรุปเนื้อหา</h3>
+      <p>คำศัพท์ 2 ชุด, Simple Past, Question Forms, Word Stress</p>
+    </div>
+    <div class="menu-card" onclick="showPage('page-easy')">
+      <span class="tag">EASY · 20 ข้อ</span>
+      <h3>2. ชุดที่ 1 — ระดับง่าย</h3>
+      <p>คลิกเลือกคำตอบ พร้อมเฉลยและคำอธิบายทันที</p>
+    </div>
+    <div class="menu-card" onclick="showPage('page-medium')">
+      <span class="tag">MEDIUM · 20 ข้อ</span>
+      <h3>3. ชุดที่ 2 — ระดับปานกลาง</h3>
+      <p>คลิกเลือกคำตอบ พร้อมเฉลยและคำอธิบายทันที</p>
+    </div>
+    <div class="menu-card" onclick="showPage('page-hard')">
+      <span class="tag">HARD · 20 ข้อ</span>
+      <h3>4. ชุดที่ 3 — ระดับยาก</h3>
+      <p>คลิกเลือกคำตอบ พร้อมเฉลยและคำอธิบายทันที</p>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div id="page-summary" class="page">
+  <span class="back-btn" onclick="showPage('page-menu')">&larr; กลับเมนู</span>
+  <a href="index.html" class="back-btn" style="text-decoration:none;">หน้าเลือกวิชา</a>
+  <h2>1. สรุปเนื้อหา (Summary)</h2>
+
+  <h3>1.1 Vocabulary Set A — Prepare to Listen (Science)</h3>
+  <table>
+  <tr><th>Word</th><th>Type</th><th>Meaning</th></tr>
+  <tr><td>disease</td><td>n.</td><td>an illness</td></tr>
+  <tr><td>fall</td><td>v.</td><td>to move or drop to the ground</td></tr>
+  <tr><td>heavy</td><td>adj.</td><td>opposite of light in weight</td></tr>
+  <tr><td>light</td><td>n.</td><td>something that allows us to see things</td></tr>
+  <tr><td>prove</td><td>v.</td><td>to show that something is true</td></tr>
+  <tr><td>experiment</td><td>n.</td><td>a test to learn something new</td></tr>
+  <tr><td>gravity</td><td>n.</td><td>the force that pulls things toward each other and to the ground</td></tr>
+  <tr><td>hit</td><td>v.</td><td>to touch someone/something quickly and with force</td></tr>
+  <tr><td>medicine</td><td>n.</td><td>something you take when you are ill or sick</td></tr>
+  <tr><td>scientist</td><td>n.</td><td>a person who studies or works in science</td></tr>
+  </table>
+
+  <h3>1.2 Vocabulary Set B — Prepare to Watch (Science)</h3>
+  <table>
+  <tr><th>Word</th><th>Type</th><th>Meaning</th></tr>
+  <tr><td>explode</td><td>v.</td><td>to break up into pieces, usually with noise</td></tr>
+  <tr><td>light</td><td>v.</td><td>to make something start burning</td></tr>
+  <tr><td>pour</td><td>v.</td><td>to move a liquid from one place to another</td></tr>
+  <tr><td>push</td><td>v.</td><td>to move away</td></tr>
+  <tr><td>rise</td><td>v.</td><td>to move up</td></tr>
+  <tr><td>go out</td><td>v phr.</td><td>to stop burning</td></tr>
+  <tr><td>mix</td><td>v.</td><td>to put two or more things together</td></tr>
+  <tr><td>pull</td><td>v.</td><td>to move closer</td></tr>
+  <tr><td>react</td><td>v.</td><td>to change; to respond to something</td></tr>
+  <tr><td>toward</td><td>prep.</td><td>in the direction of someone or something</td></tr>
+  </table>
+
+  <h3>1.3 Grammar — Simple Past</h3>
+  <div class="rule-box">
+  <b>ใช้เมื่อ:</b> พูดถึงเหตุการณ์/การกระทำที่จบไปแล้วในอดีต<br><br>
+  <b>Regular verbs:</b> เติม <code>-d</code> หรือ <code>-ed</code><br>
+  &nbsp;&nbsp;want → wanted &nbsp;|&nbsp; believe → believed<br><br>
+  <b>Irregular verbs (ต้องจำ):</b><br>
+  &nbsp;&nbsp;be → was/were &nbsp;|&nbsp; do → did &nbsp;|&nbsp; go → went &nbsp;|&nbsp; think → thought &nbsp;|&nbsp; have → had<br><br>
+  <b>Negative:</b> <code>didn't + base form</code><br>
+  &nbsp;&nbsp;The others <b>didn't get</b> better. <span class="note">(ไม่ใช่ didn't got)</span><br><br>
+  <b>Question:</b> <code>Did + subject + base form</code><br>
+  &nbsp;&nbsp;<b>Did</b> he <b>find</b> a cure? &nbsp;|&nbsp; Why <b>did</b> they <b>get</b> better?
+  </div>
+
+  <h3>1.4 Grammar — Question Forms</h3>
+  <div class="rule-box">
+  <b>Yes/No Questions</b><br>
+  &nbsp;&nbsp;• Verb <i>be</i> → ย้าย <code>be</code> ไปหน้าประธาน: <b>Are</b> you a music lover?<br>
+  &nbsp;&nbsp;• Simple present → <code>Do/Does</code> + subject + base verb: <b>Do</b> you like music?<br>
+  &nbsp;&nbsp;• Simple past → <code>Did</code> + subject + base verb: <b>Did</b> she buy new headphones?<br><br>
+  <b>Wh- Questions</b><br>
+  &nbsp;&nbsp;• คำถาม (+noun) วางหน้า auxiliary verb: <b>What</b> do you listen to? / <b>Which concert</b> did you go to?<br>
+  &nbsp;&nbsp;• How + many/much/often/far/long: <b>How often</b> do they buy music?<br>
+  &nbsp;&nbsp;• ถ้าคำถามถามหา "ประธาน" ของประโยค → <u>ห้ามใส่ auxiliary verb</u>:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>What</b> happened next? / <b>Who</b> likes your band?
+  </div>
+
+  <h3>1.5 Pronunciation — Word Stress</h3>
+  <div class="rule-box">
+  &nbsp;&nbsp;• คำนาม/คำคุณศัพท์ 2 พยางค์ส่วนใหญ่ → เน้นพยางค์<b>แรก</b>: <b>CON</b>cert, <b>NEIGH</b>bors, <b>NOR</b>mal<br>
+  &nbsp;&nbsp;• คำกริยา 2 พยางค์ส่วนใหญ่ → เน้นพยางค์<b>ที่สอง</b>: ar<b>RIVE</b>, in<b>VITE</b>, be<b>GIN</b>
+  </div>
+</div>
+
+<!-- EASY -->
+<div id="page-easy" class="page">
+  <span class="back-btn" onclick="showPage('page-menu')">&larr; กลับเมนู</span>
+  <a href="index.html" class="back-btn" style="text-decoration:none;">หน้าเลือกวิชา</a>
+  <h2>ชุดที่ 1 — ระดับง่าย (Easy · 20 ข้อ)</h2>
+  <div class="score-bar">
+    <span id="score-text-easy">ตอบแล้ว 0/20 ข้อ · ถูก 0 ข้อ</span>
+    <button class="reset-btn" onclick="resetPage('page-easy')">ทำใหม่</button>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="disease แปลว่าโรค/ความเจ็บป่วย">
+    <span class="q-num">1.</span>What is the word for "an illness"?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. medicine</button>
+      <button class="opt-btn" data-opt="B">B. disease</button>
+      <button class="opt-btn" data-opt="C">C. experiment</button>
+      <button class="opt-btn" data-opt="D">D. scientist</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="gravity คือแรงโน้มถ่วง ที่ดึงสิ่งของเข้าหากันและลงสู่พื้น">
+    <span class="q-num">2.</span>"The force that pulls things toward the ground" is called:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. light</button>
+      <button class="opt-btn" data-opt="B">B. heavy</button>
+      <button class="opt-btn" data-opt="C">C. gravity</button>
+      <button class="opt-btn" data-opt="D">D. prove</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="scientist คือนักวิทยาศาสตร์ ผู้ศึกษาหรือทำงานด้านวิทยาศาสตร์">
+    <span class="q-num">3.</span>A person who studies or works in science is a:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. disease</button>
+      <button class="opt-btn" data-opt="B">B. medicine</button>
+      <button class="opt-btn" data-opt="C">C. scientist</button>
+      <button class="opt-btn" data-opt="D">D. experiment</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="fall แปลว่าตกลงสู่พื้น">
+    <span class="q-num">4.</span>"To move or drop to the ground" means:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. rise</button>
+      <button class="opt-btn" data-opt="B">B. fall</button>
+      <button class="opt-btn" data-opt="C">C. hit</button>
+      <button class="opt-btn" data-opt="D">D. pull</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="medicine คือยาที่กินตอนป่วย">
+    <span class="q-num">5.</span>Something you take when you are sick is:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. medicine</button>
+      <button class="opt-btn" data-opt="B">B. light</button>
+      <button class="opt-btn" data-opt="C">C. gravity</button>
+      <button class="opt-btn" data-opt="D">D. disease</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="go out แปลว่าไฟดับ/หยุดลุกไหม้">
+    <span class="q-num">6.</span>"To stop burning" is:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. light</button>
+      <button class="opt-btn" data-opt="B">B. go out</button>
+      <button class="opt-btn" data-opt="C">C. explode</button>
+      <button class="opt-btn" data-opt="D">D. rise</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="explode แปลว่าระเบิด แตกออกเป็นชิ้นพร้อมเสียงดัง">
+    <span class="q-num">7.</span>"To break up into pieces, usually with noise" is:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. explode</button>
+      <button class="opt-btn" data-opt="B">B. mix</button>
+      <button class="opt-btn" data-opt="C">C. pour</button>
+      <button class="opt-btn" data-opt="D">D. push</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="pour แปลว่าเท (ของเหลว) จากที่หนึ่งไปอีกที่หนึ่ง">
+    <span class="q-num">8.</span>"To move a liquid from one place to another" is:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. mix</button>
+      <button class="opt-btn" data-opt="B">B. pour</button>
+      <button class="opt-btn" data-opt="C">C. pull</button>
+      <button class="opt-btn" data-opt="D">D. push</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="toward แปลว่าไปทาง/มุ่งไปยังทิศทางใดทิศทางหนึ่ง">
+    <span class="q-num">9.</span>"In the direction of someone or something" is:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. toward</button>
+      <button class="opt-btn" data-opt="B">B. push</button>
+      <button class="opt-btn" data-opt="C">C. pull</button>
+      <button class="opt-btn" data-opt="D">D. rise</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="rise แปลว่าลอยขึ้น/สูงขึ้น">
+    <span class="q-num">10.</span>"To move up" is:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. fall</button>
+      <button class="opt-btn" data-opt="B">B. rise</button>
+      <button class="opt-btn" data-opt="C">C. push</button>
+      <button class="opt-btn" data-opt="D">D. pull</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="want เป็น regular verb เติม -ed เป็น wanted">
+    <span class="q-num">11.</span>James Lind ______ to find a cure for scurvy. (want)
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. want</button>
+      <button class="opt-btn" data-opt="B">B. wanted</button>
+      <button class="opt-btn" data-opt="C">C. wants</button>
+      <button class="opt-btn" data-opt="D">D. wanting</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="give เป็น irregular verb ช่องอดีตคือ gave">
+    <span class="q-num">12.</span>He ______ oranges and limes to two sailors. (give)
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. give</button>
+      <button class="opt-btn" data-opt="B">B. gives</button>
+      <button class="opt-btn" data-opt="C">C. gave</button>
+      <button class="opt-btn" data-opt="D">D. given</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="D" data-explain="get เป็น irregular verb ช่องอดีตคือ got">
+    <span class="q-num">13.</span>The two sailors ______ better quickly. (get)
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. get</button>
+      <button class="opt-btn" data-opt="B">B. gets</button>
+      <button class="opt-btn" data-opt="C">C. getting</button>
+      <button class="opt-btn" data-opt="D">D. got</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="believe เป็น regular verb เติม -ed เป็น believed">
+    <span class="q-num">14.</span>Many people ______ that music came before language. (believe)
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. believe</button>
+      <button class="opt-btn" data-opt="B">B. believes</button>
+      <button class="opt-btn" data-opt="C">C. believed</button>
+      <button class="opt-btn" data-opt="D">D. believing</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="โครงสร้างปฏิเสธอดีตคือ didn't + base form (ห้ามใช้ didn't got)">
+    <span class="q-num">15.</span>The others ______ better. (negative)
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. didn't got</button>
+      <button class="opt-btn" data-opt="B">B. didn't get</button>
+      <button class="opt-btn" data-opt="C">C. don't got</button>
+      <button class="opt-btn" data-opt="D">D. not got</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="Did + subject + base form (find ไม่ใช่ found)">
+    <span class="q-num">16.</span>Choose the correct question:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Did he found a cure?</button>
+      <button class="opt-btn" data-opt="B">B. Did he find a cure?</button>
+      <button class="opt-btn" data-opt="C">C. Does he found a cure?</button>
+      <button class="opt-btn" data-opt="D">D. Did he finds a cure?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="Why + did + subject + base form">
+    <span class="q-num">17.</span>Choose the correct question:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Why did they got better?</button>
+      <button class="opt-btn" data-opt="B">B. Why they did get better?</button>
+      <button class="opt-btn" data-opt="C">C. Why did they get better?</button>
+      <button class="opt-btn" data-opt="D">D. Why do they got better?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="simple past question ใช้ Did">
+    <span class="q-num">18.</span>______ she buy new headphones? (past)
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Do</button>
+      <button class="opt-btn" data-opt="B">B. Does</button>
+      <button class="opt-btn" data-opt="C">C. Did</button>
+      <button class="opt-btn" data-opt="D">D. Is</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="CONcert เป็นคำนาม 2 พยางค์ เน้นพยางค์แรก">
+    <span class="q-num">19.</span>Which syllable is stressed in "concert" (noun)?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. first syllable</button>
+      <button class="opt-btn" data-opt="B">B. second syllable</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="arRIVE เป็นคำกริยา 2 พยางค์ เน้นพยางค์ที่สอง">
+    <span class="q-num">20.</span>Which syllable is stressed in "arrive" (verb)?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. first syllable</button>
+      <button class="opt-btn" data-opt="B">B. second syllable</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="summary-box" id="summary-easy">
+    <div>คะแนนรวม</div>
+    <div class="score-big"><span id="final-easy">0</span>/20</div>
+    <div class="score-msg" id="msg-easy"></div>
+  </div>
+</div>
+
+<!-- MEDIUM -->
+<div id="page-medium" class="page">
+  <span class="back-btn" onclick="showPage('page-menu')">&larr; กลับเมนู</span>
+  <a href="index.html" class="back-btn" style="text-decoration:none;">หน้าเลือกวิชา</a>
+  <h2>ชุดที่ 2 — ระดับปานกลาง (Medium · 20 ข้อ)</h2>
+  <div class="score-bar">
+    <span id="score-text-medium">ตอบแล้ว 0/20 ข้อ · ถูก 0 ข้อ</span>
+    <button class="reset-btn" onclick="resetPage('page-medium')">ทำใหม่</button>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="experiment คือการทดลอง">
+    <span class="q-num">1.</span>Scientists did an ______ to test the new medicine.
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. disease</button>
+      <button class="opt-btn" data-opt="B">B. experiment</button>
+      <button class="opt-btn" data-opt="C">C. medicine</button>
+      <button class="opt-btn" data-opt="D">D. prove</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="pour คือเทของเหลว">
+    <span class="q-num">2.</span>Please ______ the water into the glass.
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. push</button>
+      <button class="opt-btn" data-opt="B">B. pour</button>
+      <button class="opt-btn" data-opt="C">C. pull</button>
+      <button class="opt-btn" data-opt="D">D. mix</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="go out คือไฟดับ/เทียนดับ">
+    <span class="q-num">3.</span>The candle will ______ if you don't watch it.
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. rise</button>
+      <button class="opt-btn" data-opt="B">B. go out</button>
+      <button class="opt-btn" data-opt="C">C. explode</button>
+      <button class="opt-btn" data-opt="D">D. react</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="react คือเกิดปฏิกิริยาตอบสนอง (สร้างควันได้)">
+    <span class="q-num">4.</span>Two chemicals can ______ and create smoke.
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. pour</button>
+      <button class="opt-btn" data-opt="B">B. mix</button>
+      <button class="opt-btn" data-opt="C">C. react</button>
+      <button class="opt-btn" data-opt="D">D. push</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="give (present) → gave (past) เป็น irregular verb">
+    <span class="q-num">5.</span>Choose the correct past tense of: "He gives oranges to sailors."
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. He give oranges to sailors.</button>
+      <button class="opt-btn" data-opt="B">B. He gived oranges to sailors.</button>
+      <button class="opt-btn" data-opt="C">C. He gave oranges to sailors.</button>
+      <button class="opt-btn" data-opt="D">D. He given oranges to sailors.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="โครงสร้างปฏิเสธอดีต: didn't + base form → didn't get">
+    <span class="q-num">6.</span>Choose the correct negative form of: "The others got better."
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. The others don't get better.</button>
+      <button class="opt-btn" data-opt="B">B. The others didn't got better.</button>
+      <button class="opt-btn" data-opt="C">C. The others didn't get better.</button>
+      <button class="opt-btn" data-opt="D">D. The others not get better.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="believe (present) → believed (past) เป็น regular verb">
+    <span class="q-num">7.</span>Choose the correct past tense of: "Many people believe music came before language."
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Many people believed music came before language.</button>
+      <button class="opt-btn" data-opt="B">B. Many people believes music comes before language.</button>
+      <button class="opt-btn" data-opt="C">C. Many people believe music came before language.</button>
+      <button class="opt-btn" data-opt="D">D. Many people believing music came before language.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="didn't + base form → didn't find (ไม่ใช่ didn't found)">
+    <span class="q-num">8.</span>Choose the correct negative form of: "James Lind found a cure quickly."
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. James Lind not found a cure quickly.</button>
+      <button class="opt-btn" data-opt="B">B. James Lind didn't found a cure quickly.</button>
+      <button class="opt-btn" data-opt="C">C. James Lind didn't find a cure quickly.</button>
+      <button class="opt-btn" data-opt="D">D. James Lind doesn't find a cure quickly.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="What do you listen to? เป็นคำถามมาตรฐานถามสิ่งที่ฟัง">
+    <span class="q-num">9.</span>"I listen to pop music." Which question fits this answer?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Which music do you listen to?</button>
+      <button class="opt-btn" data-opt="B">B. What do you listen to?</button>
+      <button class="opt-btn" data-opt="C">C. Do you listen to music?</button>
+      <button class="opt-btn" data-opt="D">D. How often do you listen to music?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="Which concert did you go to? — Which + noun วางหน้า auxiliary">
+    <span class="q-num">10.</span>"I went to the Coldplay concert." Which question fits?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. What concert did you go to?</button>
+      <button class="opt-btn" data-opt="B">B. Which concert did you go to?</button>
+      <button class="opt-btn" data-opt="C">C. Did you go to a concert?</button>
+      <button class="opt-btn" data-opt="D">D. Where did you go?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="How often ใช้ถามความถี่">
+    <span class="q-num">11.</span>"She buys headphones often." Which question asks about frequency?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. How many headphones does she buy?</button>
+      <button class="opt-btn" data-opt="B">B. How often does she buy headphones?</button>
+      <button class="opt-btn" data-opt="C">C. Does she buy headphones?</button>
+      <button class="opt-btn" data-opt="D">D. What does she buy?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="Who เป็นประธานของประโยค จึงไม่ต้องมี auxiliary verb">
+    <span class="q-num">12.</span>"Tom likes your band." Which question fits (Who = subject, no auxiliary)?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Who does like your band?</button>
+      <button class="opt-btn" data-opt="B">B. Who likes your band?</button>
+      <button class="opt-btn" data-opt="C">C. Does who like your band?</button>
+      <button class="opt-btn" data-opt="D">D. Who did like your band?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="Did + subject + base form → Did she go">
+    <span class="q-num">13.</span>Choose the correct sentence:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Did she went to the concert?</button>
+      <button class="opt-btn" data-opt="B">B. Did she go to the concert?</button>
+      <button class="opt-btn" data-opt="C">C. Does she went to the concert?</button>
+      <button class="opt-btn" data-opt="D">D. Was she go to the concert?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="What เป็นประธานของประโยค ไม่ต้องมี auxiliary verb">
+    <span class="q-num">14.</span>Choose the correct sentence:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. What happened next?</button>
+      <button class="opt-btn" data-opt="B">B. What did happened next?</button>
+      <button class="opt-btn" data-opt="C">C. What does happen next?</button>
+      <button class="opt-btn" data-opt="D">D. What was happened next?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="didn't + base form → didn't find">
+    <span class="q-num">15.</span>Choose the correct sentence:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. He didn't found a cure.</button>
+      <button class="opt-btn" data-opt="B">B. He didn't find a cure.</button>
+      <button class="opt-btn" data-opt="C">C. He not found a cure.</button>
+      <button class="opt-btn" data-opt="D">D. He don't found a cure.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="Who เป็นประธาน ไม่ต้องมี auxiliary verb">
+    <span class="q-num">16.</span>Choose the correct question form:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Who did like your band?</button>
+      <button class="opt-btn" data-opt="B">B. Who likes your band?</button>
+      <button class="opt-btn" data-opt="C">C. Who does like your band?</button>
+      <button class="opt-btn" data-opt="D">D. Who like your band?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="BORing เป็นคำคุณศัพท์ 2 พยางค์ เน้นพยางค์แรก">
+    <span class="q-num">17.</span>Which syllable is stressed in "boring"?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. first syllable</button>
+      <button class="opt-btn" data-opt="B">B. second syllable</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="preFER เป็นคำกริยา 2 พยางค์ เน้นพยางค์ที่สอง">
+    <span class="q-num">18.</span>Which syllable is stressed in "prefer"?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. first syllable</button>
+      <button class="opt-btn" data-opt="B">B. second syllable</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="REAson เป็นคำนาม 2 พยางค์ เน้นพยางค์แรก">
+    <span class="q-num">19.</span>Which syllable is stressed in "reason"?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. first syllable</button>
+      <button class="opt-btn" data-opt="B">B. second syllable</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="comPARE เป็นคำกริยา 2 พยางค์ เน้นพยางค์ที่สอง">
+    <span class="q-num">20.</span>Which syllable is stressed in "compare"?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. first syllable</button>
+      <button class="opt-btn" data-opt="B">B. second syllable</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="summary-box" id="summary-medium">
+    <div>คะแนนรวม</div>
+    <div class="score-big"><span id="final-medium">0</span>/20</div>
+    <div class="score-msg" id="msg-medium"></div>
+  </div>
+</div>
+
+<!-- HARD -->
+<div id="page-hard" class="page">
+  <span class="back-btn" onclick="showPage('page-menu')">&larr; กลับเมนู</span>
+  <a href="index.html" class="back-btn" style="text-decoration:none;">หน้าเลือกวิชา</a>
+  <h2>ชุดที่ 3 — ระดับยาก (Hard · 20 ข้อ)</h2>
+  <div class="score-bar">
+    <span id="score-text-hard">ตอบแล้ว 0/20 ข้อ · ถูก 0 ข้อ</span>
+    <button class="reset-btn" onclick="resetPage('page-hard')">ทำใหม่</button>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="เหตุการณ์เกิดในอดีต (1747) ต้องใช้ simple past: wanted">
+    <span class="q-num">1.</span>Choose the correct sentence:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. In 1747, a Scottish doctor wants to find a cure for scurvy.</button>
+      <button class="opt-btn" data-opt="B">B. In 1747, a Scottish doctor wanted to find a cure for scurvy.</button>
+      <button class="opt-btn" data-opt="C">C. In 1747, a Scottish doctor want to find a cure for scurvy.</button>
+      <button class="opt-btn" data-opt="D">D. In 1747, a Scottish doctor is wanting to find a cure for scurvy.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="give → gave (irregular verb, past tense)">
+    <span class="q-num">2.</span>Choose the correct sentence:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. He give oranges and limes to two sailors.</button>
+      <button class="opt-btn" data-opt="B">B. He gived oranges and limes to two sailors.</button>
+      <button class="opt-btn" data-opt="C">C. He gave oranges and limes to two sailors.</button>
+      <button class="opt-btn" data-opt="D">D. He was give oranges and limes to two sailors.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="หลัง Did ต้องใช้ base form: find ไม่ใช่ found">
+    <span class="q-num">3.</span>Choose the correct question:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Did he found a cure for scurvy?</button>
+      <button class="opt-btn" data-opt="B">B. Did he find a cure for scurvy?</button>
+      <button class="opt-btn" data-opt="C">C. Does he find a cure for scurvy?</button>
+      <button class="opt-btn" data-opt="D">D. Did he finding a cure for scurvy?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="หลัง did ต้องใช้ base form: listen ไม่ใช่ listened">
+    <span class="q-num">4.</span>Choose the correct question:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. What did you listened to last night?</button>
+      <button class="opt-btn" data-opt="B">B. What did you listen to last night?</button>
+      <button class="opt-btn" data-opt="C">C. What do you listened to last night?</button>
+      <button class="opt-btn" data-opt="D">D. What were you listen to last night?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="หลัง did ต้องใช้ base form: go ไม่ใช่ went">
+    <span class="q-num">5.</span>Choose the correct question:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Which concert did you went to?</button>
+      <button class="opt-btn" data-opt="B">B. Which concert did you go to?</button>
+      <button class="opt-btn" data-opt="C">C. Which concert do you went to?</button>
+      <button class="opt-btn" data-opt="D">D. Which concert you did go to?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="passage">"In 1747, a Scottish doctor did an <b>(6)</b>______ to find a <b>(7)</b>______ for scurvy, a serious <b>(8)</b>______. He believed oranges could <b>(9)</b>______ that his idea was correct. After a few days, the sailors who ate oranges got better, but the others did not <b>(10)</b>______ better."</div>
+
+  <div class="q" data-correct="B" data-explain="experiment = การทดลอง">
+    <span class="q-num">6.</span>Blank (6):
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. disease</button>
+      <button class="opt-btn" data-opt="B">B. experiment</button>
+      <button class="opt-btn" data-opt="C">C. medicine</button>
+      <button class="opt-btn" data-opt="D">D. prove</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="cure = วิธีรักษา/ยาที่รักษาโรค">
+    <span class="q-num">7.</span>Blank (7):
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. cure</button>
+      <button class="opt-btn" data-opt="B">B. disease</button>
+      <button class="opt-btn" data-opt="C">C. experiment</button>
+      <button class="opt-btn" data-opt="D">D. gravity</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="disease = โรค/ความเจ็บป่วย">
+    <span class="q-num">8.</span>Blank (8):
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. experiment</button>
+      <button class="opt-btn" data-opt="B">B. disease</button>
+      <button class="opt-btn" data-opt="C">C. cure</button>
+      <button class="opt-btn" data-opt="D">D. medicine</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="prove = พิสูจน์ว่าเป็นจริง">
+    <span class="q-num">9.</span>Blank (9):
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. prove</button>
+      <button class="opt-btn" data-opt="B">B. react</button>
+      <button class="opt-btn" data-opt="C">C. push</button>
+      <button class="opt-btn" data-opt="D">D. rise</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="did not + base form → did not get">
+    <span class="q-num">10.</span>Blank (10):
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. got</button>
+      <button class="opt-btn" data-opt="B">B. get</button>
+      <button class="opt-btn" data-opt="C">C. getting</button>
+      <button class="opt-btn" data-opt="D">D. gets</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="Verb be → ย้าย are มาไว้หน้าประธาน">
+    <span class="q-num">11.</span>Choose the correct Yes/No question for: "You are a music lover."
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Do you a music lover?</button>
+      <button class="opt-btn" data-opt="B">B. Are you a music lover?</button>
+      <button class="opt-btn" data-opt="C">C. Does you a music lover?</button>
+      <button class="opt-btn" data-opt="D">D. You are a music lover?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="How many + noun (albums) + does + subject + base verb">
+    <span class="q-num">12.</span>"She buys three albums a month." Choose the correct question using "How many":
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. How many albums does she buy a month?</button>
+      <button class="opt-btn" data-opt="B">B. How many albums she buys a month?</button>
+      <button class="opt-btn" data-opt="C">C. How much albums does she buy a month?</button>
+      <button class="opt-btn" data-opt="D">D. How many album does she buys a month?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="didn't + base form → didn't prove">
+    <span class="q-num">13.</span>Choose the correct past negative of: "The doctor proves his theory."
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. The doctor doesn't prove his theory.</button>
+      <button class="opt-btn" data-opt="B">B. The doctor didn't proved his theory.</button>
+      <button class="opt-btn" data-opt="C">C. The doctor didn't prove his theory.</button>
+      <button class="opt-btn" data-opt="D">D. The doctor not prove his theory.</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="What เป็นประธานของประโยค ไม่ต้องมี auxiliary verb">
+    <span class="q-num">14.</span>Choose the best combined question for: "Something happened. What was it?"
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. What was happened?</button>
+      <button class="opt-btn" data-opt="B">B. What did happen?</button>
+      <button class="opt-btn" data-opt="C">C. What happened?</button>
+      <button class="opt-btn" data-opt="D">D. What does happen?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="A" data-explain="What kind of + noun + does + subject + base verb">
+    <span class="q-num">15.</span>"He goes to <b>rock</b> concerts." Choose the best question asking about the type of concerts:
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. What kind of concerts does he go to?</button>
+      <button class="opt-btn" data-opt="B">B. What kind of concerts he goes to?</button>
+      <button class="opt-btn" data-opt="C">C. Which kind of concerts did he go?</button>
+      <button class="opt-btn" data-opt="D">D. What kind concerts does he go?</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="passage">"In 1747, a Scottish doctor, James Lind, wanted to find a cure for scurvy. He decided to carry out an experiment. He gave oranges and limes to two of the sailors. Those two sailors got better quickly. The others didn't get better."</div>
+
+  <div class="q" data-correct="B" data-explain="ในบทความระบุชัดว่า James Lind เป็นแพทย์ชาวสก็อตที่ต้องการหาวิธีรักษา">
+    <span class="q-num">16.</span>Who wanted to find a cure for scurvy?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. A group of sailors</button>
+      <button class="opt-btn" data-opt="B">B. James Lind, a Scottish doctor</button>
+      <button class="opt-btn" data-opt="C">C. A ship's captain</button>
+      <button class="opt-btn" data-opt="D">D. Two sick sailors</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="บทความระบุว่า He gave oranges and limes to two of the sailors">
+    <span class="q-num">17.</span>What did James Lind give to two sailors?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Medicine and water</button>
+      <button class="opt-btn" data-opt="B">B. Vegetables and bread</button>
+      <button class="opt-btn" data-opt="C">C. Oranges and limes</button>
+      <button class="opt-btn" data-opt="D">D. Vitamin pills</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="B" data-explain="สอดคล้องกับผลการทดลองที่ให้ oranges และ limes แก่สองคนนั้น">
+    <span class="q-num">18.</span>Why did the two sailors get better quickly?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. Because they rested for many days</button>
+      <button class="opt-btn" data-opt="B">B. Because they received oranges and limes from the experiment</button>
+      <button class="opt-btn" data-opt="C">C. Because they had special medicine</button>
+      <button class="opt-btn" data-opt="D">D. Because they stopped working</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="singer เป็นคำนาม เน้นพยางค์แรก (SINGer) ไม่ใช่คำกริยา">
+    <span class="q-num">19.</span>Which word does NOT follow the "2-syllable verb → stress on 2nd syllable" pattern?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. arrive</button>
+      <button class="opt-btn" data-opt="B">B. invite</button>
+      <button class="opt-btn" data-opt="C">C. singer</button>
+      <button class="opt-btn" data-opt="D">D. begin</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="q" data-correct="C" data-explain="compare เป็นคำกริยา เน้นพยางค์ที่สอง (comPARE)">
+    <span class="q-num">20.</span>Which word does NOT follow the "2-syllable noun/adjective → stress on 1st syllable" pattern?
+    <div class="opts">
+      <button class="opt-btn" data-opt="A">A. concert</button>
+      <button class="opt-btn" data-opt="B">B. neighbors</button>
+      <button class="opt-btn" data-opt="C">C. compare</button>
+      <button class="opt-btn" data-opt="D">D. normal</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="summary-box" id="summary-hard">
+    <div>คะแนนรวม</div>
+    <div class="score-big"><span id="final-hard">0</span>/20</div>
+    <div class="score-msg" id="msg-hard"></div>
+  </div>
+</div>
+
+<hr class="divider">
+<p class="note">สรุปครอบคลุม: Unit 3 (Question Forms, Word Stress) และ Unit 4 (Vocabulary, Simple Past) — จัดทำสำหรับเตรียมสอบ Final วิชาภาษาอังกฤษ M.1</p>
+
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+var levelMap = { 'page-easy':'easy', 'page-medium':'medium', 'page-hard':'hard' };
+
+function onOptionClick(e){
+  var btn = e.currentTarget;
+  var qDiv = btn.closest('.q');
+  if(qDiv.classList.contains('answered')) return;
+  qDiv.classList.add('answered');
+
+  var correct = qDiv.getAttribute('data-correct');
+  var chosen = btn.getAttribute('data-opt');
+  var explain = qDiv.getAttribute('data-explain');
+
+  qDiv.querySelectorAll('.opt-btn').forEach(function(b){
+    b.disabled = true;
+    if(b.getAttribute('data-opt') === correct){ b.classList.add('opt-correct'); }
+  });
+
+  var isCorrect = (chosen === correct);
+  if(!isCorrect){ btn.classList.add('opt-wrong'); }
+  qDiv.classList.add(isCorrect ? 'q-correct' : 'q-wrong');
+
+  var fb = qDiv.querySelector('.feedback');
+  fb.style.display = 'block';
+  fb.classList.add(isCorrect ? 'fb-correct' : 'fb-wrong');
+  fb.innerHTML = (isCorrect ? '✅ ถูกต้อง! ' : '❌ ยังไม่ถูก คำตอบที่ถูกคือ ' + correct + ' ') + '— ' + explain;
+
+  var page = qDiv.closest('.page');
+  updateScore(page);
+}
+
+function updateScore(page){
+  var levelId = page.id;
+  var level = levelMap[levelId];
+  if(!level) return;
+  var qs = page.querySelectorAll('.q');
+  var total = qs.length;
+  var answered = page.querySelectorAll('.q.answered').length;
+  var correctCount = page.querySelectorAll('.q.q-correct').length;
+
+  var scoreText = document.getElementById('score-text-' + level);
+  if(scoreText){ scoreText.textContent = 'ตอบแล้ว ' + answered + '/' + total + ' ข้อ · ถูก ' + correctCount + ' ข้อ'; }
+
+  if(answered === total){
+    var summaryBox = document.getElementById('summary-' + level);
+    var finalScore = document.getElementById('final-' + level);
+    var msg = document.getElementById('msg-' + level);
+    finalScore.textContent = correctCount;
+    var pct = Math.round((correctCount/total)*100);
+    var text;
+    if(pct >= 90){ text = 'ยอดเยี่ยมมาก! พร้อมสำหรับข้อสอบ Final แล้ว'; }
+    else if(pct >= 70){ text = 'ทำได้ดี! ทบทวนจุดที่ผิดอีกนิดเดียว'; }
+    else if(pct >= 50){ text = 'พอใช้ได้ ลองกลับไปอ่านสรุปเนื้อหาแล้วทำใหม่'; }
+    else { text = 'ควรทบทวนสรุปเนื้อหาก่อน แล้วค่อยกลับมาทำใหม่'; }
+    msg.textContent = text + ' (' + pct + '%)';
+    summaryBox.classList.add('show');
+  }
+}
+
+function resetPage(pageId){
+  var page = document.getElementById(pageId);
+  page.querySelectorAll('.q').forEach(function(q){
+    q.classList.remove('answered','q-correct','q-wrong');
+    q.querySelectorAll('.opt-btn').forEach(function(b){
+      b.disabled = false;
+      b.classList.remove('opt-correct','opt-wrong');
+    });
+    var fb = q.querySelector('.feedback');
+    fb.style.display = 'none';
+    fb.classList.remove('fb-correct','fb-wrong');
+    fb.innerHTML = '';
+  });
+  var level = levelMap[pageId];
+  if(level){
+    document.getElementById('summary-' + level).classList.remove('show');
+  }
+  updateScore(page);
+}
+
+document.querySelectorAll('.opt-btn').forEach(function(btn){
+  btn.addEventListener('click', onOptionClick);
+});
+</script>
+
+</body>
+</html>

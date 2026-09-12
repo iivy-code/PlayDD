@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary — Additional Math Unit 3-4</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761; --navy-light:#CADCFC; --ink:#1A1A1A; --bg:#F5F5F5;
+    --card:#FFFFFF; --border:#E0E3EA; --slate:#2C3E50; --light:#D6DCE4;
+  }
+  *{box-sizing:border-box;}
+  body{ font-family:'Sarabun','TH Sarabun New',Arial,sans-serif; background:var(--bg); color:var(--ink); margin:0; padding:0; font-size:11pt; line-height:1.65; }
+  header{ background:var(--navy); color:#fff; padding:14px 20px 20px; text-align:center; }
+  header h1{ font-size:16.5pt; margin:8px 0 6px; font-weight:700; }
+  header p{ margin:0; font-size:10.5pt; color:var(--navy-light); }
+  .backlink{ display:inline-block;margin:0 4px 8px;color:var(--navy-light);font-weight:600;font-size:10.5pt;border:1px solid var(--navy-light);border-radius:4px;padding:5px 12px;text-decoration:none; }
+  .cta{ display:inline-block;margin-top:14px;background:#fff;color:var(--navy);font-weight:700;font-size:11.5pt;border-radius:5px;padding:12px 22px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.15); }
+  .cta:hover{ background:var(--navy-light); }
+  .wrap{ max-width:880px; margin:0 auto; padding:24px 18px 70px; }
+  .card{ background:var(--card); border:1px solid var(--border); border-radius:6px; padding:22px 24px; margin-bottom:20px; }
+  h2{ font-size:15pt; color:var(--navy); border-bottom:2px solid var(--navy); padding-bottom:6px; margin:0 0 14px; }
+  h3{ font-size:12.5pt; color:var(--slate); margin:20px 0 8px; }
+  h4{ font-size:11.5pt; color:var(--slate); margin:14px 0 6px; }
+  p{ margin:0 0 10px; } ul{ margin:6px 0 12px; padding-left:22px; } li{ margin-bottom:6px; }
+  table{ width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:10.2pt; }
+  th{ background:var(--navy); color:#fff; text-align:left; padding:7px 10px; }
+  td{ padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  tr:nth-child(even) td{ background:#FAFBFD; }
+  .note{ font-size:10pt; color:#555; font-style:italic; margin-top:-4px; }
+  .formula{ background:#F2F4F8; border-left:3px solid var(--navy); border-radius:2px; padding:8px 14px; margin:8px 0 14px; font-weight:700; color:var(--navy); font-family:Consolas,monospace; }
+  .unit-jump{ display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 24px; }
+  .unit-jump a{ flex:1; min-width:150px; text-align:center; padding:10px; border:1.5px solid var(--navy); border-radius:4px; color:var(--navy); text-decoration:none; font-weight:600; font-size:10pt; }
+  .unit-jump a:hover{ background:var(--navy); color:#fff; }
+  footer{ text-align:center; color:#888; font-size:9pt; padding:20px; }
+  .bottom-cta{ text-align:center; margin:30px 0 10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="backlink">&larr; Back to subjects</a>
+  <h1>Additional Math — Unit 3-4 Summary</h1>
+  <p>Mathematical Patterns · Scientific Notation</p>
+  <br>
+  <a href="m1-addmath-unit34-practice.html" class="cta">Go to the practice problems (3 levels, 15 each) &rarr;</a>
+</header>
+
+<div class="wrap">
+
+  <div class="unit-jump">
+    <a href="#unit3">Unit 3 — Patterns</a>
+    <a href="#unit4">Unit 4 — Scientific Notation</a>
+  </div>
+
+  <!-- ===================== UNIT 3 ===================== -->
+  <div class="card" id="unit3">
+    <h2>Unit 3 — Mathematical Patterns</h2>
+
+    <h3>3.1 Geometric Patterns</h3>
+    <p>A mathematical pattern is a repeated arrangement of numbers, shapes, colors, or other elements that follows a specific rule. Patterns can be finite or infinite. The key skill is recognizing the rule from a picture or list, then writing a formula for the nth term.</p>
+
+    <h4>Formulas found from common picture patterns</h4>
+    <table>
+      <tr><th>Pattern type</th><th>Formula</th></tr>
+      <tr><td>Triangular stack (row n has n items; e.g. pipes, dots, hexagons)</td><td>nth row = n. &nbsp; Total for n rows = T(n) = n(n+1)/2</td></tr>
+      <tr><td>n unit squares in a row, made from matches</td><td>Matches needed = 3n + 1. &nbsp; Perimeter = 2n + 2</td></tr>
+      <tr><td>n houses (square + triangle roof) in a row, made from matches</td><td>Matches needed = 5n + 1. &nbsp; Perimeter = 3n + 2</td></tr>
+      <tr><td>n×n grid of dots, first row &amp; column black (corner white)</td><td>Black dots = 2(n − 1). &nbsp; White dots = n² − 2n + 2</td></tr>
+      <tr><td>Dots arranged in a growing diamond/square (perfect squares)</td><td>Total dots = n². Also equals the sum of the first n odd numbers: 1+3+5+…+(2n−1) = n²</td></tr>
+    </table>
+
+    <h4>Worked Example — Triangular stack of pipes</h4>
+    <p>A stack of steel pipes is arranged so row 1 has 1 pipe, row 2 has 2 pipes, row 3 has 3 pipes, and so on.</p>
+    <ul>
+      <li>Pipes in the 9th row = 9 (the row number itself).</li>
+      <li>Pipes in the nth row = n.</li>
+      <li>Total pipes for 50 rows = T(50) = 50×51/2 = 1275.</li>
+      <li>Total pipes for 77 rows = T(77) = 77×78/2 = 3003.</li>
+    </ul>
+
+    <h4>Worked Example — Perfect-square dot pattern</h4>
+    <p>Dots are arranged so the 1st picture has 1 dot, the 2nd has 4, the 3rd has 9 (a growing square/diamond of dots). Total dots in the nth picture = n².</p>
+    <ul>
+      <li>The 15th picture, expressed as a sum of odd numbers: 1+3+5+7+9+11+13+15+17+19+21+23+25+27+29 = 15² = 225.</li>
+      <li>Evaluate 1+3+5+…+69: since 69 is the 35th odd number, the sum = 35² = 1225.</li>
+      <li>Evaluate 5+7+9+…+199: this is (sum of all odds 1 to 199) minus (1+3) = 100² − 4 = 9996.</li>
+    </ul>
+
+    <h3>3.2 Numerical Patterns</h3>
+    <p>To find a pattern in a list of numbers, check in this order:</p>
+    <ul>
+      <li>Constant difference between terms → arithmetic sequence: aₙ = a₁ + (n−1)d</li>
+      <li>Constant ratio between terms → geometric sequence: aₙ = a₁ × r⁽ⁿ⁻¹⁾</li>
+      <li>Differences are not constant, but the differences of the differences ARE constant → the pattern is quadratic (often n² plus/minus something)</li>
+      <li>Ratios of ratios, or a changing common ratio → look for a pattern in the ratios themselves</li>
+    </ul>
+
+    <h4>Worked Examples</h4>
+    <table>
+      <tr><th>Sequence</th><th>Rule found</th><th>Answer</th></tr>
+      <tr><td>88, 79, 70, 61, 52, …</td><td>Arithmetic, common difference −9</td><td>Next two terms: 43, 34</td></tr>
+      <tr><td>1, 4, 9, 16, 25, …</td><td>Perfect squares, aₙ = n²</td><td>200th term = 200² = 40,000</td></tr>
+      <tr><td>21, 15, 9, 3, −3, …</td><td>Arithmetic, d = −6, aₙ = 27 − 6n</td><td>75th term = 27 − 6(75) = −423</td></tr>
+      <tr><td>3, 8, 15, 24, 35, …</td><td>aₙ = n² + 2n &nbsp;(or (n+1)² − 1)</td><td>400th term = 400² + 2(400) = 160,800</td></tr>
+      <tr><td>2, 8, 18, 32, 50, …</td><td>aₙ = 2n²</td><td>60th term = 2(60)² = 7,200</td></tr>
+      <tr><td>−6, 30, −150, 750, …</td><td>Geometric, ratio −5</td><td>Next two terms: 18,750 and −93,750</td></tr>
+    </table>
+    <p class="note">Tip: for a sequence like 4, 7, 12, 19, 28 the differences are 3, 5, 7, 9 (consecutive odd numbers) — this signals a quadratic rule of the form n² + c. Testing n=1 (1+c=4 → c=3) gives aₙ = n² + 3, which checks out for every term.</p>
+
+    <h3>3.3 The Fibonacci Sequence</h3>
+    <p>The Fibonacci sequence is a series where each number is the sum of the two preceding ones, usually starting with 1 and 1: 1, 1, 2, 3, 5, 8, 13, 21, … It is denoted F(n) or Fₙ, and was introduced to Western mathematics by Leonardo of Pisa ("Fibonacci") in his 1202 book Liber Abaci. The sequence appears throughout nature (leaf arrangements, sunflower spirals, seashells), and the ratio of consecutive terms approaches the golden ratio, ≈ 1.618.</p>
+
+    <h4>Key technique: use the recurrence both forward and backward</h4>
+    <div class="formula">F(n+2) = F(n+1) + F(n) &nbsp; (forward)</div>
+    <div class="formula">F(n) = F(n+2) − F(n+1) &nbsp; (backward — rearranged)</div>
+    <p>This lets you solve for an unknown term even when it comes BEFORE the two given terms, by working backward step by step.</p>
+
+    <h4>Worked Example — solving forward</h4>
+    <p>If F(21) = 10,946 and F(22) = 17,711, find F(23).</p>
+    <ul><li>F(23) = F(22) + F(21) = 17,711 + 10,946 = 28,657.</li></ul>
+
+    <h4>Worked Example — solving backward (harder)</h4>
+    <p>If F(30) = 832,040 and F(31) = 1,346,269, find F(27).</p>
+    <ul>
+      <li>Rearrange the recurrence to go backward: F(n) = F(n+2) − F(n+1).</li>
+      <li>F(29) = F(31) − F(30) = 1,346,269 − 832,040 = 514,229.</li>
+      <li>F(28) = F(30) − F(29) = 832,040 − 514,229 = 317,811.</li>
+      <li>F(27) = F(29) − F(28) = 514,229 − 317,811 = 196,418.</li>
+    </ul>
+
+    <h4>Worked Example — a Fibonacci-LIKE sequence (doesn't start 1,1)</h4>
+    <p>Let aₙ follow the same rule (aₙ = aₙ₋₁ + aₙ₋₂) but with unknown starting values. If a₁₄ = 1,560 and a₁₇ = 8,440, find a₂₀.</p>
+    <ul>
+      <li>Let x = a₁₄ = 1560 and y = a₁₅ (unknown). Then a₁₆ = x+y, and a₁₇ = a₁₆+a₁₅ = x + 2y.</li>
+      <li>Solve: 1560 + 2y = 8440 → 2y = 6880 → y = 3440. So a₁₅ = 3440.</li>
+      <li>a₁₆ = 1560+3440 = 5000. &nbsp; a₁₇ = 5000+3440 = 8440 ✓ (matches, confirming the values).</li>
+      <li>a₁₈ = a₁₇+a₁₆ = 8440+5000 = 13,440.</li>
+      <li>a₁₉ = a₁₈+a₁₇ = 13,440+8,440 = 21,880. &nbsp; a₂₀ = a₁₉+a₁₈ = 21,880+13,440 = 35,320.</li>
+    </ul>
+  </div>
+
+  <!-- ===================== UNIT 4 ===================== -->
+  <div class="card" id="unit4">
+    <h2>Unit 4 — Scientific Notation</h2>
+
+    <h3>4.1 Writing Scientific Notation</h3>
+    <p>Scientific notation writes a number as A × 10ⁿ, where 1 ≤ A < 10 and n is an integer. Move the decimal point until exactly one non-zero digit remains in front of it; the number of places moved becomes the exponent (positive if the original number is 10 or more, negative if it's less than 1).</p>
+    <table>
+      <tr><th>Original number</th><th>Scientific notation</th></tr>
+      <tr><td>543,000,000,000</td><td>5.43×10¹¹</td></tr>
+      <tr><td>2,097,700</td><td>2.0977×10⁶</td></tr>
+      <tr><td>0.00092</td><td>9.2×10⁻⁴</td></tr>
+      <tr><td>0.000000000000008</td><td>8×10⁻¹⁵</td></tr>
+      <tr><td>601×10⁸ &nbsp;(needs re-normalizing)</td><td>6.01×10¹⁰</td></tr>
+      <tr><td>0.004×10⁻⁷ &nbsp;(needs re-normalizing)</td><td>4×10⁻¹⁰</td></tr>
+    </table>
+
+    <h3>4.2 Multiplying and Dividing Scientific Notation</h3>
+    <div class="formula">(a×10ᵇ) × (c×10ᵈ) = (a×c) × 10⁽ᵇ⁺ᵈ⁾</div>
+    <div class="formula">(a×10ᵇ) ÷ (c×10ᵈ) = (a÷c) × 10⁽ᵇ⁻ᵈ⁾</div>
+    <p>After multiplying/dividing, check whether the coefficient is still between 1 and 10 — if not, shift the decimal point and adjust the exponent to renormalize.</p>
+
+    <h4>Worked Examples</h4>
+    <table>
+      <tr><th>Problem</th><th>Working</th><th>Answer</th></tr>
+      <tr><td>2.8×10² × 7.2×10⁴</td><td>2.8×7.2 = 20.16, exponent 2+4=6 → 20.16×10⁶ → renormalize</td><td>2.016×10⁷</td></tr>
+      <tr><td>7.0×10⁴ ÷ 3.5×10⁶</td><td>7.0÷3.5=2, exponent 4−6=−2</td><td>2×10⁻²</td></tr>
+      <tr><td>1.7952×10⁵ ÷ 3.74×10⁻³</td><td>1.7952÷3.74=0.48, exponent 5−(−3)=8 → 0.48×10⁸ → renormalize</td><td>4.8×10⁷</td></tr>
+      <tr><td>(16.2×10¹⁰ ÷ 2.0×10⁵) × 2.1×10⁵</td><td>16.2÷2.0=8.1×10⁵; then 8.1×2.1=17.01, exponent 5+5=10 → renormalize</td><td>1.701×10¹¹</td></tr>
+    </table>
+
+    <h4>Application Examples</h4>
+    <p><b>Light-years:</b> A light-year is 9.4×10¹² km. An object is 1.6×10¹⁵ light-years from Earth. Distance in km = 1.6×9.4 = 15.04, exponent 15+12=27 → 15.04×10²⁷ → renormalize to 1.504×10²⁸ km.</p>
+    <p><b>Scaling a mass:</b> The Earth's mass is 6×10²⁴ kg. A planet with 0.001 (1×10⁻³) times that mass has mass = 1×6 = 6, exponent −3+24=21 → 6×10²¹ kg.</p>
+    <p><b>Population density:</b> China's 2013 population ≈ 1.3×10⁹ people over an area of 9.6×10⁶ km². Density = 1.3÷9.6 ≈ 0.1354, exponent 9−6=3 → 0.1354×10³ → renormalize to 1.354×10² people/km².</p>
+
+    <h3>4.3 Adding and Subtracting Scientific Notation</h3>
+    <p>Before adding or subtracting, the exponents of 10 MUST be made equal first (by shifting one number's decimal point). Then add/subtract the coefficients as usual, and renormalize the final answer if needed.</p>
+
+    <h4>Worked Examples</h4>
+    <table>
+      <tr><th>Problem</th><th>Working</th><th>Answer</th></tr>
+      <tr><td>3.2×10⁴ + 4.3×10⁴</td><td>Exponents already match: 3.2+4.3=7.5</td><td>7.5×10⁴</td></tr>
+      <tr><td>5.2×10⁴ + 7.3×10⁵</td><td>Convert: 5.2×10⁴ = 0.52×10⁵. Then 0.52+7.3=7.82</td><td>7.82×10⁵</td></tr>
+      <tr><td>41×10⁶ + 78×10⁵ − 30×10⁴</td><td>Convert all to ×10⁶: 7.8×10⁶ and 0.3×10⁶. 41+7.8−0.3=48.5</td><td>4.85×10⁷</td></tr>
+      <tr><td>5.6×10⁻⁹ + 0.4×10⁻¹⁰</td><td>Convert: 0.4×10⁻¹⁰ = 0.04×10⁻⁹. Then 5.6+0.04=5.64</td><td>5.64×10⁻⁹</td></tr>
+    </table>
+    <p>A trickier example: [(4×10⁷) + (6×10⁶) − (50×10⁴)] ÷ [(5×10⁸) − (45×10⁶)]. Convert the numerator to ×10⁷: 4 + 0.6 − 0.05 = 4.55 → 4.55×10⁷. Convert the denominator to ×10⁸: 5 − 0.45 = 4.55 → 4.55×10⁸. Dividing: 4.55÷4.55 = 1, exponent 7−8 = −1, giving a clean final answer of 1×10⁻¹ (= 0.1).</p>
+  </div>
+
+  <div class="bottom-cta">
+    <a href="m1-addmath-unit34-practice.html" class="cta" style="background:var(--navy);color:#fff;">Done reading — go to the practice problems &rarr;</a>
+  </div>
+
+</div>
+
+<footer>Summary based on Additional Mathematics 1 (MA21201) course materials, Suankularb Wittayalai Thonburi School. All worked answers independently verified.</footer>
+
+</body>
+</html>

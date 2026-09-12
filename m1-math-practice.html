@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mathematics Practice — Decimals, Fractions, Sci. Notation, 3D Geometry</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761; --navy-light:#CADCFC; --ink:#1A1A1A; --bg:#F5F5F5;
+    --card:#FFFFFF; --border:#E0E3EA; --green:#1B7F3A; --green-bg:#E7F5EC;
+    --red:#B3261E; --red-bg:#FBEAE9;
+  }
+  *{box-sizing:border-box;}
+  body{ font-family:'Sarabun','TH Sarabun New',Arial,sans-serif; background:var(--bg); color:var(--ink); margin:0; padding:0; font-size:11pt; }
+  header{ background:var(--navy); color:#fff; padding:14px 20px 22px; text-align:center; }
+  header h1{ font-size:16.5pt; margin:8px 0 6px; font-weight:700; }
+  header p{ margin:0; font-size:10.5pt; color:var(--navy-light); }
+  .backlink{ display:inline-block;margin:0 4px 8px;color:var(--navy-light);font-weight:600;font-size:10.5pt;border:1px solid var(--navy-light);border-radius:4px;padding:5px 12px;text-decoration:none; }
+  .wrap{ max-width:860px; margin:0 auto; padding:20px 16px 60px; }
+  .setbar{ display:flex; gap:10px; margin:22px 0 18px; flex-wrap:wrap; }
+  .setbtn{ flex:1; min-width:150px; padding:14px 10px; border:1.5px solid var(--navy); background:#fff; color:var(--navy); font-family:inherit; font-size:12pt; font-weight:600; border-radius:4px; cursor:pointer; text-align:center; }
+  .setbtn.active{ background:var(--navy); color:#fff; }
+  .panel{ display:none; } .panel.active{ display:block; }
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid var(--border); border-radius:4px; padding:12px 16px; margin-bottom:18px; flex-wrap:wrap; gap:10px; }
+  .counter{ font-size:11pt; font-weight:700; color:var(--navy); }
+  .reshuffle{ background:#fff; border:1px solid var(--navy); color:var(--navy); font-family:inherit; padding:8px 14px; font-size:10pt; border-radius:4px; cursor:pointer; }
+  .reshuffle:hover{ background:var(--navy-light); }
+  .qcard{ background:var(--card); border:1px solid var(--border); border-radius:4px; padding:18px 18px 16px; margin-bottom:14px; }
+  .qnum{ font-size:9pt; color:#666; margin-bottom:4px; letter-spacing:.3px; }
+  .topictag{ display:inline-block; font-size:8.5pt; font-weight:700; color:#fff; background:#5B6B8C; padding:1px 7px; border-radius:3px; margin-left:8px; }
+  .typetag{ display:inline-block; font-size:8.5pt; font-weight:700; color:#1E2761; background:#E4E9F5; padding:1px 7px; border-radius:3px; margin-left:6px; }
+  .qtext{ font-size:11.5pt; font-weight:600; color:var(--ink); margin:6px 0 12px; line-height:1.55; }
+  .worklabel{ font-size:9.5pt; color:#777; margin-bottom:4px; }
+  textarea{
+    width:100%; min-height:70px; border:1px solid #C9CDD6; border-radius:4px;
+    padding:8px 10px; font-family:inherit; font-size:10.5pt; resize:vertical; margin-bottom:10px;
+  }
+  .revealbtn{ background:var(--navy); color:#fff; border:none; padding:9px 16px; font-family:inherit; font-size:10.5pt; font-weight:600; border-radius:4px; cursor:pointer; }
+  .revealbtn:hover{ opacity:0.9; }
+  .solution{ display:none; margin-top:12px; padding:12px 14px; background:#F2F4F8; border-left:3px solid var(--navy); border-radius:2px; font-size:10.5pt; line-height:1.6; color:#333; }
+  .solution.show{ display:block; }
+  .solution ol{ margin:6px 0 10px; padding-left:20px; }
+  .solution li{ margin-bottom:4px; }
+  .finalanswer{ background:var(--green-bg); color:var(--green); font-weight:700; padding:8px 12px; border-radius:4px; margin-top:8px; }
+  .opt{
+    display:block; width:100%; text-align:left; background:#fff; border:1px solid #C9CDD6;
+    border-radius:4px; padding:10px 12px; margin-bottom:8px; font-family:inherit; font-size:11pt;
+    color:var(--ink); cursor:pointer; transition:background .1s;
+  }
+  .opt:hover:not(:disabled){ background:#F0F3FA; } .opt:disabled{ cursor:default; }
+  .opt.correct{ background:var(--green-bg); border-color:var(--green); color:var(--green); font-weight:600; }
+  .opt.wrong{ background:var(--red-bg); border-color:var(--red); color:var(--red); font-weight:600; }
+  .explain{ display:none; margin-top:10px; padding:10px 12px; background:#F2F4F8; border-left:3px solid var(--navy); border-radius:2px; font-size:10.5pt; line-height:1.5; color:#333; }
+  .explain.show{ display:block; } .explain b{ color:var(--navy); }
+  footer{ text-align:center; color:#888; font-size:9pt; padding:20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="backlink">&larr; Back to subjects</a>
+  <a href="M1_Math_Summary.docx" class="backlink">Download formula summary (.docx)</a>
+  <h1>Mathematics Practice</h1>
+  <p>Decimals · Fractions · Scientific Notation · 3D Geometric Figures</p>
+</header>
+
+<div class="wrap">
+  <div class="setbar">
+    <button class="setbtn active" data-set="easy">Easy (15 problems)</button>
+    <button class="setbtn" data-set="medium">Medium (15 problems)</button>
+    <button class="setbtn" data-set="hard">Hard (15 problems)</button>
+  </div>
+
+  <div id="panel-easy" class="panel active"></div>
+  <div id="panel-medium" class="panel"></div>
+  <div id="panel-hard" class="panel"></div>
+</div>
+
+<footer>Calculation problems: work it out, then reveal the step-by-step solution. Concept/identification questions: click your answer to see if it's correct, with an explanation. Order shuffles each time this page opens.</footer>
+
+<script>
+const PROBLEM_DATA = {"easy": [{"id": "EC1", "type": "calc", "topic": "A", "q": "Write 123.45 in expanded form using place values.", "solution": ["Break down each digit by its place value: 1 hundred, 2 tens, 3 ones, 4 tenths, 5 hundredths.", "Write each as a term: (1×100)+(2×10)+(3×1)+(4×1/10)+(5×1/100)."], "answer": "(1×100)+(2×10)+(3×1)+(4×1/10)+(5×1/100)"}, {"id": "EC2", "type": "calc", "topic": "A", "q": "Find 6.4 − 2.68.", "solution": ["Line up the decimal points and subtract: 6.40 − 2.68.", "6.40 − 2.68 = 3.72."], "answer": "3.72"}, {"id": "EC3", "type": "calc", "topic": "A", "q": "Find 2.9 + 6.78.", "solution": ["Line up the decimal points and add: 2.90 + 6.78.", "2.90 + 6.78 = 9.68."], "answer": "9.68"}, {"id": "EC4", "type": "calc", "topic": "B", "q": "Find 1/2 × 3/5.", "solution": ["There are no common factors to cancel, so multiply numerators and denominators directly.", "(1×3)/(2×5) = 3/10."], "answer": "3/10"}, {"id": "EC5", "type": "calc", "topic": "B", "q": "Convert 7/4 into a decimal.", "solution": ["Divide the numerator by the denominator: 7 ÷ 4.", "7 ÷ 4 = 1.75."], "answer": "1.75"}, {"id": "EC6", "type": "calc", "topic": "C", "q": "Write 85,300 in scientific notation.", "solution": ["Move the decimal point left until one non-zero digit remains: 8.53.", "Count the places moved: 4. So 85,300 = 8.53×10⁴."], "answer": "8.53×10⁴"}, {"id": "EC7", "type": "calc", "topic": "C", "q": "Write 0.00023 in scientific notation.", "solution": ["Move the decimal point right until one non-zero digit remains: 2.3.", "Count the places moved: 4 (number is less than 1, so the exponent is negative).", "So 0.00023 = 2.3×10⁻⁴."], "answer": "2.3×10⁻⁴"}, {"id": "EC8", "type": "calc", "topic": "C", "q": "Express 9.6×10³ as an integer.", "solution": ["Move the decimal point 3 places to the right (since the exponent is +3).", "9.6 → 9600."], "answer": "9,600"}, {"id": "EM1", "type": "mc", "topic": "A", "q": "Which is greater: −0.45 or −0.5?", "opts": ["−0.45", "−0.5", "They are equal", "Cannot be determined"], "explain": "Compare absolute values: |−0.45|=0.45 and |−0.5|=0.5. Among negative numbers, the one with the SMALLER absolute value is greater. Since 0.45<0.5, −0.45 is greater."}, {"id": "EM2", "type": "mc", "topic": "C", "q": "What must be true about A and n for A×10ⁿ to be considered valid scientific notation?", "opts": ["1 ≤ A < 10, and n must be an integer", "0 < A < 10, and n can be any real number", "1 ≤ A ≤ 10, and n must be positive", "A can be any number, but n must be an integer"], "explain": "Proper scientific notation requires the coefficient to satisfy 1 ≤ A < 10, AND the exponent n to be an integer (not a fraction or decimal)."}, {"id": "EM3", "type": "mc", "topic": "C", "q": "What SI prefix and symbol correspond to 10⁹?", "opts": ["giga- (G)", "mega- (M)", "tera- (T)", "kilo- (k)"], "explain": "10⁹ = one billion, which corresponds to the SI prefix giga-, symbol G."}, {"id": "EM4", "type": "mc", "topic": "C", "q": "What SI prefix and symbol correspond to 10⁻⁶?", "opts": ["micro- (μ)", "milli- (m)", "nano- (n)", "pico- (p)"], "explain": "10⁻⁶ = one millionth, which corresponds to the SI prefix micro-, symbol μ."}, {"id": "EM5", "type": "mc", "topic": "D", "q": "If you cut a cylinder parallel to its circular base, what shape is the cross-section?", "opts": ["A circle", "A rectangle", "A triangle", "An oval/ellipse"], "explain": "A cut parallel to the circular base slices straight across, always producing a circle the same radius as the base."}, {"id": "EM6", "type": "mc", "topic": "D", "q": "If you cut a cuboid with a square base parallel to that base, what shape is the cross-section?", "opts": ["A square", "A rectangle", "A triangle", "A circle"], "explain": "A cut parallel to the square base produces a square, the same size as the base."}, {"id": "EM7", "type": "mc", "topic": "D", "q": "What are the three standard views used in orthographic projection of a 3D figure?", "opts": ["Front, side, and top views", "Front, back, and side views", "Top, bottom, and side views", "Left, right, and center views"], "explain": "Orthographic projection describes a solid using the front view, the side view, and the top view."}], "medium": [{"id": "MC1", "type": "calc", "topic": "A", "q": "Write the decimal represented by (5×100,000)+(7×1,000)+(9×10)+(8×1/100)+(6×1/1,000).", "solution": ["Evaluate each term: 5×100,000=500,000; 7×1,000=7,000; 9×10=90; 8×1/100=0.08; 6×1/1,000=0.006.", "Add them together: 500,000+7,000+90+0.08+0.006 = 507,090.086."], "answer": "507,090.086"}, {"id": "MC2", "type": "calc", "topic": "A", "q": "Find (−13.98) − (−5.66).", "solution": ["Subtracting a negative number is the same as adding its positive: −13.98 − (−5.66) = −13.98 + 5.66.", "Different signs: subtract the smaller absolute value from the larger (13.98−5.66=8.32), and keep the sign of the larger magnitude (negative)."], "answer": "−8.32"}, {"id": "MC3", "type": "calc", "topic": "A", "q": "Find (−11.44) − 5.88.", "solution": ["This becomes −11.44 + (−5.88), same sign (both negative).", "Add the absolute values: 11.44+5.88=17.32, and keep the negative sign."], "answer": "−17.32"}, {"id": "MC4", "type": "calc", "topic": "A", "q": "Find (−3.41) + (−5.72).", "solution": ["Same sign (both negative): add the absolute values.", "3.41+5.72=9.13, keep the negative sign."], "answer": "−9.13"}, {"id": "MC5", "type": "calc", "topic": "A", "q": "Convert 1.05 into a fraction in its simplest form.", "solution": ["Write 1.05 as a fraction over 100: 105/100.", "Simplify by dividing both by their GCD, 5: 105÷5=21, 100÷5=20."], "answer": "21/20"}, {"id": "MC6", "type": "calc", "topic": "B", "q": "Find 1/4 × 6/7 (simplify your answer).", "solution": ["Cancel common factors first: 4 and 6 share a factor of 2. 4÷2=2, 6÷2=3.", "Multiply the simplified fractions: 1/2 × 3/7 = 3/14."], "answer": "3/14"}, {"id": "MC7", "type": "calc", "topic": "B", "q": "Find 2/3 ÷ 4/9.", "solution": ["To divide, multiply by the reciprocal of the second fraction: 2/3 × 9/4.", "Cancel common factors: 2&4 by 2, and 3&9 by 3, giving 1/1 × 3/2 = 3/2."], "answer": "3/2 (or 1½)"}, {"id": "MC8", "type": "calc", "topic": "B", "q": "Convert −9/5 into a decimal.", "solution": ["Divide 9 by 5: 9÷5=1.8.", "Apply the negative sign: −1.8."], "answer": "−1.8"}, {"id": "MC9", "type": "calc", "topic": "C", "q": "Write 0.000000094 in scientific notation.", "solution": ["Move the decimal point right until one non-zero digit remains: 9.4.", "Count the places moved: 8 places, so the exponent is −8."], "answer": "9.4×10⁻⁸"}, {"id": "MC10", "type": "calc", "topic": "C", "q": "The mass of a dust particle is 0.000000000753 kg. Write this in scientific notation.", "solution": ["Move the decimal point right until one non-zero digit remains: 7.53.", "Count the places moved: 10 places, giving exponent −10."], "answer": "7.53×10⁻¹⁰ kg"}, {"id": "MC11", "type": "calc", "topic": "C", "q": "Express 2.8×10⁻⁴ as a decimal.", "solution": ["The exponent is −4, so move the decimal point 4 places to the LEFT.", "2.8 → 0.00028."], "answer": "0.00028"}, {"id": "MC12", "type": "calc", "topic": "D", "q": "A cuboid has a square base of 1.5cm×1.5cm and height 3cm. What is the cross-section if you cut it PERPENDICULAR to the square base?", "solution": ["A cut perpendicular to the square base slices down through the height of the cuboid.", "This reveals a rectangle with width = the base's side length (1.5cm) and length = the cuboid's height (3cm)."], "answer": "A 1.5cm × 3cm rectangle"}, {"id": "MC13", "type": "calc", "topic": "D", "q": "A right circular cylinder has radius 1cm and height 3cm. What is the cross-section if you cut it vertically through the center?", "solution": ["A vertical cut through the center passes through the full diameter of the circular base and the full height.", "Width = diameter = 2×1cm = 2cm. Length = height = 3cm."], "answer": "A 2cm × 3cm rectangle"}, {"id": "MM1", "type": "mc", "topic": "A", "q": "Arrange the following in increasing order: 1.765, −1.456, −1.82.", "opts": ["−1.82, −1.456, 1.765", "−1.456, −1.82, 1.765", "1.765, −1.456, −1.82", "−1.82, 1.765, −1.456"], "explain": "Negatives always come before positives. Between the negatives, |−1.82|=1.82 > |−1.456|=1.456, so −1.82 is more negative (smaller). Increasing order: −1.82, −1.456, 1.765."}, {"id": "MM2", "type": "mc", "topic": "C", "q": "How do you read 3.7×10¹² aloud?", "opts": ["3.7 trillion", "3.7 billion", "3.7 million", "3.7 trillionth"], "explain": "10¹² corresponds to \"trillion\" in the SI prefix table, so 3.7×10¹² is read as \"3.7 trillion\"."}], "hard": [{"id": "HC1", "type": "calc", "topic": "A", "q": "Find the sum: (−23.651) + (−17.24).", "solution": ["Same sign (both negative): add the absolute values.", "23.651+17.24 = 40.891, keep the negative sign."], "answer": "−40.891"}, {"id": "HC2", "type": "calc", "topic": "A", "q": "Find the difference: (−29.81) − 14.50.", "solution": ["This becomes −29.81 + (−14.50), same sign (both negative).", "Add the absolute values: 29.81+14.50=44.31, keep the negative sign."], "answer": "−44.31"}, {"id": "HC3", "type": "calc", "topic": "A", "q": "Find (−3.167) − (−12.41).", "solution": ["Subtracting a negative is the same as adding: −3.167 + 12.41.", "Different signs: subtract the smaller absolute value from the larger (12.41−3.167=9.243), keep the sign of the larger magnitude (positive)."], "answer": "9.243"}, {"id": "HC4", "type": "calc", "topic": "A", "q": "Convert 5.16 into a fraction in its simplest form, as a mixed number.", "solution": ["Write 5.16 as a fraction over 100: 516/100.", "Simplify: GCD(516,100)=4, so 516÷4=129 and 100÷4=25, giving 129/25.", "Convert to a mixed number: 129÷25=5 remainder 4, so 129/25 = 5 4/25."], "answer": "5 4/25"}, {"id": "HC5", "type": "calc", "topic": "C", "q": "The world population in 2050 is estimated at 9,800,000,000. Write this in scientific notation, and state which SI prefix name matches this magnitude.", "solution": ["Move the decimal point left until one digit remains: 9.8, moved 9 places → 9.8×10⁹.", "Look up 10⁹ in the SI prefix table: this is \"billion\" (giga-)."], "answer": "9.8×10⁹; corresponds to \"billion\" (giga-, 10⁹)"}, {"id": "HC6", "type": "calc", "topic": "C", "q": "The Bohr radius of a hydrogen atom is 5.3×10⁻¹¹ m. Write this as an ordinary decimal number.", "solution": ["The exponent is −11, so move the decimal point 11 places to the LEFT of 5.3.", "This gives 0.000000000053 m (10 zeros before the 53, with the decimal starting right after the first zero)."], "answer": "0.000000000053 m"}, {"id": "HC7", "type": "calc", "topic": "C", "q": "The speed of light is 3×10⁸ m/s and the mass of a water molecule is about 2.99×10⁻²³ g. What is the difference between their exponents?", "solution": ["Subtract the exponents: 8 − (−23).", "8+23 = 31."], "answer": "31 (they differ by 31 powers of 10)"}, {"id": "HC8", "type": "calc", "topic": "D", "q": "A top-view grid of a cube structure shows the numbers 3, 2, 1 in one row and 2, 1 in the row below (each number = the height/number of cubes stacked at that position). What is the TOTAL number of cubes in the structure?", "solution": ["The total number of cubes equals the sum of every number in the complete top-view grid.", "3+2+1+2+1 = 9."], "answer": "9 cubes"}, {"id": "HC9", "type": "calc", "topic": "A", "q": "A recipe calls for 2¾ cups of flour, but you only have 1½ cups. How many more cups are needed? Give your answer as both a fraction and a decimal.", "solution": ["Convert both to improper fractions with a common denominator: 2¾=11/4, 1½=6/4.", "Subtract: 11/4−6/4 = 5/4 = 1¼ cups.", "As a decimal: 5/4 = 1.25 cups."], "answer": "1¼ cups = 1.25 cups"}, {"id": "HM1", "type": "mc", "topic": "B", "q": "Which is larger: 1/4×6/7 or 2/3÷4/9?", "opts": ["2/3÷4/9 (= 3/2 = 1.5)", "1/4×6/7 (= 3/14 ≈ 0.214)", "They are equal", "Cannot be compared"], "explain": "1/4×6/7 = 3/14 ≈ 0.214. 2/3÷4/9 = 2/3×9/4 = 3/2 = 1.5. Since 1.5 > 0.214, 2/3÷4/9 is larger."}, {"id": "HM2", "type": "mc", "topic": "C", "q": "Why is 3.71×10²¹·² NOT considered proper scientific notation, even though 3.71 is between 1 and 10?", "opts": ["Because the exponent 21.2 is not an integer", "Because 3.71 is not between 1 and 10", "Because the number is too large to be valid", "Because negative exponents aren't allowed"], "explain": "The coefficient (3.71) does satisfy 1≤A<10, but the exponent MUST also be an integer — 21.2 is a decimal, so this fails the definition."}, {"id": "HM3", "type": "mc", "topic": "C", "q": "Why is 45×10³ NOT considered proper scientific notation?", "opts": ["Because the coefficient 45 is not between 1 and 10", "Because the exponent 3 is too small", "Because 45 is an even number", "Because scientific notation cannot use positive exponents"], "explain": "The exponent (3) is a valid integer, but the coefficient must satisfy 1≤A<10 — 45 is far greater than 10, so this fails the definition."}, {"id": "HM4", "type": "mc", "topic": "D", "q": "A semi-sphere (radius 1.25cm) is cut (a) perpendicular to its base through the center, and (b) parallel to its base. What shapes result?", "opts": ["(a) A semicircle, (b) A circle", "(a) A circle, (b) A semicircle", "(a) A triangle, (b) A circle", "(a) A semicircle, (b) A square"], "explain": "Cutting straight down through the center of the dome (perpendicular to the base) slices it into two half-dome halves, revealing a semicircle. Cutting parallel to the base slices across the dome horizontally, revealing a full circle."}, {"id": "HM5", "type": "mc", "topic": "D", "q": "What is the difference between the cross-section from cutting an orange through its center versus cutting it near one end?", "opts": ["Center cut gives a larger circle; end cut gives a smaller circle", "Center cut gives a smaller circle; end cut gives a larger circle", "Both cuts give the same size circle", "Center cut gives a square; end cut gives a circle"], "explain": "An orange is widest at its center and narrower toward each end, so cutting through the center reveals the largest possible circular cross-section, while cutting near an end reveals a smaller circle."}, {"id": "HM6", "type": "mc", "topic": "D", "q": "In orthographic projection, what shape do you see from the TOP view of a triangular prism lying on its rectangular face (triangular ends facing front/back)?", "opts": ["A rectangle, often divided by a ridge line", "A triangle", "A circle", "A pentagon"], "explain": "Looking straight down at the prism lying on its side, you see the full rectangular outline, typically with a ridge line down the middle where the two sloped faces meet."}]};
+const TOPIC_LABEL = {"A":"Decimals", "B":"Fractions", "C":"Sci. Notation", "D":"3D Geometry"};
+
+function shuffleArr(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+  return a;
+}
+
+function buildShuffled(setKey){
+  const src = PROBLEM_DATA[setKey];
+  const order = shuffleArr(src.map((_,i)=>i));
+  return order.map(idx=>{
+    const item = src[idx];
+    if(item.type === "mc"){
+      const optOrder = shuffleArr(item.opts.map((_,i)=>i));
+      const opts = optOrder.map(oi=>item.opts[oi]);
+      const correctIndex = optOrder.indexOf(0);
+      return { ...item, opts, correctIndex };
+    }
+    return item;
+  });
+}
+
+const state = {};
+function labelLetter(i){ return ["A","B","C","D"][i]; }
+
+function render(setKey){
+  const panel = document.getElementById("panel-"+setKey);
+  const st = state[setKey];
+  let doneCount = st.revealed.size;
+  let html = '';
+  html += '<div class="toolbar">'
+        + '<div class="counter">Answered / revealed: '+doneCount+' / '+st.problems.length+'</div>'
+        + '<button class="reshuffle" onclick="reshuffle(\''+setKey+'\')">Shuffle again</button>'
+        + '</div>';
+
+  st.problems.forEach((item, qi)=>{
+    const isDone = st.revealed.has(qi);
+    html += '<div class="qcard">';
+    html += '<div class="qnum">Problem '+(qi+1)+' of '+st.problems.length
+          + '<span class="topictag">'+TOPIC_LABEL[item.topic]+'</span>'
+          + '<span class="typetag">'+(item.type==="mc"?"Multiple choice":"Calculation")+'</span></div>';
+    html += '<div class="qtext">'+item.q+'</div>';
+
+    if(item.type === "mc"){
+      const answered = st.answers[qi];
+      item.opts.forEach((opt, oi)=>{
+        let cls = 'opt'; let disabled = '';
+        if(answered !== undefined){
+          disabled = 'disabled';
+          if(oi === item.correctIndex) cls += ' correct';
+          else if(oi === answered && answered !== item.correctIndex) cls += ' wrong';
+        }
+        html += '<button class="'+cls+'" '+disabled+' onclick="answerMC(\''+setKey+'\','+qi+','+oi+')">'
+              + labelLetter(oi)+'. '+opt+'</button>';
+      });
+      html += '<div class="explain'+(answered!==undefined?' show':'')+'">'
+            + '<b>'+(answered!==undefined ? (answered===item.correctIndex ? 'Correct — ' : 'Not quite — ') : '')+'</b>'
+            + item.explain
+            + '</div>';
+    } else {
+      html += '<div class="worklabel">Your working (optional):</div>';
+      html += '<textarea placeholder="Write your steps here..." id="ta-'+setKey+'-'+qi+'"></textarea>';
+      html += '<div><button class="revealbtn" onclick="reveal(\''+setKey+'\','+qi+')">'+(isDone?'Hide solution':'Show solution')+'</button></div>';
+      html += '<div class="solution'+(isDone?' show':'')+'">';
+      html += '<b>Step-by-step:</b><ol>' + item.solution.map(s=>'<li>'+s+'</li>').join('') + '</ol>';
+      html += '<div class="finalanswer">Answer: '+item.answer+'</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+  panel.innerHTML = html;
+}
+
+function reveal(setKey, qi){
+  const st = state[setKey];
+  if(st.revealed.has(qi)) st.revealed.delete(qi);
+  else st.revealed.add(qi);
+  render(setKey);
+}
+
+function answerMC(setKey, qi, oi){
+  const st = state[setKey];
+  if(st.answers[qi] !== undefined) return;
+  st.answers[qi] = oi;
+  st.revealed.add(qi);
+  render(setKey);
+}
+
+function reshuffle(setKey){
+  state[setKey] = { problems: buildShuffled(setKey), revealed: new Set(), answers: {} };
+  render(setKey);
+}
+
+["easy","medium","hard"].forEach(k=>{
+  state[k] = { problems: buildShuffled(k), revealed: new Set(), answers: {} };
+  render(k);
+});
+
+document.querySelectorAll(".setbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".setbtn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-"+btn.dataset.set).classList.add("active");
+  });
+});
+</script>
+</body>
+</html>

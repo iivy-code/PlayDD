@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Additional Math Practice — Unit 3-4</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761; --navy-light:#CADCFC; --ink:#1A1A1A; --bg:#F5F5F5;
+    --card:#FFFFFF; --border:#E0E3EA; --green:#1B7F3A; --green-bg:#E7F5EC;
+  }
+  *{box-sizing:border-box;}
+  body{ font-family:'Sarabun','TH Sarabun New',Arial,sans-serif; background:var(--bg); color:var(--ink); margin:0; padding:0; font-size:11pt; }
+  header{ background:var(--navy); color:#fff; padding:14px 20px 22px; text-align:center; }
+  header h1{ font-size:17pt; margin:8px 0 6px; font-weight:700; }
+  header p{ margin:0; font-size:10.5pt; color:var(--navy-light); }
+  .backlink{ display:inline-block;margin:0 4px 8px;color:var(--navy-light);font-weight:600;font-size:10.5pt;border:1px solid var(--navy-light);border-radius:4px;padding:5px 12px;text-decoration:none; }
+  .wrap{ max-width:860px; margin:0 auto; padding:20px 16px 60px; }
+  .setbar{ display:flex; gap:10px; margin:22px 0 18px; flex-wrap:wrap; }
+  .setbtn{ flex:1; min-width:150px; padding:14px 10px; border:1.5px solid var(--navy); background:#fff; color:var(--navy); font-family:inherit; font-size:12pt; font-weight:600; border-radius:4px; cursor:pointer; text-align:center; }
+  .setbtn.active{ background:var(--navy); color:#fff; }
+  .panel{ display:none; } .panel.active{ display:block; }
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; background:#fff; border:1px solid var(--border); border-radius:4px; padding:12px 16px; margin-bottom:18px; flex-wrap:wrap; gap:10px; }
+  .counter{ font-size:11pt; font-weight:700; color:var(--navy); }
+  .reshuffle{ background:#fff; border:1px solid var(--navy); color:var(--navy); font-family:inherit; padding:8px 14px; font-size:10pt; border-radius:4px; cursor:pointer; }
+  .reshuffle:hover{ background:var(--navy-light); }
+  .qcard{ background:var(--card); border:1px solid var(--border); border-radius:4px; padding:18px 18px 16px; margin-bottom:14px; }
+  .qnum{ font-size:9pt; color:#666; margin-bottom:4px; letter-spacing:.3px; }
+  .unittag{ display:inline-block; font-size:8.5pt; font-weight:700; color:#fff; background:#5B6B8C; padding:1px 7px; border-radius:3px; margin-left:8px; }
+  .qtext{ font-size:11.5pt; font-weight:600; color:var(--ink); margin:6px 0 12px; line-height:1.55; }
+  .worklabel{ font-size:9.5pt; color:#777; margin-bottom:4px; }
+  textarea{
+    width:100%; min-height:70px; border:1px solid #C9CDD6; border-radius:4px;
+    padding:8px 10px; font-family:inherit; font-size:10.5pt; resize:vertical; margin-bottom:10px;
+  }
+  .revealbtn{ background:var(--navy); color:#fff; border:none; padding:9px 16px; font-family:inherit; font-size:10.5pt; font-weight:600; border-radius:4px; cursor:pointer; }
+  .revealbtn:hover{ opacity:0.9; }
+  .solution{ display:none; margin-top:12px; padding:12px 14px; background:#F2F4F8; border-left:3px solid var(--navy); border-radius:2px; font-size:10.5pt; line-height:1.6; color:#333; }
+  .solution.show{ display:block; }
+  .solution ol{ margin:6px 0 10px; padding-left:20px; }
+  .solution li{ margin-bottom:4px; }
+  .finalanswer{ background:var(--green-bg); color:var(--green); font-weight:700; padding:8px 12px; border-radius:4px; margin-top:8px; }
+  footer{ text-align:center; color:#888; font-size:9pt; padding:20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="backlink">&larr; Back to subjects</a>
+  <a href="m1-addmath-unit34-summary.html" class="backlink">Read the summary</a>
+  <h1>Additional Math Practice — Unit 3-4</h1>
+  <p>Mathematical Patterns · Scientific Notation — work it out, then reveal the solution</p>
+</header>
+
+<div class="wrap">
+  <div class="setbar">
+    <button class="setbtn active" data-set="easy">Easy (15 problems)</button>
+    <button class="setbtn" data-set="medium">Medium (15 problems)</button>
+    <button class="setbtn" data-set="hard">Hard (15 problems)</button>
+  </div>
+
+  <div id="panel-easy" class="panel active"></div>
+  <div id="panel-medium" class="panel"></div>
+  <div id="panel-hard" class="panel"></div>
+</div>
+
+<footer>Work out each problem yourself first (use the box for your steps), then click "Show solution" to check your work. Problem order shuffles each time this page opens.</footer>
+
+<script>
+const PROBLEM_DATA = {"easy": [{"id": "E1", "unit": 3, "q": "A triangular stack has row 1 with 1 pipe, row 2 with 2 pipes, and so on. How many pipes are in the 9th row?", "solution": ["The nth row always has exactly n pipes.", "So the 9th row has 9 pipes."], "answer": "9 pipes"}, {"id": "E2", "unit": 4, "q": "Write 543,000,000,000 in scientific notation.", "solution": ["Move the decimal point left until one non-zero digit remains: 5.43", "Count the places moved: 11 places.", "So 543,000,000,000 = 5.43×10¹¹."], "answer": "5.43×10¹¹"}, {"id": "E3", "unit": 4, "q": "Write 0.00092 in scientific notation.", "solution": ["Move the decimal point right until one non-zero digit remains: 9.2", "Count the places moved: 4 places (number is less than 1, so exponent is negative).", "So 0.00092 = 9.2×10⁻⁴."], "answer": "9.2×10⁻⁴"}, {"id": "E4", "unit": 3, "q": "Find the next two terms: 88, 79, 70, 61, 52, …", "solution": ["Check the difference between terms: 79−88=−9, 70−79=−9 — constant difference, so this is arithmetic with d=−9.", "Next term: 52−9=43.", "Term after that: 43−9=34."], "answer": "43, 34"}, {"id": "E5", "unit": 3, "q": "Find the next two terms: 5, 10, 20, 40, 80, …", "solution": ["Check the ratio between terms: 10÷5=2, 20÷10=2 — constant ratio, so this is geometric with r=2.", "Next term: 80×2=160.", "Term after that: 160×2=320."], "answer": "160, 320"}, {"id": "E6", "unit": 4, "q": "Simplify (3×10⁴)×(4×10²) and write the answer in scientific notation.", "solution": ["Multiply the coefficients: 3×4=12.", "Add the exponents: 4+2=6, giving 12×10⁶.", "Renormalize since 12 is not between 1 and 10: 12×10⁶ = 1.2×10⁷."], "answer": "1.2×10⁷"}, {"id": "E7", "unit": 4, "q": "Simplify (12×10²)÷(6×10²).", "solution": ["Divide the coefficients: 12÷6=2.", "Subtract the exponents: 2−2=0, giving 2×10⁰.", "Since 10⁰=1, the answer is simply 2."], "answer": "2"}, {"id": "E8", "unit": 3, "q": "Write the first 10 terms of the Fibonacci sequence.", "solution": ["Start with 1, 1.", "Each next term is the sum of the two before it: 1+1=2, 1+2=3, 2+3=5, 3+5=8, 5+8=13, 8+13=21, 13+21=34, 21+34=55."], "answer": "1, 1, 2, 3, 5, 8, 13, 21, 34, 55"}, {"id": "E9", "unit": 3, "q": "Find the total number of pipes in a triangular stack with 50 rows (row n has n pipes).", "solution": ["This is the sum 1+2+3+…+50.", "Use the triangular number formula T(n) = n(n+1)/2.", "T(50) = 50×51/2 = 1275."], "answer": "1275 pipes"}, {"id": "E10", "unit": 4, "q": "Simplify (3.2×10⁴)+(4.3×10⁴).", "solution": ["The exponents already match (both ×10⁴), so just add the coefficients: 3.2+4.3=7.5.", "Answer: 7.5×10⁴."], "answer": "7.5×10⁴"}, {"id": "E11", "unit": 3, "q": "Find the nth-term formula for the sequence 3, 9, 27, 81, 243, …", "solution": ["Check the ratio: 9÷3=3, 27÷9=3 — constant ratio 3, so it's geometric.", "Since a₁=3=3¹, a₂=9=3², a₃=27=3³, the pattern is aₙ=3ⁿ."], "answer": "aₙ = 3ⁿ"}, {"id": "E12", "unit": 3, "q": "A pattern of n unit squares in a row (made from matches) needs 3n+1 matches. How many matches are needed for the 10th picture?", "solution": ["Substitute n=10 into the formula: 3(10)+1.", "3×10=30, plus 1 = 31."], "answer": "31 matches"}, {"id": "E13", "unit": 4, "q": "Convert 601×10⁸ into proper scientific notation.", "solution": ["601 is not between 1 and 10, so rewrite it: 601 = 6.01×10².", "Combine the exponents: 6.01×10²×10⁸ = 6.01×10⁽²⁺⁸⁾."], "answer": "6.01×10¹⁰"}, {"id": "E14", "unit": 4, "q": "Simplify (25×10⁻¹⁹)÷(0.5×10¹³).", "solution": ["Divide the coefficients: 25÷0.5=50.", "Subtract the exponents: −19−13=−32, giving 50×10⁻³².", "Renormalize: 50×10⁻³² = 5×10⁻³¹."], "answer": "5×10⁻³¹"}, {"id": "E15", "unit": 4, "q": "What is the general rule for adding or subtracting numbers written in scientific notation?", "solution": ["First, make the exponents of 10 the same (by shifting one number's decimal point and adjusting its exponent).", "Then add or subtract the coefficients as usual.", "Finally, renormalize the answer if the coefficient is no longer between 1 and 10."], "answer": "Match exponents first, then add/subtract coefficients, then renormalize"}], "medium": [{"id": "M1", "unit": 3, "q": "Find the nth-term formula and the 200th term of: 1, 4, 9, 16, 25, …", "solution": ["These are perfect squares: 1=1², 4=2², 9=3², so aₙ=n².", "200th term: aₙ=200²=40,000."], "answer": "aₙ = n²;  200th term = 40,000"}, {"id": "M2", "unit": 3, "q": "Find the nth-term formula and the 75th term of: 21, 15, 9, 3, −3, …", "solution": ["Check differences: 15−21=−6, 9−15=−6 — arithmetic with d=−6.", "aₙ = a₁+(n−1)d = 21+(n−1)(−6) = 21−6n+6 = 27−6n.", "75th term: 27−6(75) = 27−450 = −423."], "answer": "aₙ = 27 − 6n;  75th term = −423"}, {"id": "M3", "unit": 3, "q": "A triangular stack of pipes has 77 rows (row n has n pipes). Find the total number of pipes.", "solution": ["Use T(n) = n(n+1)/2 with n=77.", "T(77) = 77×78/2 = 3003."], "answer": "3003 pipes"}, {"id": "M4", "unit": 3, "q": "If F(21) = 10,946 and F(22) = 17,711, find F(23).", "solution": ["Use the Fibonacci recurrence: F(23) = F(22)+F(21).", "F(23) = 17,711+10,946 = 28,657."], "answer": "F(23) = 28,657"}, {"id": "M5", "unit": 3, "q": "A Fibonacci-like sequence has a₁₀ = 3020 and a₁₂ = 7700. Find a₈.", "solution": ["a₁₂ = a₁₁+a₁₀, and a₁₁ = a₁₀+a₉ = a₁₀+(a₁₀−a₈) = 2a₁₀−a₈.", "So a₁₂ = (2a₁₀−a₈)+a₁₀ = 3a₁₀−a₈.", "Solve: 7700 = 3(3020)−a₈ = 9060−a₈ → a₈ = 9060−7700 = 1360."], "answer": "a₈ = 1360"}, {"id": "M6", "unit": 3, "q": "Find the nth-term formula and the 400th term of: 3, 8, 15, 24, 35, …", "solution": ["Differences: 5,7,9,11 (consecutive odd numbers) → quadratic pattern.", "Test aₙ=n²+2n: a₁=1+2=3 ✓, a₂=4+4=8 ✓ — confirmed.", "400th term: 400²+2(400) = 160,000+800 = 160,800."], "answer": "aₙ = n² + 2n;  400th term = 160,800"}, {"id": "M7", "unit": 3, "q": "A pattern of n unit squares in a row needs 3n+1 matches. How many MORE matches are needed for the 2568th picture than the 2025th picture?", "solution": ["Since the formula is linear (3n+1), the difference only depends on the difference in n, times the common difference (3).", "Difference = 3×(2568−2025) = 3×543 = 1629."], "answer": "1629 more matches"}, {"id": "M8", "unit": 4, "q": "Simplify (2.8×10²)×(7.2×10⁴) and write in proper scientific notation.", "solution": ["Multiply coefficients: 2.8×7.2=20.16.", "Add exponents: 2+4=6, giving 20.16×10⁶.", "Renormalize: 20.16×10⁶ = 2.016×10⁷."], "answer": "2.016×10⁷"}, {"id": "M9", "unit": 4, "q": "Simplify (7.0×10⁴)÷(3.5×10⁶).", "solution": ["Divide coefficients: 7.0÷3.5=2.", "Subtract exponents: 4−6=−2.", "Answer: 2×10⁻²."], "answer": "2×10⁻²"}, {"id": "M10", "unit": 4, "q": "Simplify (1.7952×10⁵)÷(3.74×10⁻³).", "solution": ["Divide coefficients: 1.7952÷3.74=0.48.", "Subtract exponents: 5−(−3)=8, giving 0.48×10⁸.", "Renormalize: 0.48×10⁸ = 4.8×10⁷."], "answer": "4.8×10⁷"}, {"id": "M11", "unit": 4, "q": "Simplify (41×10⁶)+(78×10⁵)−(30×10⁴).", "solution": ["Convert all terms to ×10⁶: 78×10⁵=7.8×10⁶, and 30×10⁴=0.3×10⁶.", "Add/subtract coefficients: 41+7.8−0.3=48.5, giving 48.5×10⁶.", "Renormalize: 48.5×10⁶ = 4.85×10⁷."], "answer": "4.85×10⁷"}, {"id": "M12", "unit": 4, "q": "Simplify (5.6×10⁻⁹)+(0.4×10⁻¹⁰).", "solution": ["Convert to matching exponents: 0.4×10⁻¹⁰ = 0.04×10⁻⁹.", "Add coefficients: 5.6+0.04=5.64.", "Answer: 5.64×10⁻⁹ (already normalized)."], "answer": "5.64×10⁻⁹"}, {"id": "M13", "unit": 3, "q": "Dots are arranged in a growing square pattern where the nth picture has n² dots. Express the total number of dots in the 15th picture as a sum of odd numbers, and give the total.", "solution": ["The sum of the first n odd numbers always equals n².", "For n=15: 1+3+5+7+9+11+13+15+17+19+21+23+25+27+29.", "This sum equals 15² = 225."], "answer": "1+3+5+…+29 = 225"}, {"id": "M14", "unit": 3, "q": "Evaluate 1+3+5+7+…+65+67+69.", "solution": ["This is the sum of consecutive odd numbers starting from 1.", "Find which term 69 is: 69=2n−1 → n=35.", "Sum of the first 35 odd numbers = 35² = 1225."], "answer": "1225"}, {"id": "M15", "unit": 3, "q": "A pattern of n houses (square+triangle roof) in a row has perimeter 3n+2. Find the perimeter of the 16th picture.", "solution": ["Substitute n=16 into the formula: 3(16)+2.", "3×16=48, plus 2 = 50."], "answer": "50 (units)"}], "hard": [{"id": "H1", "unit": 3, "q": "If F(30) = 832,040 and F(31) = 1,346,269, find F(27).", "solution": ["Rearrange the Fibonacci recurrence to go backward: F(n) = F(n+2) − F(n+1).", "F(29) = F(31) − F(30) = 1,346,269 − 832,040 = 514,229.", "F(28) = F(30) − F(29) = 832,040 − 514,229 = 317,811.", "F(27) = F(29) − F(28) = 514,229 − 317,811 = 196,418."], "answer": "F(27) = 196,418"}, {"id": "H2", "unit": 3, "q": "If F(36) = 14,930,352 and F(33) = 3,524,578, find F(34).", "solution": ["Write F(35) in terms of F(34) and F(33): F(35) = F(34)+F(33).", "Write F(36) in terms of F(35) and F(34): F(36) = F(35)+F(34) = (F(34)+F(33))+F(34) = 2F(34)+F(33).", "Solve: 14,930,352 = 2F(34)+3,524,578 → 2F(34) = 11,405,774 → F(34) = 5,702,887."], "answer": "F(34) = 5,702,887"}, {"id": "H3", "unit": 3, "q": "A Fibonacci-like sequence has a₁₄ = 1560 and a₁₇ = 8440. Find a₂₀.", "solution": ["Let x=a₁₄=1560 and y=a₁₅ (unknown). Then a₁₆=x+y and a₁₇=a₁₆+a₁₅=x+2y.", "Solve: 1560+2y=8440 → 2y=6880 → y=3440. So a₁₅=3440, and a₁₆=1560+3440=5000.", "Continue forward: a₁₈=a₁₇+a₁₆=8440+5000=13,440.", "a₁₉=a₁₈+a₁₇=13,440+8,440=21,880.  a₂₀=a₁₉+a₁₈=21,880+13,440=35,320."], "answer": "a₂₀ = 35,320"}, {"id": "H4", "unit": 3, "q": "In a growing n×n dot grid where the first row and column are black (except the white corner), find how many MORE white dots than black dots are in the 6th picture. (Black(n)=2(n−1), White(n)=n²−2n+2)", "solution": ["Black(6) = 2(6−1) = 2×5 = 10.", "White(6) = 6²−2(6)+2 = 36−12+2 = 26.", "Difference: White−Black = 26−10 = 16."], "answer": "16 more white dots"}, {"id": "H5", "unit": 3, "q": "Using the same black/white dot grid pattern (Black(n)=2(n−1)), find the TOTAL number of black dots from the 1st picture to the 50th picture combined.", "solution": ["We need the sum: Black(1)+Black(2)+…+Black(50) = 2(0)+2(1)+2(2)+…+2(49).", "Factor out the 2: 2×(0+1+2+…+49) = 2×[49×50/2] = 2×1225.", "Total = 2450."], "answer": "2450 black dots in total"}, {"id": "H6", "unit": 3, "q": "A gardener plants tulips following the pattern 1, 3, 5, 7, … (adding 2 more each day than the day before, following the odd numbers). Find the total number of tulips planted during the first 20 days.", "solution": ["The number planted each day follows aₙ=2n−1, the odd numbers.", "The sum of the first n odd numbers equals n².", "For the first 20 days: total = 20² = 400."], "answer": "400 tulips"}, {"id": "H7", "unit": 3, "q": "Evaluate 5+7+9+11+…+195+197+199.", "solution": ["This is the sum of odd numbers from 5 to 199, which is (sum of ALL odd numbers from 1 to 199) minus (1+3).", "199 is the 100th odd number, so the sum from 1 to 199 = 100² = 10,000.", "Subtract the missing first two terms: 10,000 − (1+3) = 10,000−4 = 9996."], "answer": "9996"}, {"id": "H8", "unit": 4, "q": "A light-year is 9.4×10¹² km. If an object is 1.6×10¹⁵ light-years from Earth, how many kilometers away is it?", "solution": ["Multiply the two scientific-notation numbers: (1.6×10¹⁵)×(9.4×10¹²).", "Multiply coefficients: 1.6×9.4=15.04. Add exponents: 15+12=27, giving 15.04×10²⁷.", "Renormalize: 15.04×10²⁷ = 1.504×10²⁸ km."], "answer": "1.504×10²⁸ km"}, {"id": "H9", "unit": 4, "q": "The mass of the Earth is 6×10²⁴ kg. Find the mass of a planet that is 0.001 times the mass of the Earth.", "solution": ["Write 0.001 in scientific notation: 0.001 = 1×10⁻³.", "Multiply: (1×10⁻³)×(6×10²⁴).", "Coefficients: 1×6=6. Exponents: −3+24=21, giving 6×10²¹ kg."], "answer": "6×10²¹ kg"}, {"id": "H10", "unit": 4, "q": "In 2013, China's population was approximately 1.3 billion, and its land area was 9,600,000 km². Find the population density in people per km², in scientific notation.", "solution": ["Write both numbers in scientific notation: population = 1.3×10⁹, area = 9.6×10⁶ km².", "Density = population ÷ area = (1.3×10⁹)÷(9.6×10⁶).", "Divide coefficients: 1.3÷9.6 ≈ 0.1354. Subtract exponents: 9−6=3, giving 0.1354×10³.", "Renormalize: 0.1354×10³ = 1.354×10² people/km²."], "answer": "≈ 1.354×10² people/km²"}, {"id": "H11", "unit": 4, "q": "Simplify [(4×10⁷)+(6×10⁶)−(50×10⁴)] ÷ [(5×10⁸)−(45×10⁶)].", "solution": ["Numerator: convert to ×10⁷: 6×10⁶=0.6×10⁷, 50×10⁴=0.05×10⁷. Sum: 4+0.6−0.05=4.55, giving 4.55×10⁷.", "Denominator: convert to ×10⁸: 45×10⁶=0.45×10⁸. Difference: 5−0.45=4.55, giving 4.55×10⁸.", "Divide: (4.55×10⁷)÷(4.55×10⁸) = 1×10⁽⁷⁻⁸⁾ = 1×10⁻¹."], "answer": "1×10⁻¹  (= 0.1)"}, {"id": "H12", "unit": 4, "q": "Simplify [(12×10⁴)+(4×10⁴)+(3×10³)] ÷ (10×10²).", "solution": ["Numerator: 12×10⁴+4×10⁴=16×10⁴. Convert 3×10³=0.3×10⁴, so total = 16.3×10⁴.", "Denominator: 10×10²=1×10³.", "Divide: (16.3×10⁴)÷(1×10³) = 16.3×10¹ = 1.63×10²."], "answer": "1.63×10²"}, {"id": "H13", "unit": 3, "q": "For the sequence 2, 4, 8, 16, 32, … (aₙ=2ⁿ), find how many terms are needed before a term FIRST exceeds one billion (10⁹).", "solution": ["We need the smallest n such that 2ⁿ > 10⁹ = 1,000,000,000.", "Since 2¹⁰=1024≈10³, we can estimate 2ⁿ≈10⁹ when n≈9×(10/3)≈30.", "Check: 2²⁹ = 536,870,912 (under 1 billion). 2³⁰ = 1,073,741,824 (over 1 billion)."], "answer": "The 30th term (2³⁰ = 1,073,741,824) is the first to exceed one billion"}, {"id": "H14", "unit": 3, "q": "Find the total number of pipes when combining the 21st and 22nd rows' cumulative totals, i.e. T(21)+T(22), where T(n)=n(n+1)/2.", "solution": ["T(21) = 21×22/2 = 231.", "T(22) = 22×23/2 = 253.", "Sum: 231+253 = 484."], "answer": "484"}, {"id": "H15", "unit": 3, "q": "Hexagons are arranged in triangular rows exactly like the pipe-stack pattern (row n has n hexagons). Find the total number of hexagons in the 30th picture.", "solution": ["Use the triangular number formula T(n)=n(n+1)/2 with n=30.", "T(30) = 30×31/2 = 930/2 = 465."], "answer": "465 hexagons"}]};
+const UNIT_LABEL = {3:"Unit 3", 4:"Unit 4"};
+
+function shuffleArr(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+  return a;
+}
+function buildShuffled(setKey){
+  const src = PROBLEM_DATA[setKey];
+  const order = shuffleArr(src.map((_,i)=>i));
+  return order.map(idx => src[idx]);
+}
+const state = {};
+
+function render(setKey){
+  const panel = document.getElementById("panel-"+setKey);
+  const st = state[setKey];
+  let revealedCount = st.revealed.size;
+  let html = '';
+  html += '<div class="toolbar">'
+        + '<div class="counter">Revealed: '+revealedCount+' / '+st.problems.length+'</div>'
+        + '<button class="reshuffle" onclick="reshuffle(\''+setKey+'\')">Shuffle again</button>'
+        + '</div>';
+
+  st.problems.forEach((item, qi)=>{
+    const isRevealed = st.revealed.has(qi);
+    html += '<div class="qcard">';
+    html += '<div class="qnum">Problem '+(qi+1)+' of '+st.problems.length+'<span class="unittag">'+UNIT_LABEL[item.unit]+'</span></div>';
+    html += '<div class="qtext">'+item.q+'</div>';
+    html += '<div class="worklabel">Your working (optional):</div>';
+    html += '<textarea placeholder="Write your steps here..." id="ta-'+setKey+'-'+qi+'"></textarea>';
+    html += '<div><button class="revealbtn" onclick="reveal(\''+setKey+'\','+qi+')">'+(isRevealed?'Hide solution':'Show solution')+'</button></div>';
+    html += '<div class="solution'+(isRevealed?' show':'')+'" id="sol-'+setKey+'-'+qi+'">';
+    html += '<b>Step-by-step:</b><ol>' + item.solution.map(s=>'<li>'+s+'</li>').join('') + '</ol>';
+    html += '<div class="finalanswer">Answer: '+item.answer+'</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+  panel.innerHTML = html;
+}
+
+function reveal(setKey, qi){
+  const st = state[setKey];
+  if(st.revealed.has(qi)) st.revealed.delete(qi);
+  else st.revealed.add(qi);
+  render(setKey);
+}
+
+function reshuffle(setKey){
+  state[setKey] = { problems: buildShuffled(setKey), revealed: new Set() };
+  render(setKey);
+}
+
+["easy","medium","hard"].forEach(k=>{
+  state[k] = { problems: buildShuffled(k), revealed: new Set() };
+  render(k);
+});
+
+document.querySelectorAll(".setbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".setbtn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-"+btn.dataset.set).classList.add("active");
+  });
+});
+</script>
+</body>
+</html>

@@ -33,48 +33,76 @@
     border-radius:8px;
     padding:24px 22px;
     background:#fff;
-    text-decoration:none;
-    color:inherit;
-    display:block;
-    transition:box-shadow .15s, border-color .15s, transform .1s;
+    display:flex;
+    flex-direction:column;
+    transition:box-shadow .15s, border-color .15s;
   }
-  .subject-card.active:hover{border-color:var(--navy);box-shadow:0 4px 14px rgba(30,39,97,0.15);transform:translateY(-2px);}
-  .subject-card.active{cursor:pointer;}
-  .subject-card.disabled{opacity:0.55;cursor:default;}
+  .subject-card.active:hover{border-color:var(--navy);box-shadow:0 4px 14px rgba(30,39,97,0.15);}
+  .subject-card.disabled{opacity:0.55;}
 
-  .subject-icon{font-size:9.5pt;font-weight:700;color:#fff;background:var(--navy);display:inline-block;padding:3px 10px;border-radius:3px;margin-bottom:12px;}
+  .subject-icon{font-size:9.5pt;font-weight:700;color:#fff;background:var(--navy);display:inline-block;padding:3px 10px;border-radius:3px;margin-bottom:12px;align-self:flex-start;}
   .subject-card.disabled .subject-icon{background:#9AA5B1;}
   .subject-card h3{margin:0 0 6px;font-size:14pt;color:var(--navy);}
   .subject-card.disabled h3{color:#6B7280;}
-  .subject-card p{margin:0;color:#555;font-size:10pt;}
-  .status-tag{display:inline-block;margin-top:10px;font-size:9pt;font-weight:600;color:#8E7A00;background:#FFF6DA;padding:2px 8px;border-radius:3px;}
+  .subject-card p{margin:0;color:#555;font-size:10pt;flex-grow:1;}
+  .status-tag{display:inline-block;margin-top:10px;font-size:9pt;font-weight:600;color:#8E7A00;background:#FFF6DA;padding:2px 8px;border-radius:3px;align-self:flex-start;}
+
+  .card-actions{display:flex;gap:10px;margin-top:16px;}
+  .action-btn{
+    flex:1;
+    text-align:center;
+    padding:10px 8px;
+    border-radius:5px;
+    font-size:10pt;
+    font-weight:600;
+    text-decoration:none;
+    transition:opacity .15s, transform .1s;
+  }
+  .action-btn:hover{transform:translateY(-1px);}
+  .action-btn.summary{background:#EEF1FA;color:var(--navy);border:1px solid var(--border);}
+  .action-btn.summary:hover{background:var(--border);}
+  .action-btn.quiz{background:var(--navy);color:#fff;}
+  .action-btn.quiz:hover{opacity:0.88;}
+  .action-btn.single{background:var(--navy);color:#fff;}
+  .action-btn.single:hover{opacity:0.88;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
 <h1>M.1 Final Exam Prep</h1>
-<div class="subtitle">เลือกวิชาที่ต้องการทบทวนและทำแบบทดสอบ</div>
+<div class="subtitle">เลือกวิชาที่ต้องการทบทวนและทำแบบทดสอบ — แต่ละวิชาเลือกได้เลยว่าจะอ่านสรุป หรือจะทำแบบทดสอบก่อน</div>
 
 <div class="subject-grid">
 
-  <a href="m1-english-final.html" class="subject-card active">
+  <div class="subject-card active">
     <span class="subject-icon">ENGLISH</span>
     <h3>ภาษาอังกฤษ</h3>
-    <p>Unit 3-4: Question Forms, Word Stress, Vocabulary, Simple Past — สรุปเนื้อหา + แบบทดสอบ 3 ระดับ</p>
-  </a>
+    <p>Unit 3-4: Question Forms, Word Stress, Vocabulary, Simple Past</p>
+    <div class="card-actions">
+      <a href="m1-english-final.html" class="action-btn single">เปิดวิชานี้</a>
+    </div>
+  </div>
 
-  <a href="m1-english-unit345-summary.html" class="subject-card active">
+  <div class="subject-card active">
     <span class="subject-icon">ENGLISH</span>
     <h3>ภาษาอังกฤษ (Unit 3-5)</h3>
-    <p>Sports, On the Move, Life Stories — อ่านสรุปเนื้อหาก่อน แล้วไปทำแบบทดสอบ 3 ระดับ ระดับละ 30 ข้อ</p>
-  </a>
+    <p>Sports, On the Move, Life Stories — แบบทดสอบ 3 ระดับ ระดับละ 30 ข้อ</p>
+    <div class="card-actions">
+      <a href="m1-english-unit345-summary.html" class="action-btn summary">อ่านสรุป</a>
+      <a href="m1-english-unit345.html" class="action-btn quiz">ทำแบบทดสอบ</a>
+    </div>
+  </div>
 
-  <a href="m1-nattasin.html" class="subject-card active">
+  <div class="subject-card active">
     <span class="subject-icon">DANCE</span>
     <h3>นาฏศิลป์</h3>
     <p>ความรู้ทั่วไปนาฏศิลป์ไทย, นาฏยศัพท์/รูปแบบการแสดง, ละคร, การจัดการแสดงละคร — แบบทดสอบ 3 ระดับ ระดับละ 40 ข้อ</p>
-  </a>
+    <div class="card-actions">
+      <a href="สรุปเนื้อหาวิชานาฏศิลป์.docx" class="action-btn summary">อ่านสรุป</a>
+      <a href="m1-nattasin.html" class="action-btn quiz">ทำแบบทดสอบ</a>
+    </div>
+  </div>
 
   <div class="subject-card disabled">
     <span class="subject-icon">SCIENCE</span>
@@ -83,17 +111,25 @@
     <span class="status-tag">เร็วๆ นี้</span>
   </div>
 
-  <a href="m1-math-practice.html" class="subject-card active">
+  <div class="subject-card active">
     <span class="subject-icon">MATH</span>
     <h3>คณิตศาสตร์</h3>
-    <p>Decimals, Fractions, Scientific Notation, 3D Geometric Figures — สรุปสูตร/วิธีคิด + แบบฝึกหัด 3 ระดับ ระดับละ 15 ข้อ (คำนวณ+ปรนัย พร้อมเฉลย)</p>
-  </a>
+    <p>Decimals, Fractions, Scientific Notation, 3D Geometric Figures — แบบฝึกหัด 3 ระดับ ระดับละ 15 ข้อ</p>
+    <div class="card-actions">
+      <a href="m1-math-summary.html" class="action-btn summary">อ่านสรุป</a>
+      <a href="m1-math-practice.html" class="action-btn quiz">ทำแบบทดสอบ</a>
+    </div>
+  </div>
 
-  <a href="m1-addmath-unit34-summary.html" class="subject-card active">
+  <div class="subject-card active">
     <span class="subject-icon">ADD MATH</span>
     <h3>คณิตศาสตร์เพิ่มเติม (Unit 3-4)</h3>
-    <p>Mathematical Patterns, Scientific Notation — อ่านสรุปสูตร/วิธีคิดก่อน แล้วไปทำแบบฝึกหัด 3 ระดับ ระดับละ 15 ข้อ พร้อมเฉลยทีละขั้นตอน</p>
-  </a>
+    <p>Mathematical Patterns, Scientific Notation — แบบฝึกหัด 3 ระดับ ระดับละ 15 ข้อ พร้อมเฉลยทีละขั้นตอน</p>
+    <div class="card-actions">
+      <a href="m1-addmath-unit34-summary.html" class="action-btn summary">อ่านสรุป</a>
+      <a href="m1-addmath-unit34-practice.html" class="action-btn quiz">ทำแบบทดสอบ</a>
+    </div>
+  </div>
 
   <div class="subject-card disabled">
     <span class="subject-icon">SOCIAL</span>
@@ -102,11 +138,15 @@
     <span class="status-tag">เร็วๆ นี้</span>
   </div>
 
-  <a href="m1-history-unit2-summary.html" class="subject-card active">
+  <div class="subject-card active">
     <span class="subject-icon">HISTORY</span>
     <h3>ประวัติศาสตร์ (Unit 2)</h3>
-    <p>The Development of Southeast Asian States + Civilization Sites & Heritage — อ่านสรุปเนื้อหาก่อน แล้วไปทำแบบทดสอบ 3 ระดับ ระดับละ 50 ข้อ</p>
-  </a>
+    <p>The Development of Southeast Asian States + Civilization Sites & Heritage — แบบทดสอบ 3 ระดับ ระดับละ 50 ข้อ</p>
+    <div class="card-actions">
+      <a href="m1-history-unit2-summary.html" class="action-btn summary">อ่านสรุป</a>
+      <a href="m1-history-unit2-quiz.html" class="action-btn quiz">ทำแบบทดสอบ</a>
+    </div>
+  </div>
 
   <div class="subject-card disabled">
     <span class="subject-icon">THAI</span>

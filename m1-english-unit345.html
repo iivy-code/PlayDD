@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M.1 English Quiz — Units 3-5</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-light:#CADCFC;
+    --ink:#1A1A1A;
+    --bg:#F5F5F5;
+    --card:#FFFFFF;
+    --border:#E0E3EA;
+    --green:#1B7F3A;
+    --green-bg:#E7F5EC;
+    --red:#B3261E;
+    --red-bg:#FBEAE9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    margin:0;
+    padding:0;
+    font-size:11pt;
+  }
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:14px 20px 22px;
+    text-align:center;
+  }
+  header h1{
+    font-size:18pt;
+    margin:8px 0 6px;
+    font-weight:700;
+  }
+  header p{
+    margin:0;
+    font-size:11pt;
+    color:var(--navy-light);
+  }
+  .wrap{
+    max-width:860px;
+    margin:0 auto;
+    padding:20px 16px 60px;
+  }
+  .setbar{
+    display:flex;
+    gap:10px;
+    margin:22px 0 18px;
+    flex-wrap:wrap;
+  }
+  .setbtn{
+    flex:1;
+    min-width:150px;
+    padding:14px 10px;
+    border:1.5px solid var(--navy);
+    background:#fff;
+    color:var(--navy);
+    font-family:inherit;
+    font-size:12pt;
+    font-weight:600;
+    border-radius:4px;
+    cursor:pointer;
+    text-align:center;
+  }
+  .setbtn.active{
+    background:var(--navy);
+    color:#fff;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:12px 16px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .score{font-size:12pt;font-weight:700;color:var(--navy);}
+  .reshuffle{
+    background:#fff;
+    border:1px solid var(--navy);
+    color:var(--navy);
+    font-family:inherit;
+    padding:8px 14px;
+    font-size:10pt;
+    border-radius:4px;
+    cursor:pointer;
+  }
+  .reshuffle:hover{background:var(--navy-light);}
+  .qcard{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:18px 18px 16px;
+    margin-bottom:14px;
+  }
+  .qnum{font-size:9pt;color:#666;margin-bottom:4px;letter-spacing:.3px;}
+  .unittag{
+    display:inline-block;
+    font-size:8.5pt;
+    font-weight:700;
+    color:#fff;
+    background:#5B6B8C;
+    padding:1px 7px;
+    border-radius:3px;
+    margin-left:8px;
+  }
+  .qtext{font-size:12pt;font-weight:600;color:var(--ink);margin:6px 0 12px;line-height:1.5;}
+  .opt{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:#fff;
+    border:1px solid #C9CDD6;
+    border-radius:4px;
+    padding:10px 12px;
+    margin-bottom:8px;
+    font-family:inherit;
+    font-size:11pt;
+    color:var(--ink);
+    cursor:pointer;
+    transition:background .1s;
+  }
+  .opt:hover:not(:disabled){background:#F0F3FA;}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:600;}
+  .opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:600;}
+  .explain{
+    display:none;
+    margin-top:10px;
+    padding:10px 12px;
+    background:#F2F4F8;
+    border-left:3px solid var(--navy);
+    border-radius:2px;
+    font-size:10.5pt;
+    line-height:1.5;
+    color:#333;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--navy);}
+  footer{text-align:center;color:#888;font-size:9pt;padding:20px;}
+  .progresswrap{background:#E4E7EE;border-radius:3px;height:6px;overflow:hidden;margin-top:8px;}
+  .progressbar{background:var(--navy);height:100%;width:0%;transition:width .2s;}
+  .backlink{
+    display:inline-block;margin-bottom:10px;color:var(--navy-light);
+    font-weight:600;font-size:10.5pt;border:1px solid var(--navy-light);
+    border-radius:4px;padding:5px 12px;text-decoration:none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="backlink">&larr; กลับหน้าเลือกวิชา</a>
+  <a href="m1-english-unit345-summary.html" class="backlink">อ่านสรุปเนื้อหา</a>
+  <h1>M.1 English Quiz — Units 3-5</h1>
+  <p>Unit 3: Sports · Unit 4: On the Move · Unit 5: Life Stories</p>
+</header>
+
+<div class="wrap">
+  <div class="setbar">
+    <button class="setbtn active" data-set="easy">ชุดง่าย (30 ข้อ)</button>
+    <button class="setbtn" data-set="medium">ชุดปานกลาง (30 ข้อ)</button>
+    <button class="setbtn" data-set="hard">ชุดยาก (30 ข้อ)</button>
+  </div>
+
+  <div id="panel-easy" class="panel active"></div>
+  <div id="panel-medium" class="panel"></div>
+  <div id="panel-hard" class="panel"></div>
+</div>
+
+<footer>สลับลำดับข้อและตัวเลือกใหม่ทุกครั้งที่เปิดหน้านี้ · กดปุ่ม "สลับข้อสอบใหม่" เพื่อสุ่มใหม่โดยไม่ต้องรีโหลดหน้า</footer>
+
+<script>
+const QUESTION_DATA = {"easy": [{"id": "E1", "unit": 3, "q": "According to the grammar rule, which forms are used for things that are necessary or obligatory?", "opts": ["have to / must", "don't have to", "mustn't", "can / can't"], "explain": "The rule states: We use have to and must for things that are necessary or obligatory."}, {"id": "E2", "unit": 3, "q": "Which form do we use for things that are NOT necessary — we can do them if we want?", "opts": ["don't have to", "must", "mustn't", "have to"], "explain": "Don't have to describes something that is optional, not required."}, {"id": "E3", "unit": 3, "q": "Which form do we use for things we can't do because we don't have permission?", "opts": ["mustn't", "don't have to", "have to", "can"], "explain": "Mustn't expresses prohibition — something not allowed."}, {"id": "E4", "unit": 3, "q": "What is the negative form of 'have to' for he/she?", "opts": ["doesn't have to", "don't have to", "isn't have to", "hasn't to"], "explain": "For he/she, the negative of have to is doesn't have to."}, {"id": "E5", "unit": 3, "q": "Complete the short answer: 'Do you have to wear a uniform?' 'Yes, ___.'", "opts": ["I do", "I have", "I am", "I must"], "explain": "Short answers with have to use do/does: Yes, I do. / No, I don't."}, {"id": "E6", "unit": 3, "q": "What is the adverb form of 'slow'?", "opts": ["slowly", "slowlly", "sloly", "slowley"], "explain": "Most adverbs of manner are formed by adding -ly to the adjective: slow → slowly."}, {"id": "E7", "unit": 3, "q": "What is the irregular adverb form of 'good'?", "opts": ["well", "goodly", "gooder", "goodly"], "explain": "Good is irregular — its adverb form is well, not \"goodly\"."}, {"id": "E8", "unit": 3, "q": "Which body part is at the end of your leg?", "opts": ["foot", "wrist", "elbow", "shoulder"], "explain": "The foot is located at the end of the leg."}, {"id": "E9", "unit": 3, "q": "Which sport is played with a shuttlecock and a racket?", "opts": ["badminton", "hockey", "rugby", "golf"], "explain": "Badminton uses a shuttlecock and a racket."}, {"id": "E10", "unit": 3, "q": "Which physical activity means to move quickly across ice or ground using skates?", "opts": ["skate", "climb", "dive", "sail"], "explain": "To skate means to move using skates, e.g. ice skating or in-line skating."}, {"id": "E11", "unit": 4, "q": "What is the nationality adjective for someone from France?", "opts": ["French", "Francian", "Frenchian", "Francese"], "explain": "France → French."}, {"id": "E12", "unit": 4, "q": "What is the nationality adjective for someone from Japan?", "opts": ["Japanese", "Japanic", "Japander", "Japaner"], "explain": "Japan → Japanese."}, {"id": "E13", "unit": 4, "q": "Which word means 'a document you need to travel to another country'?", "opts": ["passport", "ticket", "luggage", "souvenir"], "explain": "A passport is the official document required for international travel."}, {"id": "E14", "unit": 4, "q": "Which word means 'a holiday where transport, hotel, etc. are all included in one price'?", "opts": ["package holiday", "excursion", "tour guide", "travel agency"], "explain": "A package holiday bundles transport, accommodation, and other costs into a single price."}, {"id": "E15", "unit": 4, "q": "What is the past simple negative form of 'to be' for 'he'?", "opts": ["wasn't", "weren't", "isn't", "don't was"], "explain": "For he/she/it, the negative past of 'to be' is wasn't."}, {"id": "E16", "unit": 4, "q": "What is the past simple (affirmative) of the modal 'can'?", "opts": ["could", "canned", "can'd", "was can"], "explain": "The past simple form of can is could."}, {"id": "E17", "unit": 4, "q": "What is the negative past simple form of 'can'?", "opts": ["couldn't", "can'tn't", "wasn't can", "didn't can"], "explain": "The negative past form of can is couldn't."}, {"id": "E18", "unit": 4, "q": "Which of these is a type of RAIL transport?", "opts": ["train", "lorry", "ship", "helicopter"], "explain": "A train travels on rails, unlike road, air, or sea transport."}, {"id": "E19", "unit": 4, "q": "Which of these is a type of SEA transport?", "opts": ["ship", "tram", "van", "plane"], "explain": "A ship travels on the sea, unlike rail, road, or air transport."}, {"id": "E20", "unit": 4, "q": "Complete: 'There ___ a South African astronaut.'", "opts": ["was", "were", "is", "are"], "explain": "Singular subject (a South African astronaut) takes 'was' in the past simple."}, {"id": "E21", "unit": 5, "q": "Which job repairs cars, buses and lorries?", "opts": ["mechanic", "engineer", "plumber", "electrician"], "explain": "A mechanic repairs vehicles such as cars, buses and lorries."}, {"id": "E22", "unit": 5, "q": "Which job treats sick animals?", "opts": ["vet", "nurse", "doctor", "psychologist"], "explain": "A vet (veterinarian) treats sick or injured animals."}, {"id": "E23", "unit": 5, "q": "Which job designs buildings?", "opts": ["architect", "engineer", "designer", "builder"], "explain": "An architect designs buildings."}, {"id": "E24", "unit": 5, "q": "Which job writes news stories?", "opts": ["journalist", "author", "novelist", "lawyer"], "explain": "A journalist researches and writes news stories."}, {"id": "E25", "unit": 5, "q": "Where would a doctor most typically work?", "opts": ["clinic / hospital", "garage", "laboratory", "recording studio"], "explain": "Doctors typically work in a clinic or hospital."}, {"id": "E26", "unit": 5, "q": "Where would you find a mechanic working?", "opts": ["garage", "office", "school", "outdoors"], "explain": "A mechanic typically works in a garage."}, {"id": "E27", "unit": 5, "q": "Who is the author of The Hunger Games books?", "opts": ["Suzanne Collins", "Eoin Colfer", "James Proimos", "J.K. Rowling"], "explain": "Suzanne Collins is the author of The Hunger Games."}, {"id": "E28", "unit": 5, "q": "Who is the author of the Artemis Fowl books?", "opts": ["Eoin Colfer", "Suzanne Collins", "James Proimos", "J.K. Rowling"], "explain": "Eoin Colfer wrote the Artemis Fowl series."}, {"id": "E29", "unit": 5, "q": "What does 'genius' mean, according to the text?", "opts": ["a person with a lot of intelligence or skill", "the main bad person in a story", "television stations", "opinions or feelings about something"], "explain": "Genius is defined in the text as a person with a lot of intelligence or skill."}, {"id": "E30", "unit": 5, "q": "What does 'villain' mean, according to the text?", "opts": ["the main bad person in a story", "a person with a lot of intelligence or skill", "television stations", "all the information a person knows"], "explain": "Villain is defined in the text as the main bad person in a story."}], "medium": [{"id": "M1", "unit": 3, "q": "Complete: 'Taking photos is not permitted in the museum. You ___ do it.'", "opts": ["mustn't", "don't have to", "have to", "can"], "explain": "\"Not permitted\" signals prohibition, so we use mustn't."}, {"id": "M2", "unit": 3, "q": "Complete: 'You ___ buy a ticket to see a film at the cinema.'", "opts": ["have to", "don't have to", "mustn't", "must not"], "explain": "Buying a ticket is a necessary requirement, so we use have to."}, {"id": "M3", "unit": 3, "q": "Complete: 'We ___ drive to the shopping centre because there isn't a bus.'", "opts": ["have to", "don't have to", "mustn't", "can't"], "explain": "Because there's no bus, driving becomes necessary — have to."}, {"id": "M4", "unit": 3, "q": "Complete: 'We ___ use our mobile phones in class. It's against the rules.'", "opts": ["mustn't", "don't have to", "have to", "can"], "explain": "\"Against the rules\" signals prohibition — mustn't."}, {"id": "M5", "unit": 3, "q": "Complete: 'He ___ go to PE class because he has a note from the doctor.'", "opts": ["doesn't have to", "have to", "mustn't", "must"], "explain": "A doctor's note gives an exemption from an obligation — doesn't have to."}, {"id": "M6", "unit": 3, "q": "Rewrite using don't have to: 'It is not necessary for you to bring food to the party.'", "opts": ["You don't have to bring food to the party.", "You mustn't bring food to the party.", "You have to bring food to the party.", "You can't bring food to the party."], "explain": "\"Not necessary\" is expressed with don't have to."}, {"id": "M7", "unit": 3, "q": "Which sentence correctly uses an adverb of manner?", "opts": ["She sings beautifully.", "She sings beautiful.", "She beautiful sings.", "She is sings beautifully."], "explain": "Adverbs of manner describe verbs, formed here as beautiful → beautifully."}, {"id": "M8", "unit": 3, "q": "What is the correct adverb form of 'easy'?", "opts": ["easily", "easyly", "easyley", "easely"], "explain": "Adjectives ending in -y change to -ily: easy → easily."}, {"id": "M9", "unit": 3, "q": "What is the correct adverb form of 'terrible'?", "opts": ["terribly", "terriblely", "terribley", "terribally"], "explain": "Adjectives ending in -le often drop the -e and add -y: terrible → terribly."}, {"id": "M10", "unit": 3, "q": "In the Ultimate Frisbee rules, 'the person with the frisbee stays in one place — they mustn't move with it' tells us that:", "opts": ["players cannot run while holding the frisbee", "players must always be running", "there is no time limit in the game", "a referee decides all the rules"], "explain": "The rule mustn't move with it means a player holding the frisbee has to stay still."}, {"id": "M11", "unit": 4, "q": "What is the nationality adjective for someone from Switzerland?", "opts": ["Swiss", "Switzerlandish", "Swissian", "Switzer"], "explain": "Switzerland → Swiss."}, {"id": "M12", "unit": 4, "q": "What is the nationality adjective for someone from Wales?", "opts": ["Welsh", "Walesian", "Walesish", "Welshian"], "explain": "Wales → Welsh."}, {"id": "M13", "unit": 4, "q": "Complete: 'There ___ lots of experiments to do on the ISS.'", "opts": ["were", "was", "are", "is"], "explain": "Plural subject (lots of experiments) takes 'were' in the past simple."}, {"id": "M14", "unit": 4, "q": "Complete (negative): 'There ___ an International Space Station in the 1800s.'", "opts": ["wasn't", "weren't", "isn't", "didn't"], "explain": "Singular subject (an International Space Station) takes the negative 'wasn't'."}, {"id": "M15", "unit": 4, "q": "What is the correct past simple form of 'fly'?", "opts": ["flew", "flied", "flyed", "flown"], "explain": "Fly is irregular — its past simple form is flew."}, {"id": "M16", "unit": 4, "q": "What is the correct past simple form of 'try', following the spelling rule for consonant+y verbs?", "opts": ["tried", "tryed", "tryied", "tries"], "explain": "Verbs ending in consonant + y change y to ied: try → tried."}, {"id": "M17", "unit": 4, "q": "What is the correct past simple form of 'stop', following the doubling rule?", "opts": ["stopped", "stoped", "stopeed", "stopted"], "explain": "One-vowel-one-consonant verbs double the final consonant: stop → stopped."}, {"id": "M18", "unit": 4, "q": "Which -ed ending is pronounced as an extra syllable, /ɪd/?", "opts": ["chatted", "loved", "walked", "stopped"], "explain": "Verbs ending in a /t/ or /d/ sound, like chat, add an extra syllable: chatted /tʃætɪd/."}, {"id": "M19", "unit": 4, "q": "Why couldn't Richard Garriott work as an astronaut when he was young?", "opts": ["his eyesight was bad", "he wasn't determined enough", "he didn't like science", "he was too young"], "explain": "The text says his eyesight was bad, and he couldn't see well without glasses."}, {"id": "M20", "unit": 4, "q": "According to the text, how much did Thomas Cook's 1872 round-the-world tour cost?", "opts": ["£210", "£25,000", "£30 million", "£1,841"], "explain": "The text states the 1872 tour cost £210, worth over £25,000 in today's money."}, {"id": "M21", "unit": 5, "q": "Which word describes 'a place where scientific tests happen'?", "opts": ["laboratory", "clinic", "recording studio", "garage"], "explain": "A laboratory is a place for conducting scientific experiments and tests."}, {"id": "M22", "unit": 5, "q": "Which word describes 'a place with equipment for recording music'?", "opts": ["recording studio", "laboratory", "office", "outdoors"], "explain": "A recording studio is equipped for recording music or audio."}, {"id": "M23", "unit": 5, "q": "What was Suzanne Collins doing when she got the idea for The Hunger Games?", "opts": ["watching the news and a reality TV show", "reading a novel", "teaching English", "visiting Ireland"], "explain": "She was watching the news, then switched to a reality show and noticed little difference between them."}, {"id": "M24", "unit": 5, "q": "Who encouraged Suzanne Collins to try writing novels for children?", "opts": ["James Proimos", "Eoin Colfer", "her father", "her editor"], "explain": "James Proimos, an author she worked with on Generation O!, encouraged her to write novels."}, {"id": "M25", "unit": 5, "q": "Where was Eoin Colfer born?", "opts": ["Wexford, Ireland", "Dublin, Ireland", "Connecticut, US", "Tunisia"], "explain": "Eoin Colfer was born in Wexford, Ireland."}, {"id": "M26", "unit": 5, "q": "What inspired Eoin Colfer's love of writing?", "opts": ["exciting stories about Vikings he learned about at school", "his experience as an astronaut", "working in children's TV", "travelling to the US"], "explain": "The text says his love for writing came from exciting stories about Vikings that he learned about at school."}, {"id": "M27", "unit": 5, "q": "What is the title of Eoin Colfer's first book, based on his time in Tunisia?", "opts": ["Benny and Omar", "Artemis Fowl", "Iron Man: The Gauntlet", "Illegal"], "explain": "Benny and Omar was based on his experiences teaching in Tunisia."}, {"id": "M28", "unit": 5, "q": "In what year did Eoin Colfer write the first Artemis Fowl book?", "opts": ["2001", "1992", "1998", "2008"], "explain": "The text states he wrote the first Artemis Fowl book in 2001."}, {"id": "M29", "unit": 5, "q": "What does 'encouraged' mean in the text?", "opts": ["to tell a person to do something you believe is good", "to become popular and make money", "a test to find out what happens", "the ability to see"], "explain": "Encouraged means to tell someone to do something you believe is good for them."}, {"id": "M30", "unit": 5, "q": "What does 'mischievous' mean, according to the text?", "opts": ["enjoying having fun by making trouble", "the main bad person in a story", "television stations", "all the information a person knows"], "explain": "Mischievous describes enjoying having fun by making trouble."}], "hard": [{"id": "H1", "unit": 3, "q": "According to the grammar reference, why is 'must' not very common in question form?", "opts": ["because 'have to' is usually used instead", "because questions never use modal verbs", "because 'must' cannot be negative", "because it is only used in written English"], "explain": "The grammar reference explicitly states: Must is not very common in the question form — we usually use have to."}, {"id": "H2", "unit": 3, "q": "Complete: 'Olga ___ be at the dentist's at ten o'clock. She has an appointment.'", "opts": ["must", "mustn't", "don't have to", "can't"], "explain": "A personal obligation stated by the speaker is typically expressed with must."}, {"id": "H3", "unit": 3, "q": "Complete: 'You ___ be a member to use the sports centre. Anyone can use it.'", "opts": ["don't have to", "must", "mustn't", "can't"], "explain": "\"Anyone can use it\" shows membership isn't required — don't have to."}, {"id": "H4", "unit": 3, "q": "Which pair correctly shows an IRREGULAR adverb of manner (same form as the adjective)?", "opts": ["fast → fast", "slow → slowly", "careful → carefully", "easy → easily"], "explain": "Fast, hard, early and late are irregular — the adverb form is identical to the adjective."}, {"id": "H5", "unit": 3, "q": "According to the Writing Bank, 'sitting, rubber, glasses' are examples of which type of common error?", "opts": ["words with double consonants", "words with silent letters", "preposition errors", "subject pronoun errors"], "explain": "These words all contain double consonants, a common spelling error category."}, {"id": "H6", "unit": 3, "q": "According to the Writing Bank, 'climbing, answer, know' are examples of which type of common error?", "opts": ["words with silent letters", "words with double consonants", "verb conjugation errors", "preposition errors"], "explain": "These words all contain silent letters (b, w, k), another common error category."}, {"id": "H7", "unit": 3, "q": "According to the Writing Bank, 'on the sofa, in the desk, on Monday' illustrates which error category?", "opts": ["prepositions", "verb conjugations", "subject pronouns", "double consonants"], "explain": "These are examples of correct preposition use — a common area of error."}, {"id": "H8", "unit": 3, "q": "According to the Writing Bank, 'I have → he/she/it has' illustrates which error category?", "opts": ["verb conjugations", "subject pronouns", "prepositions", "silent letters"], "explain": "This shows subject-verb agreement, i.e. verb conjugation for third person singular."}, {"id": "H9", "unit": 3, "q": "Give the irregular adverb form of 'early'.", "opts": ["early", "earlily", "earlyly", "earlier"], "explain": "Early is irregular — the adverb form is identical to the adjective: early."}, {"id": "H10", "unit": 3, "q": "In the Bart's Sports Club advert, what rule is stated about the gym?", "opts": ["no black trainers are allowed in the gym", "a swimming cap is optional", "classes must be booked one week ahead", "children under 13 cannot enter"], "explain": "The advert states: **no black trainers in the gym."}, {"id": "H11", "unit": 4, "q": "What was the exact cost of Richard Garriott's ticket to the International Space Station?", "opts": ["$30 million", "$25,000", "£210", "$12 million"], "explain": "The text states the ticket for his trip on the Soyuz spacecraft was $30 million."}, {"id": "H12", "unit": 4, "q": "How many days did Richard Garriott spend in space?", "opts": ["12 fantastic days", "8 fantastic days", "30 fantastic days", "2 fantastic days"], "explain": "The text says he was in space for 12 fantastic days."}, {"id": "H13", "unit": 4, "q": "Who was the Russian cosmonaut on Richard Garriott's spaceship?", "opts": ["Yuri Lonchakov", "Michael Fincke", "Dennis Tito", "Mark Shuttleworth"], "explain": "The Russian cosmonaut mentioned is Yuri Lonchakov; Michael Fincke was the American NASA astronaut."}, {"id": "H14", "unit": 4, "q": "What nationality was Anousheh Ansari, the first female space tourist?", "opts": ["Iranian", "American", "South African", "Hungarian"], "explain": "The text identifies Anousheh Ansari as Iranian, the first female space tourist, in 2006."}, {"id": "H15", "unit": 4, "q": "In what year did Charles Simonyi travel to space for the SECOND time?", "opts": ["2009", "2007", "2005", "2002"], "explain": "The text says Simonyi was in space twice — in 2007 and 2009."}, {"id": "H16", "unit": 4, "q": "According to the Thomas Cook story, how far did passengers travel by train on his first excursion in 1841?", "opts": ["12 miles", "25 miles", "134 miles", "210 miles"], "explain": "The text states passengers could only travel 12 miles by train on this excursion."}, {"id": "H17", "unit": 4, "q": "In what year did Thomas Cook organise the first international trip around Europe?", "opts": ["1855", "1841", "1851", "1872"], "explain": "The text states this happened in 1855, after the 1851 trips to London's Great Exhibition."}, {"id": "H18", "unit": 4, "q": "Which spelling rule applies to 'stop → stopped'?", "opts": ["verbs ending in one vowel + one consonant: double the consonant and add -ed", "verbs ending in -e: add -d only", "verbs ending in consonant + y: change y to ied", "add -ed to most verbs with no change"], "explain": "Stop ends in one vowel + one consonant, so the consonant is doubled before adding -ed."}, {"id": "H19", "unit": 4, "q": "Which spelling rule applies to 'love → loved'?", "opts": ["verbs ending in -e: add -d only", "add -ed to most verbs", "double the final consonant and add -ed", "change y to ied and add -ed"], "explain": "Verbs already ending in -e simply add -d: love → loved."}, {"id": "H20", "unit": 4, "q": "According to the New Zealand text, how tall is the world's smallest penguin found at Pukekura?", "opts": ["25 cm", "134 cm", "450 cm", "4 cm"], "explain": "The text states the blue penguins at Pukekura are only 25 cm tall."}, {"id": "H21", "unit": 5, "q": "What was Suzanne Collins's job before she became a novelist?", "opts": ["a writer for children's TV in the US", "a schoolteacher", "a soldier", "a journalist"], "explain": "The text says she first worked as a writer for children's TV in the US."}, {"id": "H22", "unit": 5, "q": "What was the name of the TV programme Suzanne Collins was working on in 2000?", "opts": ["Generation O!", "The Underland Chronicles", "The Hunger Games", "Benny and Omar"], "explain": "The text names the programme as Generation O!, where she met James Proimos."}, {"id": "H23", "unit": 5, "q": "What was the name of Suzanne Collins's first series of novels, before The Hunger Games?", "opts": ["The Underland Chronicles", "Generation O!", "Illegal", "Artemis Fowl"], "explain": "Her first series of fantasy novels was called The Underland Chronicles."}, {"id": "H24", "unit": 5, "q": "What was Eoin Colfer's profession before he became a full-time writer?", "opts": ["a school teacher", "a soldier", "a TV producer", "a journalist"], "explain": "The text says Colfer worked as a school teacher before writing full-time."}, {"id": "H25", "unit": 5, "q": "Besides Ireland, where did Eoin Colfer teach English, according to the text?", "opts": ["Africa and Asia", "the US and Canada", "Connecticut and New York", "Wexford and Dublin"], "explain": "The text states he left Ireland and taught English in several countries in Africa and Asia."}, {"id": "H26", "unit": 5, "q": "What other novel involving a Marvel character did Eoin Colfer write, according to the text?", "opts": ["Iron Man: The Gauntlet", "Spider-Man: Homecoming", "Illegal", "Benny and Omar"], "explain": "The text names Iron Man: The Gauntlet among Colfer's other books."}, {"id": "H27", "unit": 5, "q": "How old is the criminal genius character in the Artemis Fowl books?", "opts": ["twelve years old", "ten years old", "fifteen years old", "eighteen years old"], "explain": "The text describes Artemis Fowl as a twelve-year-old criminal genius."}, {"id": "H28", "unit": 5, "q": "What inspired the character of Artemis Fowl, according to the text?", "opts": ["one of Colfer's sons, who reminded him of a villain from the James Bond films", "a real criminal Colfer met while teaching", "a dream Colfer had as a child", "a news story about a young genius"], "explain": "Colfer thought one of his sons was similar to a villain from the James Bond films."}, {"id": "H29", "unit": 5, "q": "What does 'attitudes' mean in the context of the text?", "opts": ["opinions or feelings about something", "television stations", "all the information a person knows", "the main bad person in a story"], "explain": "Attitudes are defined in the text as opinions or feelings about something."}, {"id": "H30", "unit": 5, "q": "What does 'channels' mean in the context of the text?", "opts": ["television stations", "opinions or feelings about something", "all the information a person knows", "a person with a lot of skill"], "explain": "Channels is defined in the text as television stations."}]};
+const UNIT_LABEL = {3:"Unit 3", 4:"Unit 4", 5:"Unit 5"};
+
+function shuffleArr(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function buildShuffled(setKey){
+  const src = QUESTION_DATA[setKey];
+  const order = shuffleArr(src.map((_,i)=>i));
+  return order.map(idx=>{
+    const item = src[idx];
+    const optOrder = shuffleArr(item.opts.map((_,i)=>i));
+    const opts = optOrder.map(oi=>item.opts[oi]);
+    const correctIndex = optOrder.indexOf(0);
+    return { id:item.id, unit:item.unit, q:item.q, opts:opts, correctIndex:correctIndex, explain:item.explain };
+  });
+}
+
+const state = {};
+function labelLetter(i){ return ["ก","ข","ค","ง"][i]; }
+
+function render(setKey){
+  const panel = document.getElementById("panel-"+setKey);
+  const st = state[setKey];
+  let answeredCount = Object.keys(st.answered).length;
+  let html = '';
+  html += '<div class="toolbar">'
+        + '<div class="score">ตอบถูก: '+st.correctCount+' / '+answeredCount+' (จากทั้งหมด '+st.questions.length+' ข้อ)'
+        + '<div class="progresswrap"><div class="progressbar" style="width:'+(answeredCount/st.questions.length*100)+'%"></div></div>'
+        + '</div>'
+        + '<button class="reshuffle" onclick="reshuffle(\''+setKey+'\')">สลับข้อสอบใหม่ (สุ่มลำดับ)</button>'
+        + '</div>';
+
+  st.questions.forEach((item, qi)=>{
+    const answered = st.answered[qi];
+    html += '<div class="qcard">';
+    html += '<div class="qnum">ข้อที่ '+(qi+1)+' จาก '+st.questions.length+'<span class="unittag">'+UNIT_LABEL[item.unit]+'</span></div>';
+    html += '<div class="qtext">'+item.q+'</div>';
+    item.opts.forEach((opt, oi)=>{
+      let cls = 'opt';
+      let disabled = '';
+      if(answered !== undefined){
+        disabled = 'disabled';
+        if(oi === item.correctIndex) cls += ' correct';
+        else if(oi === answered && answered !== item.correctIndex) cls += ' wrong';
+      }
+      html += '<button class="'+cls+'" '+disabled+' onclick="answer(\''+setKey+'\','+qi+','+oi+')">'
+            + labelLetter(oi)+'. '+opt+'</button>';
+    });
+    html += '<div class="explain'+(answered!==undefined?' show':'')+'">'
+          + '<b>'+(answered!==undefined ? (answered===item.correctIndex ? 'Correct — ' : 'Not quite — ') : '')+'</b>'
+          + item.explain
+          + '</div>';
+    html += '</div>';
+  });
+
+  panel.innerHTML = html;
+}
+
+function answer(setKey, qi, oi){
+  const st = state[setKey];
+  if(st.answered[qi] !== undefined) return;
+  st.answered[qi] = oi;
+  if(oi === st.questions[qi].correctIndex) st.correctCount++;
+  render(setKey);
+}
+
+function reshuffle(setKey){
+  state[setKey] = { questions: buildShuffled(setKey), answered:{}, correctCount:0 };
+  render(setKey);
+}
+
+["easy","medium","hard"].forEach(k=>{
+  state[k] = { questions: buildShuffled(k), answered:{}, correctCount:0 };
+  render(k);
+});
+
+document.querySelectorAll(".setbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".setbtn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-"+btn.dataset.set).classList.add("active");
+  });
+});
+</script>
+</body>
+</html>

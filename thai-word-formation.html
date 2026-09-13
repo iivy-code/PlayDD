@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>การสร้างคำในภาษาไทย — สรุปและแบบทดสอบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E2761;
+    --navy-deep:#131A45;
+    --paper:#FFFFFF;
+    --bg:#F5F6FA;
+    --line:#DDE1EC;
+    --ink:#1A1A1A;
+    --ink-soft:#5B6172;
+    --accent:#1565C0;
+    --easy:#2E7D5B;
+    --medium:#B8860B;
+    --hard:#B03A2E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+    background:var(--bg); color:var(--ink); font-size:11pt; line-height:1.65;
+  }
+  header{
+    background:var(--navy); color:#fff; padding:22px 24px 18px;
+  }
+  header h1{margin:0 0 4px; font-size:18pt; font-weight:700;}
+  header .sub{font-size:10pt; color:#CADCFC; margin:0;}
+  .container{max-width:960px; margin:0 auto; padding:0 16px 60px;}
+  .topic-tabs{display:flex; gap:6px; margin:18px 0 0; flex-wrap:wrap;}
+  .topic-btn{
+    flex:1 1 auto; min-width:140px; padding:12px 10px; text-align:center;
+    background:#fff; border:1px solid var(--line); border-bottom:3px solid transparent;
+    cursor:pointer; font-family:inherit; font-size:12pt; font-weight:600; color:var(--ink-soft);
+    border-radius:6px 6px 0 0;
+  }
+  .topic-btn.active{color:var(--navy); border-bottom:3px solid var(--navy); background:#fff;}
+  .topic-panel{display:none; background:#fff; border:1px solid var(--line); border-top:none; border-radius:0 0 6px 6px; padding:20px;}
+  .topic-panel.active{display:block;}
+  .topic-head{border-bottom:2px solid var(--navy); padding-bottom:10px; margin-bottom:16px;}
+  .topic-head h2{margin:0; color:var(--navy); font-size:14pt;}
+  .topic-head .subtitle{color:var(--ink-soft); font-size:9.5pt;}
+  .mode-tabs{display:flex; gap:8px; margin-bottom:16px;}
+  .mode-btn{
+    padding:8px 18px; border:1px solid var(--navy); background:#fff; color:var(--navy);
+    border-radius:4px; cursor:pointer; font-family:inherit; font-size:10.5pt; font-weight:600;
+  }
+  .mode-btn.active{background:var(--navy); color:#fff;}
+  .mode-panel{display:none;}
+  .mode-panel.active{display:block;}
+  .summary-grid{display:flex; flex-direction:column; gap:14px;}
+  .card{border:1px solid var(--line); border-radius:6px; padding:14px 16px; background:#FAFBFD;}
+  .card h3{margin:0 0 8px; color:var(--navy); font-size:12pt; border-left:4px solid var(--navy); padding-left:8px;}
+  .def-box{background:#EEF1F9; border-left:4px solid var(--navy); padding:10px 12px; border-radius:4px; font-size:10.5pt;}
+  table.summary-table{width:100%; border-collapse:collapse; margin-top:6px; font-size:10pt;}
+  table.summary-table th{background:var(--navy); color:#fff; padding:7px 9px; text-align:left; font-weight:600;}
+  table.summary-table td{padding:7px 9px; border-bottom:1px solid var(--line); vertical-align:top;}
+  table.summary-table tr:nth-child(even) td{background:#F5F6FA;}
+  .chip-grid{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .chip{background:#EEF1F9; border:1px solid var(--line); border-radius:4px; padding:5px 10px; font-size:9.5pt; color:var(--ink);}
+  .note-box{background:#FFF8E6; border-left:4px solid var(--medium); padding:10px 12px; border-radius:4px; font-size:10pt;}
+  .diff-tabs{display:flex; gap:6px; margin-bottom:12px;}
+  .diff-tabs button{
+    flex:1; padding:9px; border:1px solid var(--line); background:#fff; border-radius:4px;
+    cursor:pointer; font-family:inherit; font-size:10pt; font-weight:600; color:var(--ink-soft);
+  }
+  .diff-tabs button[data-diff="easy"].active{background:var(--easy); color:#fff; border-color:var(--easy);}
+  .diff-tabs button[data-diff="medium"].active{background:var(--medium); color:#fff; border-color:var(--medium);}
+  .diff-tabs button[data-diff="hard"].active{background:var(--hard); color:#fff; border-color:var(--hard);}
+  .quiz-meta{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
+  .score{font-size:10.5pt; font-weight:600; color:var(--navy);}
+  .reset-btn{background:#fff; border:1px solid var(--navy); color:var(--navy); padding:6px 12px; border-radius:4px; font-family:inherit; font-size:9.5pt; cursor:pointer;}
+  .q-item{border:1px solid var(--line); border-radius:6px; margin-bottom:10px; padding:12px 14px; background:#FAFBFD;}
+  .q-text{font-weight:600; margin-bottom:8px; font-size:10.5pt;}
+  .choice{
+    display:block; width:100%; text-align:left; padding:8px 10px; margin-bottom:6px;
+    border:1px solid var(--line); border-radius:4px; background:#fff; cursor:pointer;
+    font-family:inherit; font-size:10pt; color:var(--ink);
+  }
+  .choice:hover{border-color:var(--accent);}
+  .choice.correct{background:#E4F3EA; border-color:var(--easy); font-weight:600;}
+  .choice.wrong{background:#FBE7E4; border-color:var(--hard); font-weight:600;}
+  .choice.dim{opacity:.5;}
+  .choice[disabled]{cursor:default;}
+  .explain{margin-top:8px; padding:8px 10px; background:#EEF1F9; border-left:3px solid var(--navy); border-radius:4px; font-size:9.5pt; display:none;}
+  .explain.show{display:block;}
+  footer{text-align:center; color:var(--ink-soft); font-size:9pt; padding:20px 0;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>การสร้างคำในภาษาไทย</h1>
+  <p class="sub">สรุปเนื้อหาและแบบทดสอบ — คำประสม · คำซ้อน · คำซ้ำ · กาพย์เห่ชมเครื่องคาวหวาน · มารยาท (แนวข้อสอบปลายภาค ๑/๖๘)</p>
+</header>
+
+<div class="container">
+  <div class="topic-tabs" id="topic-tabs">
+    <button class="topic-btn active" data-topic="prasom">๑. คำประสม</button>
+    <button class="topic-btn" data-topic="saun">๒. คำซ้อน</button>
+    <button class="topic-btn" data-topic="sam">๓. คำซ้ำ</button>
+    <button class="topic-btn" data-topic="kapyhe">๔. กาพย์เห่ชมเครื่องคาวหวาน</button>
+    <button class="topic-btn" data-topic="marayat">๕. มารยาท</button>
+    <button class="topic-btn" data-topic="classify">๖. จำแนกคำ (ผสม)</button>
+  </div>
+
+  <!-- ===================== TOPIC: คำประสม ===================== -->
+  <section class="topic-panel active" data-topic="prasom">
+    <div class="topic-head">
+      <h2>๑. คำประสม</h2>
+      <span class="subtitle">สรุปเนื้อหา + แบบทดสอบ 30 ข้อ (ง่าย 10 / กลาง 10 / ยาก 10)</span>
+    </div>
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="summary">สรุปเนื้อหา</button>
+      <button class="mode-btn" data-mode="quiz">แบบทดสอบ</button>
+    </div>
+
+    <div class="mode-panel active" data-mode="summary">
+      <div class="summary-grid">
+        <div class="card">
+          <h3>นิยาม</h3>
+          <div class="def-box"><b>คำประสม</b> คือ คำที่เกิดจากการนำคำมูลที่มีความหมายต่างกันตั้งแต่ 2 คำขึ้นไปมารวมกัน แล้วเกิดเป็นคำที่มีความหมายใหม่ต่างจากความหมายของคำ 2 คำที่นำมารวมกัน แต่ก็ยังมีเค้าความหมายของคำเดิมอยู่</div>
+          <p style="margin-top:10px;">ตัวอย่าง: <b>หนังสือพิมพ์</b> (หนังสือ + พิมพ์) = สิ่งพิมพ์ข่าวและความเห็นที่เสนอแก่ประชาชนตามปกติออกเป็นรายวัน / <b>เหยี่ยวข่าว</b> (เหยี่ยว + ข่าว) = นักข่าวที่หาข่าวได้รวดเร็วเป็นพิเศษ</p>
+        </div>
+
+        <div class="card">
+          <h3>ข้อสังเกต — "คนใช้"</h3>
+          <p>เปรียบเทียบ 2 ประโยค: <b>"ใครเป็นคนใช้เขาไปซื้อของ"</b> (คนใช้ = คนที่บังคับให้ทำ, ความหมายตรงตัว, <u>ไม่ใช่</u>คำประสม) กับ <b>"คนใช้บ้านนี้ชื่อแจ๋ว"</b> (คนใช้ = คนที่มีหน้าที่คอยรับใช้, เกิดความหมายใหม่, <u>เป็น</u>คำประสม)</p>
+        </div>
+
+        <div class="card">
+          <h3>ประเภทของคำประสม</h3>
+          <table class="summary-table">
+            <tr><th style="width:20%;">ประเภท</th><th>ตัวอย่าง</th></tr>
+            <tr><td>คำประสมที่เป็นคำนาม</td><td>หัวใจ แม่ยาย แม่บ้าน แม่น้ำ ลูกน้ำ กาฝาก ม้าเร็ว มือมืด แกะดำ เมืองนอก กันชน ต้มยำ นั่งร้าน สามล้อ นอกชาน ตีนแมว ชูชีพ บัวลอย ดาวเทียม ทะเลทราย</td></tr>
+            <tr><td>คำประสมที่เป็นคำกริยา</td><td>เดินเล่น ร้องเรียน แก้ตัว ถอนสายบัว วางก้าม จับผิด คิดร้าย คิดสั้น นอกใจ เปรี้ยวปาก ตีข่า ปิดปาก ยกเมฆ แก้แค้น ช้ำใจ ทิ้งไพ่ จนตรอก กินโต๊ะ อ่อนใจ ซักฟอก</td></tr>
+          </table>
+          <p style="margin-top:8px; font-size:9.5pt; color:var(--ink-soft);">ควรฝึกวิเคราะห์ว่าคำประสมประกอบจากคำชนิดใด เช่น "หัวใจ" = คำนาม+คำนาม, "ม้าเร็ว" = คำนาม+คำวิเศษณ์, "นั่งร้าน" = คำกริยา+คำนาม</p>
+        </div>
+
+        <div class="card">
+          <h3>ลักษณะความหมายของคำประสม (3 แบบ)</h3>
+          <table class="summary-table">
+            <tr><th style="width:22%;">ลักษณะ</th><th style="width:42%;">คำอธิบาย</th><th>ตัวอย่าง</th></tr>
+            <tr><td>๑. ความหมายใกล้เคียงคำเดิม</td><td>เมื่อแยกคำมีความหมายต่างกัน แต่รวมกันแล้วยังมีเค้าความหมายเดิมของทั้งสองคำอยู่บ้าง</td><td><b>ยางลบ</b> (ยาง+ลบ), แกงป่า แกงจืด แกงเผ็ด รถบรรทุก รถไถ ไม้เท้า ไม้ตีพริก ไม้กวาด ผ้าเช็ดหน้า ผ้าปูโต๊ะ ผ้าม่าน ป่าดิบ ป่าโปร่ง ป่าสน</td></tr>
+            <tr><td>๒. ความหมายเฉพาะ</td><td>รวมกันแล้วเกิดความหมายใหม่ที่ต่างจากคำเดิมมาก จนต้องอาศัยคำอธิบายเพิ่ม</td><td><b>กันสาด</b> (กัน+สาด) = แผงกันฝน, เบาใจ อ่อนใจ ใจเสีย ลูกเสือ แม่ทัพ เสียหน้า ได้หน้า นั่งร้าน ห่อหมก กล่องดำ</td></tr>
+            <tr><td>๓. ความหมายเปรียบเทียบ</td><td>นำความหมายเดิมมาเปรียบเทียบเป็นความหมายใหม่ในเชิงเปรียบเปรย</td><td><b>ตีนแมว</b> = นักย่องเบา, หมาวัด ดอกฟ้า หัวสูง ลูกช้าง มือใหม่ มือสะอาด งูพิษ ตีนผี ขึ้นคาน ลูกหม้อ คุยโต สามหาว</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>คำประสมที่มีได้ 2 ความหมาย (ต้องดูบริบท)</h3>
+          <table class="summary-table">
+            <tr><th style="width:18%;">คำ</th><th style="width:24%;">ลักษณะความหมาย</th><th>หมายถึง</th></tr>
+            <tr><td rowspan="2">หมาวัด</td><td>ใกล้เคียงคำเดิม</td><td>หมาที่อาศัยอยู่ในวัด</td></tr>
+            <tr><td>เปรียบเทียบ</td><td>ผู้ชายที่มีศักดิ์ต่ำกว่าผู้หญิงที่ตนเองหมายปอง</td></tr>
+            <tr><td rowspan="2">ตีนผี</td><td>เฉพาะ</td><td>ส่วนของจักรเย็บผ้าที่ใช้กดผ้าเวลาเดินจักร ยกขึ้นลงได้</td></tr>
+            <tr><td>เปรียบเทียบ</td><td>เรียกผู้ที่ขับรถเร็วจนน่าหวาดเสียวและไม่รักษากฎจราจร</td></tr>
+          </table>
+        </div>
+
+        <div class="note-box">นักเรียนควรฝึกวิเคราะห์ส่วนประกอบของคำประสมว่าเกิดจากคำชนิดใด และสังเกตว่าคำประสมบางคำมีมากกว่า 1 ความหมาย ต้องอาศัยบริบทของประโยคจึงจะทราบความหมายที่ถูกต้อง</div>
+      </div>
+    </div>
+
+    <div class="mode-panel" data-mode="quiz">
+      <div class="diff-tabs" id="diff-prasom">
+        <button data-diff="easy" class="active">ง่าย (10 ข้อ)</button>
+        <button data-diff="medium">กลาง (10 ข้อ)</button>
+        <button data-diff="hard">ยาก (10 ข้อ)</button>
+      </div>
+      <div class="quiz-meta">
+        <div class="score" id="score-prasom">ตอบถูก <b>0</b> / <span class="qcount">0</span> ข้อ</div>
+        <button class="reset-btn" data-reset="prasom">ล้างคำตอบชุดนี้</button>
+      </div>
+      <div class="q-list" id="qlist-prasom"></div>
+    </div>
+  </section>
+
+  <!-- ===================== TOPIC: คำซ้อน ===================== -->
+  <section class="topic-panel" data-topic="saun">
+    <div class="topic-head">
+      <h2>๒. คำซ้อน</h2>
+      <span class="subtitle">สรุปเนื้อหา + แบบทดสอบ 30 ข้อ (ง่าย 10 / กลาง 10 / ยาก 10)</span>
+    </div>
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="summary">สรุปเนื้อหา</button>
+      <button class="mode-btn" data-mode="quiz">แบบทดสอบ</button>
+    </div>
+
+    <div class="mode-panel active" data-mode="summary">
+      <div class="summary-grid">
+        <div class="card">
+          <h3>นิยาม</h3>
+          <div class="def-box"><b>คำซ้อน</b> คือ คำที่เกิดจากการนำคำมูลตั้งแต่ 2 คำขึ้นไปมารวมกัน โดยแต่ละคำที่นำมารวมกันอาจมีความหมายเหมือนกัน คล้ายคลึงกัน หรือตรงกันข้ามก็ได้</div>
+          <p style="margin-top:10px;">ตัวอย่าง: <b>สูญหาย</b> (สูญ+หาย) — คำมูลใกล้เคียงกันมาก รวมกันเกิดความหมายใหม่ชัดเจนว่า "หายไป" / <b>ชั่วดี</b> (ชั่ว+ดี) — คำมูลตรงกันข้ามกันโดยสิ้นเชิง แต่รวมกันแล้วเกิดความหมายใหม่ที่เป็นกลาง ๆ อาจดีหรือไม่ดีก็ได้ เช่น "ชั่วดีอย่างไร ฉันก็จะพยายามทำต่อไป"</p>
+        </div>
+
+        <div class="card">
+          <h3>ตัวอย่างคำซ้อน</h3>
+          <div class="chip-grid">
+            <span class="chip">ข้าไท</span><span class="chip">ใหญ่โต</span><span class="chip">ทรัพย์สิน</span><span class="chip">แก่ชรา</span>
+            <span class="chip">จิตใจ</span><span class="chip">บ้านเรือน</span><span class="chip">เจ็บไข้</span><span class="chip">ทุบตี</span>
+            <span class="chip">ถ้วยชาม</span><span class="chip">กู้ยืม</span><span class="chip">อุ้มชู</span><span class="chip">ค้ำจุน</span><span class="chip">ดูดดื่ม</span>
+          </div>
+          <p style="margin-top:8px; font-size:9.5pt;">จุดมุ่งหมายของการสร้างคำซ้อนคือ <b>เน้นความหมายของคำที่เกิดขึ้นใหม่ให้ชัดเจนขึ้น</b> เช่น "เจ็บไข้" หมายถึงอาการเจ็บป่วยทั่ว ๆ ไป ไม่ได้จำกัดเฉพาะการเป็นไข้ / "ถ้วยชาม" หมายถึงภาชนะต่าง ๆ ไม่ได้หมายถึงเฉพาะถ้วยหรือชามเท่านั้น</p>
+        </div>
+
+        <div class="card">
+          <h3>ลักษณะความหมายของคำที่นำมาซ้อน (3 แบบ)</h3>
+          <table class="summary-table">
+            <tr><th style="width:20%;">ลักษณะ</th><th>ตัวอย่าง</th></tr>
+            <tr><td>๑. ความหมายเหมือนกัน</td><td>ดูแล เร็วไว สูญหาย ใหญ่โต ทรัพย์สิน เลือกสรร นุ่มนิ่ม กักขัง พบปะ ภูเขา รูปภาพ ยอดเยี่ยม เกี่ยวข้อง พูดคุย ยิ้มแย้มแจ่มใส</td></tr>
+            <tr><td>๒. ความหมายคล้ายกัน</td><td>เล็กน้อย หน้าตา แข้งขา ไร่นา ห้างร้าน เหนื่อยล้า ชักจูง แน่นหนา บ้านเมือง อดทน ปิดบัง แห้งแล้ง เก็บเกี่ยว ติดตาม เย็บปักถักร้อย</td></tr>
+            <tr><td>๓. ความหมายตรงกันข้าม</td><td>ทุกข์สุข เหตุผล ชั่วดี เท็จจริง อ้วนผอม ช้าเร็ว เป็นตาย บวกลบ ใกล้ไกล รู้ร้อนรู้หนาว ได้อย่างเสียอย่าง สูงต่ำดำขาว หวานอมขมกลืน ห่วงหน้าพะวงหลัง</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>เกร็ดความรู้ — คำซ้อนกับภาษาถิ่น</h3>
+          <p>คำที่นำมาซ้อนกันอาจเป็นคำภาษาไทยมาตรฐานซ้อนกับคำภาษาไทยถิ่น เพื่อช่วยให้เข้าใจความหมายของคำถิ่นจากคำมาตรฐานที่ซ้อนอยู่ด้วย</p>
+          <table class="summary-table">
+            <tr><th style="width:26%;">ถิ่น</th><th>ตัวอย่าง</th></tr>
+            <tr><td>ภาษาถิ่นอีสาน</td><td>ภู(เขา), แปด(เปื้อน), (เสื่อ)สาด</td></tr>
+            <tr><td>ภาษาถิ่นใต้</td><td>(ข่ม)เหง, (เพื่อน)เกลอ</td></tr>
+            <tr><td>ภาษาถิ่นเหนือ</td><td>(พบ)ปะ, ชะ(ล้าง)</td></tr>
+          </table>
+        </div>
+
+        <div class="note-box"><b>ข้อแตกต่างสำคัญ:</b> คำซ้อนเกิดจากการนำคำที่มีความหมายเหมือนกัน คล้ายกัน หรือตรงกันข้ามมารวมกัน ส่วนคำประสมเกิดจากคำที่มีความหมายต่างกันมารวมกัน — แต่ทั้งสองแบบความหมายที่เกิดขึ้นจากการรวมกันจะต้องเป็นความหมายใหม่ ที่ยังมีเค้าความหมายเดิมของคำที่นำมารวมกันอยู่บ้าง</div>
+      </div>
+    </div>
+
+    <div class="mode-panel" data-mode="quiz">
+      <div class="diff-tabs" id="diff-saun">
+        <button data-diff="easy" class="active">ง่าย (10 ข้อ)</button>
+        <button data-diff="medium">กลาง (10 ข้อ)</button>
+        <button data-diff="hard">ยาก (10 ข้อ)</button>
+      </div>
+      <div class="quiz-meta">
+        <div class="score" id="score-saun">ตอบถูก <b>0</b> / <span class="qcount">0</span> ข้อ</div>
+        <button class="reset-btn" data-reset="saun">ล้างคำตอบชุดนี้</button>
+      </div>
+      <div class="q-list" id="qlist-saun"></div>
+    </div>
+  </section>
+
+  <!-- ===================== TOPIC: คำซ้ำ ===================== -->
+  <section class="topic-panel" data-topic="sam">
+    <div class="topic-head">
+      <h2>๓. คำซ้ำ</h2>
+      <span class="subtitle">สรุปเนื้อหา + แบบทดสอบ 30 ข้อ (ง่าย 10 / กลาง 10 / ยาก 10)</span>
+    </div>
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="summary">สรุปเนื้อหา</button>
+      <button class="mode-btn" data-mode="quiz">แบบทดสอบ</button>
+    </div>
+
+    <div class="mode-panel active" data-mode="summary">
+      <div class="summary-grid">
+        <div class="card">
+          <h3>นิยาม</h3>
+          <div class="def-box"><b>คำซ้ำ</b> คือ คำที่เกิดจากการนำคำมูลคำเดิมมากล่าวหรือเขียนซ้ำอีกครั้งหนึ่ง ในการเขียนจะใช้ <b>ไม้ยมก (ๆ)</b> แทนคำที่ซ้ำ</div>
+          <p style="margin-top:10px;">ตัวอย่าง: "เพื่อนมาแล้ว" ต่างจาก "เพื่อน ๆ มาแล้ว" — คำว่า "เพื่อน ๆ" บ่งบอกจำนวนเพื่อนที่มามากกว่าประโยคแรก (เป็นพหูพจน์)</p>
+        </div>
+
+        <div class="card">
+          <h3>ประเภทของคำซ้ำ (แบ่งตามการออกเสียง)</h3>
+          <table class="summary-table">
+            <tr><th style="width:26%;">ประเภท</th><th>ตัวอย่าง</th></tr>
+            <tr><td>คำซ้ำไม่เปลี่ยนเสียง</td><td>พี่ๆ น้องๆ สาวๆ หนุ่มๆ เด็กๆ เกือบๆ ราวๆ กล้วยๆ ไหนๆ พอดีๆ</td></tr>
+            <tr><td>คำซ้ำเปลี่ยนเสียง</td><td>ดี๊ดี ช้อบชอบ เปรี้ยวเปรี้ยว อิ๊มอิ่ม พ้อมผอม ฮิ้วหิว เบื๊อเบื่อ เร้วเร็ว</td></tr>
+          </table>
+          <p style="margin-top:8px; font-size:9.5pt; color:var(--ink-soft);">คำซ้ำเปลี่ยนเสียงคือคำซ้ำที่เน้นเสียงวรรณยุกต์ของพยางค์แรกให้เป็นพิเศษ และอาจเกิดกับคำที่มีมากกว่า 1 พยางค์ เช่น โบร้าณโบราณ ตล้าดตลาด นางเอ๊กนางเอก ผู้ดีผู้ดี</p>
+        </div>
+
+        <div class="card">
+          <h3>ลักษณะความหมายของคำซ้ำ (5 แบบ)</h3>
+          <table class="summary-table">
+            <tr><th style="width:18%;">ลักษณะ</th><th style="width:30%;">คำอธิบาย</th><th>ตัวอย่างประโยค</th></tr>
+            <tr><td>๑. ความหมายเปลี่ยนไป</td><td>ซ้ำแล้วความหมายต่างไปจากคำเดิมโดยสิ้นเชิง</td><td>เรื่อง<b>กล้วย ๆ</b> แบบนี้ฉันทำได้สบายมาก (กล้วยๆ = ง่ายมาก ไม่ใช่ผลไม้)</td></tr>
+            <tr><td>๒. ความหมายเป็นพหูพจน์</td><td>ซ้ำแล้วแสดงจำนวนที่เพิ่มมากขึ้น</td><td>คุณครูรัก<b>เด็ก ๆ</b> ทุกคนในห้อง / เลี้ยงช้างเป็น<b>โขลง ๆ</b></td></tr>
+            <tr><td>๓. ความหมายแยกจำนวน</td><td>ซ้ำแล้วแสดงการแยกเป็นส่วน ๆ</td><td>รับประทานอาหารให้หมดเป็น<b>จาน ๆ</b> ไป / อ่านเอกสารเป็น<b>เรื่อง ๆ</b> ไป</td></tr>
+            <tr><td>๔. ความหมายเน้นหนักขึ้น</td><td>ซ้ำแล้วเน้นย้ำให้มีความชัดเจนขึ้น</td><td>ขับรถยนต์<b>ช้า ๆ</b> เมื่อขึ้นเขา / ตักแต่<b>ผัก ๆ</b> ให้หน่อย</td></tr>
+            <tr><td>๕. ความหมายอ่อนลง</td><td>ซ้ำแล้วแสดงความไม่ชัดเจน หรือไม่เจาะจง</td><td>รู้สึก<b>คล้าย ๆ</b> จะเป็นไข้ / เสื้อสี<b>เขียว ๆ</b> / สูง<b>ราว ๆ</b> 170 ซม.</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>ข้อควรระวัง — คำที่ "หน้าตา" เหมือนคำซ้ำ แต่ไม่ใช่</h3>
+          <table class="summary-table">
+            <tr><th style="width:28%;">คำ</th><th>เหตุผล</th></tr>
+            <tr><td><b>ฉอด ๆ, ปาว ๆ, หลัด ๆ, หยก ๆ</b></td><td>นำคำมูลเดิมมาใช้เดี่ยว ๆ ไม่ได้ ต้องใช้อยู่ในรูปที่ซ้ำเท่านั้น</td></tr>
+            <tr><td><b>จะจะ</b></td><td>เป็นคำมูล 2 พยางค์ หมายถึง ชัดเจน กระจ่าง (ไม่ใช่คำซ้ำ)</td></tr>
+            <tr><td><b>นานา</b></td><td>เป็นคำภาษาบาลี 2 พยางค์ หมายถึง ต่าง ๆ (ไม่ใช่คำซ้ำ)</td></tr>
+          </table>
+        </div>
+
+        <div class="note-box"><b>สรุปโครงสร้างร่วม 3 ประเภท:</b> คำประสม คำซ้อน คำซ้ำ ทุกประเภทเกิดจากการนำคำมูลตั้งแต่ 2 คำขึ้นไปมารวมกัน คำมูลอาจเป็นคำไทยแท้หรือคำจากภาษาต่างประเทศก็ได้ แต่คำใหม่ที่เกิดขึ้นต้องมีความหมายใหม่ หรืออาจยังคงเค้าความหมายเดิมอยู่บ้าง</div>
+      </div>
+    </div>
+
+    <div class="mode-panel" data-mode="quiz">
+      <div class="diff-tabs" id="diff-sam">
+        <button data-diff="easy" class="active">ง่าย (10 ข้อ)</button>
+        <button data-diff="medium">กลาง (10 ข้อ)</button>
+        <button data-diff="hard">ยาก (10 ข้อ)</button>
+      </div>
+      <div class="quiz-meta">
+        <div class="score" id="score-sam">ตอบถูก <b>0</b> / <span class="qcount">0</span> ข้อ</div>
+        <button class="reset-btn" data-reset="sam">ล้างคำตอบชุดนี้</button>
+      </div>
+      <div class="q-list" id="qlist-sam"></div>
+    </div>
+  </section>
+
+  <!-- ===================== TOPIC: กาพย์เห่ชมเครื่องคาวหวาน ===================== -->
+  <section class="topic-panel" data-topic="kapyhe">
+    <div class="topic-head">
+      <h2>๔. กาพย์เห่ชมเครื่องคาวหวาน</h2>
+      <span class="subtitle">สรุปเนื้อหา + แบบทดสอบ 30 ข้อ (ง่าย 10 / กลาง 10 / ยาก 10)</span>
+    </div>
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="summary">สรุปเนื้อหา</button>
+      <button class="mode-btn" data-mode="quiz">แบบทดสอบ</button>
+    </div>
+
+    <div class="mode-panel active" data-mode="summary">
+      <div class="summary-grid">
+        <div class="card">
+          <h3>ผู้แต่ง / จุดประสงค์ / ที่มา</h3>
+          <div class="def-box">พระราชนิพนธ์ใน <b>พระบาทสมเด็จพระพุทธเลิศหล้านภาลัย (รัชกาลที่ 2)</b> สันนิษฐานว่าทรงพระราชนิพนธ์ขณะดำรงพระอิสริยยศเป็นสมเด็จเจ้าฟ้ากรมหลวงอิศรสุนทร ในรัชกาลที่ 1 โดยมีพระราชประสงค์เพื่อชมฝีพระหัตถ์การทำเครื่องเสวยของ <b>เจ้าฟ้าหญิงบุญรอด</b> ซึ่งภายหลังคือ <b>สมเด็จพระศรีสุริเยนทราบรมราชินี</b> ในรัชกาลที่ 2</div>
+          <p style="margin-top:10px;">ชื่อเรียกเต็ม: "กาพย์เห่ชมเครื่องคาวหวานและว่าด้วยงานนักขัตฤกษ์" เพราะเนื้อความประกอบด้วยบทเห่ชมเครื่องคาว บทเห่ชมผลไม้ บทเห่ชมเครื่องหวาน บทเห่ครวญเข้ากับนักขัตฤกษ์ (งานนักขัตฤกษ์ของคนไทยเชื้อสายมุสลิมนิกายชีอะห์) และบทเห่เจ้าเซ็น — ตอนที่นำมาศึกษาคือ <b>ตอนชมเครื่องคาว</b></p>
+          <p>เดิมทรงพระราชนิพนธ์ไว้สำหรับเห่เรือเป็นการส่วนพระองค์ ("เห่เรือเล่น") ภายหลังในรัชสมัยพระบาทสมเด็จพระจอมเกล้าเจ้าอยู่หัว (รัชกาลที่ 4) โปรดเกล้าฯ ให้นำมาใช้เห่ในพระราชพิธีเสด็จพระราชดำเนินโดยขบวนพยุหยาตราทางชลมารค</p>
+        </div>
+
+        <div class="card">
+          <h3>ลักษณะคำประพันธ์</h3>
+          <p>แต่ละตอนขึ้นต้นด้วย <b>โคลงสี่สุภาพ 1 บท</b> ตามด้วย <b>กาพย์ยานี 11</b> ไม่จำกัดจำนวนบท โดยเนื้อความของโคลงบทแรกคล้ายกับกาพย์ในบทแรก (ลักษณะกาพย์เห่ตามแบบฉบับกาพย์เห่เรือ) จึงเรียกว่า "กาพย์เห่"</p>
+          <table class="summary-table">
+            <tr><th style="width:20%;">คำประพันธ์</th><th>ลักษณะ</th></tr>
+            <tr><td>โคลงสี่สุภาพ</td><td>1 บท มี 4 บาท / 1 บาท มี 2 วรรค / วรรคหน้ามี 5 คำ วรรคหลังมี 2 คำ (บาทที่ 4 วรรคหน้ามี 5 คำ วรรคหลังมี 4 คำ) / วรรคหลังของบาทที่ 1 และ 3 อาจมีคำสร้อยก็ได้ / มีข้อกำหนดคำเอก 7 แห่ง คำโท 4 แห่ง</td></tr>
+            <tr><td>กาพย์ยานี 11</td><td>1 บท มี 2 บาท คือ บาทเอกและบาทโท / บาทหนึ่งแบ่งเป็น 2 วรรค วรรคหน้ามี 5 คำ วรรคหลังมี 6 คำ</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>ศัพทานุกรม (คำศัพท์ท้ายบท)</h3>
+          <table class="summary-table">
+            <tr><th style="width:18%;">คำศัพท์</th><th>ความหมาย</th></tr>
+            <tr><td>กล</td><td>เช่น อย่าง เหมือน</td></tr>
+            <tr><td>ข้อน</td><td>อาการตีหรือทุบ</td></tr>
+            <tr><td>ความขำ</td><td>ความลับ เรื่องที่มิได้เปิดเผย</td></tr>
+            <tr><td>เคร่า</td><td>รอ คอย</td></tr>
+            <tr><td>ฉุน</td><td>แรง กล้า (ใช้แก่กลิ่นและรส)</td></tr>
+            <tr><td>โดย</td><td>ด้วย ตาม</td></tr>
+            <tr><td>น้ำปลาญี่ปุ่น</td><td>เครื่องปรุงประเภทน้ำปลาหรือซอสปรุงรสคล้ายซีอิ๊ว</td></tr>
+            <tr><td>นิทร</td><td>มาจาก "นิทรา" หมายถึง การนอนหลับ</td></tr>
+            <tr><td>ใบทองหลาง</td><td>ใบรูปหอก ปลายเรียวแหลม รสฝาดเล็กน้อย ใบอ่อนรับประทานได้ทั้งดิบและสุก ใช้กินกับเมี่ยงคำ ปลาแนม</td></tr>
+            <tr><td>ประทิ่น</td><td>เครื่องหอม ในที่นี้หมายถึงกลิ่นหอมน่ารับประทาน</td></tr>
+            <tr><td>ผักโฉม</td><td>ชื่อไม้ล้มลุกชนิดหนึ่ง ชอบขึ้นในที่ชื้นแฉะ กลิ่นหอม ใช้เป็นอาหารและทำยา</td></tr>
+            <tr><td>ผักหวาน</td><td>ชื่อไม้พุ่มชนิดหนึ่ง ยอดกินได้</td></tr>
+            <tr><td>พร้อง</td><td>พูด กล่าว ร้อง</td></tr>
+            <tr><td>พิศวาส</td><td>รักใคร่ สิเนหา</td></tr>
+            <tr><td>ไฟฟอน</td><td>กองไฟที่ดับแล้วแต่ยังมีความร้อนระอุอยู่</td></tr>
+            <tr><td>ภุญช์</td><td>อาหาร</td></tr>
+            <tr><td>ยี่หร่า</td><td>ชื่อเรียกผลแก่แห้งของไม้ล้มลุก ใช้เป็นเครื่องเทศ เม็ดเล็ก รูปไข่ แบน สีน้ำตาล กลิ่นหอมฉุน รสเผ็ดร้อน นิยมใช้หมักเนื้อสัตว์เพื่อดับกลิ่นคาว</td></tr>
+            <tr><td>รางชาง</td><td>สวยงาม งดงาม เด่น</td></tr>
+            <tr><td>ลูกเอ็น</td><td>ลูกกระวานเทศ (เรียกอีกชื่อว่า ลูกเอ็ล หรือเอลา) ไม้ล้มลุกจากอินเดียตอนใต้ ผลรูปกระสวยหรือรูปไข่ปลายแหลม สีนวล มี 3 พู กลิ่นหอมฉุน ใช้หุงข้าวและปรุงอาหาร</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>อาหารที่ปรากฏในเรื่อง (บางส่วน)</h3>
+          <table class="summary-table">
+            <tr><th style="width:16%;">อาหาร</th><th>ลักษณะ</th></tr>
+            <tr><td>แกงมัสมั่น</td><td>แกงชนิดหนึ่ง น้ำแกงข้น อย่างมุสลิม ใช้เนื้อหรือไก่ ปรุงด้วยเครื่องเทศ รสเค็ม หวาน ออกเปรี้ยวเล็กน้อย</td></tr>
+            <tr><td>ยำใหญ่</td><td>ยำที่ใส่แตงกวา ไข่ต้ม กุ้งต้ม หมูต้ม หนังหมู เห็ดหูหนู ผัก ปรุงรสเปรี้ยว เค็ม หรือหวานก็ได้</td></tr>
+            <tr><td>ตับเหล็ก</td><td>อาหารทำจากม้ามหมู นำไปลวกหรือต้มแล้วปรุงรส</td></tr>
+            <tr><td>หมูแนม</td><td>อาหารว่าง ทำด้วยเนื้อหมูไม่ติดมันบดผสมข่าและแป้งแดงจีน ทำให้สุกด้วยการผัดในน้ำสะเอะ</td></tr>
+            <tr><td>ก้อยกุ้ง</td><td>อาหารที่ทำด้วยกุ้งสด ลักษณะคล้ายพล่า</td></tr>
+            <tr><td>แกงเทโพ</td><td>แกงเผ็ดใส่กะทิ มีผักบุ้งและหมูสามชั้นเป็นส่วนประกอบสำคัญ (สูตรเดิมใส่ปลาเทโพ)</td></tr>
+            <tr><td>แกงคั่วส้ม</td><td>แกงกะทิ คล้ายแกงเผ็ดแต่มีรสออกเปรี้ยว</td></tr>
+            <tr><td>พล่า</td><td>เครื่องกับข้าว คล้ายยำ มักใช้เนื้อดิบ ทำให้สุกด้วยของเปรี้ยวเช่นมะนาว</td></tr>
+            <tr><td>ล่าเตียง</td><td>อาหารว่าง ใช้ไข่โรยเป็นร่างแห ห่อไส้ที่ทำด้วยกุ้งผัดกับเครื่องปรุง</td></tr>
+            <tr><td>หรุ่ม</td><td>อาหารที่มีไส้ทำด้วยหมูหั่นชิ้นเล็ก ผัดกับถั่วลิสง หัวหอม ห่อด้วยไข่โรยฝอย</td></tr>
+            <tr><td>รังนก</td><td>รังของนกนางแอ่นชนิดหนึ่ง เมื่อแช่น้ำมีลักษณะคล้ายวุ้นกินได้</td></tr>
+            <tr><td>แสร้งว่า</td><td>อาหารทำด้วยกุ้งปรุงเป็นเครื่องจิ้ม มาจาก "แสร้งว่า" คือไตปลานั่นเอง</td></tr>
+            <tr><td>ข้าวหุง</td><td>ศิลปะการหุงข้าวแบบหนึ่งของแขกเปอร์เซีย ใช้เนยเพื่อให้เม็ดข้าวเรียงสวยงาม สีเหลืองสวยงาม</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>คุณค่าด้านเนื้อหา</h3>
+          <p>แนวคิดสำคัญคือการชื่นชมเสน่ห์ของอาหารไทยและเสน่ห์การทำอาหารของหญิงไทย ตามพระราชประสงค์ของผู้ประพันธ์คือเพื่อชมฝีพระหัตถ์การทำอาหารของเจ้าฟ้าหญิงบุญรอด นอกจากนี้ยังให้:</p>
+          <table class="summary-table">
+            <tr><th style="width:26%;">ด้าน</th><th>รายละเอียด</th></tr>
+            <tr><td>๑. ความรู้เรื่องอาหารไทย</td><td>กล่าวถึงอาหารไทยหลายชนิด ทั้งที่รู้จักกันดีในปัจจุบัน (มัสมั่น เทโพ ก้อยกุ้ง แกงคั่ว หมูแนม) อาหารโบราณที่หารับประทานยาก (ล่าเตียง หรุ่ม) และอาหารต่างชาติ (ข้าวหุงเครื่องเทศ) พร้อมอธิบายส่วนประกอบการปรุงบางชนิด</td></tr>
+            <tr><td>๒. ถ้อยคำบรรยายให้อรรถรส</td><td>ถ้อยคำที่กวีใช้ทำให้ผู้อ่านได้รับรสแห่งความรัก ความรู้สึกต่าง ๆ ของกวี เช่น "ช้าช้าพล่าเนื้อสด คิดความยามถนอม ฟุ้งปรากฏรสหื่นหอม สนิทเนื้อเจือเสาวคนธ์"</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>คุณค่าด้านวรรณศิลป์</h3>
+          <table class="summary-table">
+            <tr><th style="width:22%;">กลวิธี</th><th>ตัวอย่าง/คำอธิบาย</th></tr>
+            <tr><td>๑. การเล่นเสียงสัมผัส</td><td>ทั้งสัมผัสสระและสัมผัสพยัญชนะ เช่น "หมูแนมแหลมเลิศรส พร้อมพริกสดใบทองหลาง" และการเล่นเสียงวรรณยุกต์ "หรุ่ม-รุม-รุ่ม" ใน "เห็นหรุ่มรุมทรวงเศร้า...รุ่มรุ่มเร้าคือไฟฟอน"</td></tr>
+            <tr><td>๒. การใช้คำซ้ำ</td><td>เช่นคำว่า "รุ่มรุ่ม" ในวรรค "รุ่มรุ่มเร้าคือไฟฟอน" เพื่อเน้นย้ำความหมายและให้เกิดความไพเราะยิ่งขึ้น</td></tr>
+            <tr><td>๓. การเล่นคำ</td><td>เช่น การเล่นคำว่า "โฉม" ในคำว่า "ผักโฉม" (ชื่อผัก) และ "โฉม" ในคำที่ 2, 3 (หมายถึงรูปร่างทรวดทรงของนางผู้เป็นที่รัก)</td></tr>
+            <tr><td>๔. การใช้อติพจน์</td><td>ความเปรียบที่เกินจริง เพื่อถ่ายทอดอารมณ์ให้ดียิ่งขึ้น เช่น "ก้อยกุ้งปรุงประทิ่น รสทิพย์หยิบมาโปรย วางถึงลิ้นดิ้นแดโดย ฤาจะเปรียบเทียบทันขวัญ"</td></tr>
+            <tr><td>๕. การใช้อุปมา</td><td>เปรียบเทียบสิ่งหนึ่งเหมือนกับอีกสิ่งหนึ่ง เช่น เปรียบนกที่ต้องพรากจากรังกับกวีที่ต้องพรากจากน้องอันเป็นที่รัก "รังนกนึ่งน่าซด โอชารสกว่าทั้งปวง เหมือนเรียมร้างห่างห้องหวน นกพรากจากรังรวง"</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>คุณค่าด้านสังคมและวัฒนธรรม</h3>
+          <table class="summary-table">
+            <tr><th style="width:26%;">ประเด็น</th><th>รายละเอียด</th></tr>
+            <tr><td>๑. กรรมวิธีปรุงอาหารของคนไทย</td><td>สะท้อนส่วนประกอบ ขั้นตอนการทำอาหาร เคล็ดลับการจัดตกแต่งที่ประณีตสวยงาม เช่น "มัสมั่นแกงแก้วตา ชายใดได้กลืนแกง หอมยี่หร่ารสร้อนแรง แรงอยากให้ใฝ่ฝันหา"</td></tr>
+            <tr><td>๒. เสน่ห์ปลายจวักของผู้หญิง</td><td>อาหารเป็นเครื่องสื่อถึงความรัก ความผูกพันในครอบครัว ฝีมือการทำอาหารแสดงถึงเสน่ห์ที่เกิดจากฝีมือปรุงอาหารให้โอชารสของผู้หญิงไทย</td></tr>
+            <tr><td>๓. การติดต่อกับชาวต่างชาติ</td><td>สะท้อนให้เห็นว่าคนไทยมีการติดต่อกับชาวต่างชาติทำให้ได้รับวัฒนธรรมด้านอาหารเข้ามา เช่น "ข้าวหุงปรุงอย่างเทศ ใครหุงปรุงไม่เป็น รสพิเศษใส่ลูกเอ็น เช่นเชิงมิตรประดิษฐ์ทำ" (การหุงข้าวใส่ลูกเอ็นหรือกระวานเทศ เป็นวิธีหุงข้าวอย่างต่างชาติ)</td></tr>
+            <tr><td>๔. ความเชื่อเรื่องสวรรค์</td><td>สังเกตจากคำว่า "เมืองบน" ซึ่งหมายถึงเมืองฟ้า เมืองสวรรค์ เช่น "ล่าเตียงคิดเตียงน้อง ลดหลั่นชั้นชอบกล นอนเตียงทองทำเมืองบน ยลอยากนิทรคิดแนบนอน"</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>ข้อคิดจากเรื่อง</h3>
+          <table class="summary-table">
+            <tr><th style="width:6%;">#</th><th>ข้อคิด</th></tr>
+            <tr><td>๑</td><td><b>การรู้จักดูแลเอาใจใส่คนรัก</b> — เมื่อเห็นหรือได้รับประทานอาหารใด กวีก็หวนคำนึงถึงหญิงคนรักของตนเสมอ นักเรียนนำไปปรับใช้ได้กับคนในครอบครัว เพื่อน พี่ น้อง ไม่ใช่เพียงคนรักเท่านั้น</td></tr>
+            <tr><td>๒</td><td><b>ควรใช้สติเมื่อมีความรัก</b> — พึงตระหนักว่าความรักมีทั้งสุขและทุกข์ ดังคำประพันธ์ "เห็นหรุ่มรุมทรวงเศร้า เจ็บไกลใจอาวรณ์ รุ่มรุ่มเร้าคือไฟฟอน ร้อนรุ่มรุ่มกลุ้มกลางทรวง" สะท้อนความรุ่มร้อนใจเมื่อต้องพลัดพรากจากคนรัก</td></tr>
+            <tr><td>๓</td><td><b>การทำอาหารต้องมีความประณีตทุกขั้นตอน</b> — นำมาประยุกต์ได้กับการฝึกตนให้มีความประณีตในการทำงาน มีความตั้งใจ และมีความละเอียดรอบคอบในทุกเรื่อง</td></tr>
+            <tr><td>๔</td><td><b>ควรนำความรู้เกี่ยวกับอาหารไทยไปปรับใช้ในชีวิตจริง</b> — เพราะอาหารไทยต่าง ๆ ล้วนมีคุณค่าและคุณประโยชน์ต่อร่างกาย เช่น แกงมัสมั่นมียี่หร่าเป็นส่วนประกอบ ซึ่งมีประโยชน์หากรับประทานในปริมาณที่เหมาะสม</td></tr>
+          </table>
+        </div>
+
+        <div class="note-box"><b>บทวิเคราะห์โดยรวม:</b> กาพย์เห่ชมเครื่องคาวหวานพรรณนาเกี่ยวกับอาหารที่สร้างสีสันและรสชาติได้อย่างน่าลิ้มลอง สะท้อนวัฒนธรรมด้านอาหารไทยได้เป็นอย่างดี แสดงถึงพระปรีชาสามารถของพระบาทสมเด็จพระพุทธเลิศหล้านภาลัยในการพรรณนาให้ได้อรรถรส จึงถูกนำมากล่าวอ้างอิงในตำราอาหารไทยอยู่เสมอ</div>
+      </div>
+    </div>
+
+    <div class="mode-panel" data-mode="quiz">
+      <div class="diff-tabs" id="diff-kapyhe">
+        <button data-diff="easy" class="active">ง่าย (10 ข้อ)</button>
+        <button data-diff="medium">กลาง (10 ข้อ)</button>
+        <button data-diff="hard">ยาก (10 ข้อ)</button>
+      </div>
+      <div class="quiz-meta">
+        <div class="score" id="score-kapyhe">ตอบถูก <b>0</b> / <span class="qcount">0</span> ข้อ</div>
+        <button class="reset-btn" data-reset="kapyhe">ล้างคำตอบชุดนี้</button>
+      </div>
+      <div class="q-list" id="qlist-kapyhe"></div>
+    </div>
+  </section>
+
+  <!-- ===================== TOPIC: มารยาท ===================== -->
+  <section class="topic-panel" data-topic="marayat">
+    <div class="topic-head">
+      <h2>๕. มารยาท</h2>
+      <span class="subtitle">สรุปเนื้อหา + แบบทดสอบ 30 ข้อ (ง่าย 10 / กลาง 10 / ยาก 10)</span>
+    </div>
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="summary">สรุปเนื้อหา</button>
+      <button class="mode-btn" data-mode="quiz">แบบทดสอบ</button>
+    </div>
+
+    <div class="mode-panel active" data-mode="summary">
+      <div class="summary-grid">
+        <div class="card">
+          <h3>มารยาทในการพูด</h3>
+          <ol style="margin:0; padding-left:20px; font-size:10pt;">
+            <li>แต่งกายให้สุภาพเรียบร้อย</li>
+            <li>มาถึงก่อนเวลาหรือตรงเวลา</li>
+            <li>เตรียมข้อมูลให้พร้อม เช่น เตรียมเรื่อง ซักซ้อม</li>
+            <li>รู้จักกาลเทศะให้เหมาะสม</li>
+            <li>ใช้คำสุภาพ ไม่หยาบคาย</li>
+            <li>ใช้น้ำเสียงให้เหมาะสมกับเรื่องที่พูด</li>
+            <li>ไม่พูดข่มขู่หรือทำให้ผู้อื่นโกรธ</li>
+            <li>ไม่พูดแทรก</li>
+            <li>มีสติ คิดก่อนพูด</li>
+            <li>ไม่โต้เถียงโดยไม่มีเหตุผล</li>
+            <li>สบตาผู้ฟัง</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3>มารยาทในการฟัง</h3>
+          <ol style="margin:0; padding-left:20px; font-size:10pt;">
+            <li>ฟังด้วยความสุภาพเรียบร้อย ตั้งใจฟัง</li>
+            <li>การฟังในที่ประชุม ควรเข้าไปนั่งก่อนผู้พูดเริ่มพูด</li>
+            <li>จดบันทึกข้อความสำคัญ หากจำเป็นให้ซักถาม</li>
+            <li>ฟังด้วยความพินิจ หน้าตาเบิกบานแจ่มใส ไม่มีอคติ</li>
+            <li>มองหน้าผู้พูด</li>
+            <li>ไม่ลุกออกทันทีโดยไม่จำเป็น</li>
+            <li>ไม่ก่อความรำคาญ</li>
+            <li>ไม่พูดแทรก</li>
+            <li>ปรบมือตอนจบ</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3>มารยาทในการดู</h3>
+          <ol style="margin:0; padding-left:20px; font-size:10pt;">
+            <li>ดูอย่างสงบ ไม่ส่งเสียงดัง</li>
+            <li>ไม่คุยหรือเล่นระหว่างดู</li>
+            <li>ปรบมือตอนจบ</li>
+            <li>ไปดูให้ตรงเวลา</li>
+            <li>ไม่นำอาหารเครื่องดื่มเข้าไป</li>
+            <li>ไม่เดินไปมา</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3>มารยาทในการเขียน</h3>
+          <ol style="margin:0; padding-left:20px; font-size:10pt;">
+            <li>เขียนด้วยลายมือที่อ่านง่าย</li>
+            <li>ใช้หมึกดำหรือน้ำเงินในการเขียน</li>
+            <li>เขียนสะกดคำให้ถูกต้อง</li>
+            <li>เมื่อนำงานเขียนของคนอื่นมาใช้ ต้องมีการอ้างอิง เขียนชื่อเจ้าของ</li>
+            <li>ไม่พึงเขียนเรื่องหยาบคายหรืออนาจาร</li>
+            <li>ไม่เขียนใส่ร้ายผู้อื่น</li>
+            <li>รักษาความสะอาดในการเขียน</li>
+            <li>ไม่เขียนล่วงล้ำบัตรส่วนตัวของผู้อื่น</li>
+            <li>รีบส่งงานเขียนตามกำหนด</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3>มารยาทในการอ่าน</h3>
+          <ol style="margin:0; padding-left:20px; font-size:10pt;">
+            <li>อ่านอย่างตั้งใจ มีสมาธิ</li>
+            <li>อ่านในใจ ไม่ส่งเสียงดังรบกวนผู้อื่น</li>
+            <li>ไม่ขีดเขียนหรือขีดเส้นในหนังสือส่วนรวม</li>
+            <li>ไม่พับหน้ากระดาษ ดูแลรักษาให้ดี</li>
+            <li>ไม่ฉีกส่วนใดส่วนหนึ่งของหนังสือ</li>
+            <li>ไม่กินขนมขณะอ่านหนังสือ</li>
+            <li>ไม่อ่านเอกสารของผู้อื่นโดยไม่ได้รับอนุญาต</li>
+            <li>เก็บหนังสือเข้าที่</li>
+            <li>อ่านหนังสือให้ถูกที่ถูกเวลา</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3>การเขียนแสดงความคิดเห็น</h3>
+          <p><b>องค์ประกอบสำคัญ:</b> ๑) ประเด็นสำคัญ ๒) ข้อมูลสนับสนุน</p>
+          <table class="summary-table">
+            <tr><th style="width:10%;">#</th><th>หลักการเขียนแสดงความคิดเห็น</th></tr>
+            <tr><td>๑</td><td>ต้องแสดงความคิดเห็นที่สร้างสรรค์ มีประโยชน์และคุณค่า</td></tr>
+            <tr><td>๒</td><td>ใช้ข้อมูลสนับสนุนที่ถูกต้อง เชื่อถือได้</td></tr>
+            <tr><td>๓</td><td>ไม่ยึดถือความคิดของตัวเองเป็นหลัก ควรเปิดรับมุมมองที่หลากหลาย</td></tr>
+          </table>
+          <table class="summary-table" style="margin-top:8px;">
+            <tr><th style="width:10%;">#</th><th>ขั้นตอนการเขียนแสดงความคิดเห็น</th></tr>
+            <tr><td>๑</td><td>สรุปประเด็นสำคัญ</td></tr>
+            <tr><td>๒</td><td>พิจารณาว่าเห็นด้วยหรือไม่ และมีความคิดเห็นไปในแง่มุมใด</td></tr>
+            <tr><td>๓</td><td>เสนอความคิดเห็นให้ถูกต้องและต่อเนื่อง</td></tr>
+          </table>
+        </div>
+
+        <div class="note-box"><b>หลักการร่วม:</b> มารยาทในการพูด ฟัง ดู เขียน และอ่าน ล้วนตั้งอยู่บนพื้นฐานของความเคารพผู้อื่น ความรับผิดชอบต่อสังคม และความเหมาะสมกับกาลเทศะ</div>
+      </div>
+    </div>
+
+    <div class="mode-panel" data-mode="quiz">
+      <div class="diff-tabs" id="diff-marayat">
+        <button data-diff="easy" class="active">ง่าย (10 ข้อ)</button>
+        <button data-diff="medium">กลาง (10 ข้อ)</button>
+        <button data-diff="hard">ยาก (10 ข้อ)</button>
+      </div>
+      <div class="quiz-meta">
+        <div class="score" id="score-marayat">ตอบถูก <b>0</b> / <span class="qcount">0</span> ข้อ</div>
+        <button class="reset-btn" data-reset="marayat">ล้างคำตอบชุดนี้</button>
+      </div>
+      <div class="q-list" id="qlist-marayat"></div>
+    </div>
+  </section>
+
+  <!-- ===================== TOPIC: จำแนกคำ (ผสม) ===================== -->
+  <section class="topic-panel" data-topic="classify">
+    <div class="topic-head">
+      <h2>๖. จำแนกคำประสม คำซ้ำ คำซ้อน (โจทย์ผสม)</h2>
+      <span class="subtitle">สรุปเทคนิคการจำแนก + แบบทดสอบ 30 ข้อ (ง่าย 10 / กลาง 10 / ยาก 10)</span>
+    </div>
+    <div class="mode-tabs">
+      <button class="mode-btn active" data-mode="summary">สรุปเนื้อหา</button>
+      <button class="mode-btn" data-mode="quiz">แบบทดสอบ</button>
+    </div>
+
+    <div class="mode-panel active" data-mode="summary">
+      <div class="summary-grid">
+        <div class="card">
+          <h3>ตารางเปรียบเทียบคำประสม คำซ้อน คำซ้ำ</h3>
+          <table class="summary-table">
+            <tr><th style="width:14%;">ประเภท</th><th style="width:40%;">นิยาม</th><th>ตัวอย่าง</th></tr>
+            <tr><td>คำประสม</td><td>นำคำมูลที่มี<b>ความหมายต่างกัน</b>ตั้งแต่ 2 คำขึ้นไปมารวมกัน เกิดความหมายใหม่ แต่ยังมีเค้าความหมายเดิมอยู่บ้าง</td><td>หัวใจ แม่น้ำ ลูกน้ำ ยางลบ กันสาด ตีนแมว หมาวัด ดอกฟ้า งูพิษ ตีนผี จนตรอก</td></tr>
+            <tr><td>คำซ้อน</td><td>นำคำมูลตั้งแต่ 2 คำขึ้นไปมารวมกัน โดยแต่ละคำมี<b>ความหมายเหมือนกัน คล้ายกัน หรือตรงข้ามกัน</b></td><td>สูญหาย ชั่วดี ทุกข์สุข เหตุผล บ้านเรือน ทรัพย์สิน เจ็บไข้ เล็กน้อย อดทน อ้วนผอม</td></tr>
+            <tr><td>คำซ้ำ</td><td>นำ<b>คำมูลคำเดิม</b>มากล่าวหรือเขียนซ้ำอีกครั้ง เขียนแทนด้วยไม้ยมก (ๆ) หรือเปลี่ยนเสียงวรรณยุกต์พยางค์แรก</td><td>พี่ๆ เด็กๆ ราวๆ กล้วยๆ ดี๊ดี ช้อบชอบ เปรี้ยวเปรี้ยว</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>เทคนิคการจำแนกในโจทย์ผสม (ทำตามลำดับ)</h3>
+          <table class="summary-table">
+            <tr><th style="width:8%;">ขั้น</th><th>วิธีตรวจสอบ</th></tr>
+            <tr><td>๑</td><td>ดูว่าคำนั้นเกิดจาก<b>คำมูลคำเดียวกันซ้ำ</b>หรือไม่ (มีไม้ยมกกำกับ หรือเขียนคำเดิมซ้ำสองครั้ง) — ถ้าใช่ ให้ตอบ <b>คำซ้ำ</b> ทันที</td></tr>
+            <tr><td>๒</td><td>ถ้าไม่ใช่คำซ้ำ ให้แยกคำมูลออกจากกันแล้วเทียบความหมาย — ถ้าคำมูลมี<b>ความหมายเหมือน คล้าย หรือตรงข้ามกัน</b> ให้ตอบ <b>คำซ้อน</b></td></tr>
+            <tr><td>๓</td><td>ถ้าคำมูลมี<b>ความหมายต่างกัน</b>ไม่เข้าพวกคำซ้อน (ไม่เหมือน ไม่คล้าย ไม่ตรงข้าม) ให้ตอบ <b>คำประสม</b></td></tr>
+            <tr><td>๔</td><td>ระวัง <b>คำที่หน้าตาเหมือนคำซ้ำแต่ไม่ใช่</b> — คำมูล 2 พยางค์ที่มีความหมายในตัวเองอยู่แล้ว เช่น "จะจะ" (ชัดเจน) "นานา" (ต่าง ๆ) ไม่ใช่คำซ้ำ</td></tr>
+            <tr><td>๕</td><td>ระวัง <b>คำประสมที่ต้องดูบริบทประโยค</b> เพราะบางคำมีทั้งความหมายตรงตัวและความหมายใหม่ เช่น "คนใช้" "หมาวัด" "ตีนผี" — ต้องดูว่าใช้ความหมายเดิมหรือความหมายใหม่ที่เกิดจากการประสมคำ</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>คลังคำแยกตามประเภท (ไว้ทบทวนก่อนสอบ)</h3>
+          <table class="summary-table">
+            <tr><th style="width:14%;">ประเภท</th><th>คำศัพท์</th></tr>
+            <tr><td>คำประสม</td><td>หัวใจ แม่บ้าน แม่น้ำ ลูกน้ำ กาฝาก ม้าเร็ว มือมืด แกะดำ เมืองนอก กันชน ต้มยำ นั่งร้าน สามล้อ นอกชาน ตีนแมว ชูชีพ บัวลอย ดาวเทียม ทะเลทราย เดินเล่น ร้องเรียน แก้ตัว จับผิด คิดร้าย คิดสั้น นอกใจ ยกเมฆ แก้แค้น ช้ำใจ ทิ้งไพ่ จนตรอก กินโต๊ะ อ่อนใจ ซักฟอก ยางลบ กันสาด หมาวัด ดอกฟ้า มือใหม่ งูพิษ ตีนผี</td></tr>
+            <tr><td>คำซ้อน</td><td>ข้าไท ใหญ่โต ทรัพย์สิน แก่ชรา จิตใจ บ้านเรือน เจ็บไข้ ทุบตี ถ้วยชาม กู้ยืม อุ้มชู ค้ำจุน ดูดดื่ม สูญหาย ชั่วดี ดูแล เร็วไว เลือกสรร นุ่มนิ่ม กักขัง พบปะ ภูเขา รูปภาพ ยอดเยี่ยม เกี่ยวข้อง พูดคุย เล็กน้อย หน้าตา แข้งขา ไร่นา ห้างร้าน เหนื่อยล้า ชักจูง แน่นหนา บ้านเมือง อดทน ปิดบัง ทุกข์สุข เหตุผล เท็จจริง อ้วนผอม บวกลบ ใกล้ไกล ได้อย่างเสียอย่าง ห่วงหน้าพะวงหลัง</td></tr>
+            <tr><td>คำซ้ำ</td><td>พี่ๆ น้องๆ สาวๆ หนุ่มๆ เด็กๆ เกือบๆ ราวๆ กล้วยๆ ไหนๆ พอดีๆ ดี๊ดี ช้อบชอบ เปรี้ยวเปรี้ยว อิ๊มอิ่ม พ้อมผอม ฮิ้วหิว เบื๊อเบื่อ เร้วเร็ว โบร้าณโบราณ ตล้าดตลาด นางเอ๊กนางเอก</td></tr>
+            <tr><td>ไม่ใช่คำซ้ำ (คำมูล)</td><td>จะจะ (ชัดเจน) นานา (ต่าง ๆ) — เป็นคำมูล 2 พยางค์ มีความหมายในตัวเองอยู่แล้ว</td></tr>
+          </table>
+        </div>
+
+        <div class="note-box"><b>สรุปสั้น:</b> ซ้ำคำเดิม = คำซ้ำ | คำมูลต่างกันแต่ความหมายเหมือน/คล้าย/ตรงข้าม = คำซ้อน | คำมูลต่างกันแบบไม่เข้าพวกคำซ้อน = คำประสม</div>
+      </div>
+    </div>
+
+    <div class="mode-panel" data-mode="quiz">
+      <div class="diff-tabs" id="diff-classify">
+        <button data-diff="easy" class="active">ง่าย (10 ข้อ)</button>
+        <button data-diff="medium">กลาง (10 ข้อ)</button>
+        <button data-diff="hard">ยาก (10 ข้อ)</button>
+      </div>
+      <div class="quiz-meta">
+        <div class="score" id="score-classify">ตอบถูก <b>0</b> / <span class="qcount">0</span> ข้อ</div>
+        <button class="reset-btn" data-reset="classify">ล้างคำตอบชุดนี้</button>
+      </div>
+      <div class="q-list" id="qlist-classify"></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>สรุปและแบบทดสอบเรื่องการสร้างคำในภาษาไทย (คำประสม / คำซ้อน / คำซ้ำ) — จัดทำเพื่อการทบทวนก่อนสอบ</footer>
+
+<script>
+/* ============================================================
+   QUIZ DATA — 3 topics × 3 difficulty levels × 10 questions
+   ============================================================ */
+const QUIZ = {
+prasom: {
+easy: [
+{q:"คำประสม คือคำที่เกิดจากการนำคำมูลที่มีความหมายต่างกันตั้งแต่กี่คำขึ้นไปมารวมกัน", choices:["1 คำ","2 คำขึ้นไป","3 คำขึ้นไปเท่านั้น","4 คำเท่านั้น"], answer:1, explain:"คำประสม คือ คำที่เกิดจากการนำคำมูลที่มีความหมายต่างกันตั้งแต่ 2 คำขึ้นไปมารวมกัน แล้วเกิดเป็นคำที่มีความหมายใหม่"},
+{q:"คำว่า \"หนังสือพิมพ์\" เกิดจากคำมูลใดมาประสมกัน", choices:["หนังสือ+อ่าน","หนังสือ+พิมพ์","หนัง+สือพิมพ์","หนังสือ+ข่าว"], answer:1, explain:"\"หนังสือพิมพ์\" เกิดจากการนำคำว่า หนังสือ และ พิมพ์ มาประสมกัน"},
+{q:"\"หนังสือพิมพ์\" เมื่อประสมกันแล้ว หมายถึงอะไร", choices:["เครื่องมือขีดเขียน","แบบถ่ายแบบ","สิ่งพิมพ์ข่าวและความเห็นที่เสนอแก่ประชาชนตามปกติออกเป็นรายวัน","กระดาษเปล่า"], answer:2, explain:"เมื่อนำมาประสมกันเกิดความหมายใหม่ หมายถึง สิ่งพิมพ์ข่าวและความเห็นที่เสนอแก่ประชาชน ตามปกติออกเป็นรายวัน"},
+{q:"\"เหยี่ยวข่าว\" เกิดจากคำมูลใด", choices:["เหยี่ยว+ข่าว","นก+ข่าว","เหยี่ยว+เร็ว","ข่าว+ด่วน"], answer:0, explain:"เกิดจากการนำคำว่า เหยี่ยว และ ข่าว มาประสมกัน เกิดความหมายใหม่คือนักข่าวที่หาข่าวได้รวดเร็วเป็นพิเศษ"},
+{q:"คำประสมที่เป็นคำนาม ได้แก่ข้อใด", choices:["เดินเล่น","หัวใจ","ร้องเรียน","แก้ตัว"], answer:1, explain:"\"หัวใจ\" เป็นคำประสมที่เป็นคำนาม ส่วนตัวเลือกอื่นเป็นคำกริยา"},
+{q:"คำประสมที่เป็นคำกริยา ได้แก่ข้อใด", choices:["แม่บ้าน","ลูกน้ำ","จับผิด","มือมืด"], answer:2, explain:"\"จับผิด\" เป็นคำประสมที่เป็นคำกริยา ส่วนตัวเลือกอื่นเป็นคำนาม"},
+{q:"\"ยางลบ\" เป็นคำประสมที่มีลักษณะความหมายแบบใด", choices:["ความหมายใกล้เคียงคำเดิม","ความหมายเฉพาะ","ความหมายเปรียบเทียบ","ความหมายตรงข้าม"], answer:0, explain:"ยางลบ (ยาง+ลบ) ความหมายของคำใหม่ยังคงมีเค้าความหมายเดิมของทั้งสองคำอยู่บ้าง จึงเป็นความหมายใกล้เคียงคำเดิม"},
+{q:"\"กันสาด\" เป็นคำประสมที่มีลักษณะความหมายแบบใด", choices:["ความหมายใกล้เคียงคำเดิม","ความหมายเฉพาะ","ความหมายเปรียบเทียบ","ความหมายตรงข้าม"], answer:1, explain:"กันสาด หมายถึง แผงหรือส่วนที่ต่อยื่นออกไปจากชายคาสำหรับกันฝน เป็นความหมายเฉพาะที่ห่างจากคำมูลเดิมมาก"},
+{q:"\"ตีนแมว\" ในความหมายเปรียบเทียบ หมายถึงอะไร", choices:["เท้าแมว","นักย่องเบา","สัตว์เลี้ยง","คนขยัน"], answer:1, explain:"ตีนแมว เป็นตัวอย่างคำประสมความหมายเปรียบเทียบ หมายถึง นักย่องเบา"},
+{q:"\"แม่น้ำ\" เป็นคำประสมประเภทใด", choices:["คำนาม","คำกริยา","คำวิเศษณ์","คำบุพบท"], answer:0, explain:"แม่น้ำ เป็นคำประสมที่เป็นคำนาม"}
+],
+medium: [
+{q:"เมื่อคำมูล 2 คำมาประสมกันเป็นคำประสม ความหมายของคำใหม่เป็นอย่างไร", choices:["เหมือนคำเดิมทุกประการ","เป็นความหมายใหม่ แต่ยังมีเค้าความหมายเดิมอยู่บ้าง","ไม่เกี่ยวข้องกับคำเดิมเลย","ต้องเป็นคำตรงข้ามกับคำเดิมเสมอ"], answer:1, explain:"คำประสมมีความหมายใหม่ต่างจากความหมายของคำเดิม แต่ยังมีเค้าความหมายเดิมของคำที่นำมารวมกันอยู่บ้าง"},
+{q:"ในประโยค \"ใครเป็นคนใช้เขาไปซื้อของ\" คำว่า \"คนใช้\" มีความหมายอย่างไร", choices:["คนที่มีหน้าที่คอยรับใช้","คนที่บังคับให้ทำ","คนรับใช้ในบ้าน","คนงานประจำ"], answer:1, explain:"ในประโยคนี้ \"คนใช้\" มีความหมายตรงตัว หมายถึง คนที่บังคับให้ทำ จึงไม่ใช่คำประสม"},
+{q:"ในประโยค \"คนใช้บ้านนี้ชื่อแจ๋ว\" คำว่า \"คนใช้\" เป็นคำประสมหรือไม่ เพราะเหตุใด", choices:["เป็นคำประสม เพราะเกิดความหมายใหม่คือคนที่มีหน้าที่คอยรับใช้","ไม่เป็นคำประสม เพราะเป็นคำตรงตัว","เป็นคำประสม เพราะสะกดยาก","ไม่เป็นคำประสม เพราะมี 2 พยางค์"], answer:0, explain:"ในประโยคนี้ \"คนใช้\" หมายถึงคนที่มีหน้าที่คอยรับใช้ ซึ่งเป็นความหมายใหม่ต่างจากความหมายตรงตัว จึงเป็นคำประสม"},
+{q:"\"นั่งร้าน\" ประกอบขึ้นจากคำชนิดใด", choices:["คำนาม+คำนาม","คำกริยา+คำนาม","คำวิเศษณ์+คำนาม","คำนาม+คำกริยา"], answer:1, explain:"\"นั่งร้าน\" ประกอบจากคำกริยา (นั่ง) และคำนาม (ร้าน)"},
+{q:"\"ม้าเร็ว\" ประกอบขึ้นจากคำชนิดใด", choices:["คำนาม+คำนาม","คำกริยา+คำนาม","คำนาม+คำวิเศษณ์","คำวิเศษณ์+คำกริยา"], answer:2, explain:"\"ม้าเร็ว\" ประกอบจากคำนาม (ม้า) และคำวิเศษณ์ (เร็ว)"},
+{q:"\"หมาวัด\" ในความหมายเปรียบเทียบ หมายถึงอะไร", choices:["หมาที่อาศัยอยู่ในวัด","ผู้ชายที่มีศักดิ์ต่ำกว่าผู้หญิงที่ตนหมายปอง","พระที่เลี้ยงหมา","สุนัขพันธุ์ไทย"], answer:1, explain:"หมาวัด ความหมายเปรียบเทียบ หมายถึง ผู้ชายที่มีศักดิ์ต่ำกว่าผู้หญิงที่ตนเองหมายปอง (คู่กับ ดอกฟ้า)"},
+{q:"\"ดอกฟ้า\" ในความหมายเปรียบเทียบ หมายถึงอะไร", choices:["ดอกไม้บนท้องฟ้า","ผู้หญิงที่มีฐานะสูงศักดิ์กว่าผู้ชายที่หมายปอง","นกชนิดหนึ่ง","ดาวเทียม"], answer:1, explain:"ดอกฟ้า หมายถึง ผู้หญิงที่มีฐานะสูงศักดิ์กว่าผู้ชายที่หมายปอง"},
+{q:"\"มือใหม่\" ในความหมายเปรียบเทียบ หมายถึงอะไร", choices:["มือที่เพิ่งผ่าตัด","ยังไม่มีความชำนาญ","มือสะอาด","คนทำงานมานาน"], answer:1, explain:"มือใหม่ หมายถึง ยังไม่มีความชำนาญ"},
+{q:"\"งูพิษ\" ในความหมายเปรียบเทียบ หมายถึงอะไร", choices:["งูที่มีพิษร้ายแรง","คนที่มีพิษสงสามารถทำร้ายผู้อื่นได้เช่นเดียวกับงูมีพิษ","งูเห่า","สัตว์เลื้อยคลาน"], answer:1, explain:"งูพิษ ความหมายเปรียบเทียบ หมายถึง คนที่มีพิษสงสามารถทำร้ายผู้อื่นได้เช่นเดียวกับงูที่มีพิษ"},
+{q:"\"ตีนผี\" ในความหมายเฉพาะ หมายถึงอะไร", choices:["เท้าของผี","นักย่องเบา","ส่วนของจักรเย็บผ้าที่ใช้กดผ้าเวลาเดินจักร ยกขึ้นลงได้","คนขับรถเร็ว"], answer:2, explain:"ตีนผี ความหมายเฉพาะ หมายถึง ส่วนของจักรเย็บผ้าที่ใช้กดผ้าเวลาเดินจักร ยกขึ้นลงได้"}
+],
+hard: [
+{q:"ข้อใดสรุปเงื่อนไขของคำประสมได้ครบถ้วนที่สุด", choices:["นำคำมูลกี่คำก็ได้มารวมกันโดยไม่ต้องเกิดความหมายใหม่","นำคำมูลที่มีความหมายต่างกันตั้งแต่ 2 คำมารวมกัน และคำใหม่ต้องมีความหมายเปลี่ยนไปจากเดิม แต่ยังมีเค้าความหมายเดิมอยู่บ้าง","นำคำมูลที่มีความหมายเหมือนกันมารวมกันเพื่อเน้นความหมาย","นำคำมูลคำเดียวมาออกเสียงซ้ำสองครั้ง"], answer:1, explain:"คำประสม คือ คำที่เกิดจากการนำคำมูลที่มีความหมายต่างกันตั้งแต่ 2 คำขึ้นไปมารวมกัน แล้วเกิดเป็นคำที่มีความหมายใหม่ แต่ยังมีเค้าความหมายของคำเดิมอยู่บ้าง"},
+{q:"เพราะเหตุใด \"กันสาด\" จึงถูกจัดเป็นคำประสมความหมายเฉพาะ ไม่ใช่ความหมายใกล้เคียงคำเดิม", choices:["เพราะคำมูลทั้งสองมีเสียงพ้องกัน","เพราะคำมูล \"กัน\" และ \"สาด\" เมื่อแยกออกจากกันมีความหมายห่างไกลจากความหมายของคำใหม่มาก จนต้องอาศัยคำอธิบายเพิ่ม","เพราะเป็นคำยืมจากภาษาต่างประเทศ","เพราะคำมูลทั้งสองมีความหมายตรงข้ามกันชัดเจน"], answer:1, explain:"กัน = กีดขวางไว้ไม่ให้เข้ามาหรือออกไป, สาด = ซัดหรือกระเซ็นเข้ามา เมื่อรวมกันเกิดความหมายใหม่เฉพาะเจาะจงคือแผงกันฝน ต้องอาศัยคำอธิบายเพิ่มเติมจึงจะเข้าใจ"},
+{q:"ข้อใดคือความหมายเปรียบเทียบของ \"ตีนผี\" ซึ่งต่างจากความหมายเฉพาะของคำเดียวกัน", choices:["ส่วนของจักรเย็บผ้าที่ใช้กดผ้า","อุปกรณ์ยกของหนัก","คนที่ขับรถเร็วจนน่าหวาดเสียวและไม่รักษากฎจราจร","เท้าของสิ่งลึกลับเหนือธรรมชาติ"], answer:2, explain:"ความหมายเปรียบเทียบของตีนผี หมายถึง คนที่ขับรถเร็วจนน่าหวาดเสียวและไม่รักษากฎจราจร ส่วนความหมายเฉพาะคือส่วนของจักรเย็บผ้า"},
+{q:"เพราะเหตุใดการวิเคราะห์ส่วนประกอบของคำประสมว่าเกิดจากคำชนิดใดบ้าง จึงมีประโยชน์มากกว่าการท่องจำความหมายเพียงอย่างเดียว", choices:["เพราะเป็นวิธีเดียวที่จำคำศัพท์ได้แม่นยำที่สุด","เพราะข้อสอบออกเฉพาะการวิเคราะห์ส่วนประกอบเท่านั้น","เพราะการท่องจำเป็นวิธีที่ผิดหลักภาษาไทย","เพราะช่วยฝึกทักษะการคิดวิเคราะห์ที่นำไปประยุกต์ใช้กับคำอื่นได้"], answer:3, explain:"การฝึกวิเคราะห์ส่วนประกอบของคำประสมช่วยให้นักเรียนมีทักษะการคิดวิเคราะห์ ซึ่งนำไปประยุกต์ใช้กับเรื่องอื่นได้ ไม่ใช่เพียงจำคำเฉพาะที่เคยเห็น"},
+{q:"ในประโยค \"ใครเป็นคนใช้เขาไปซื้อของ\" กับ \"คนใช้บ้านนี้ชื่อแจ๋ว\" ข้อใดสรุปถูกต้องเกี่ยวกับสถานะของคำว่า \"คนใช้\"", choices:["ประโยคแรกไม่เป็นคำประสมเพราะยังคงความหมายตรงตัว ส่วนประโยคที่สองเป็นคำประสมเพราะเกิดความหมายใหม่","เป็นคำประสมทั้งสองประโยค","ไม่เป็นคำประสมทั้งสองประโยค","ประโยคแรกเป็นคำประสม ส่วนประโยคที่สองไม่เป็น"], answer:0, explain:"ประโยคแรก \"คนใช้\" หมายถึงคนที่บังคับให้ทำ เป็นความหมายตรงตัว ไม่ใช่คำประสม ส่วนประโยคที่สอง \"คนใช้\" หมายถึงคนที่มีหน้าที่คอยรับใช้ เป็นความหมายใหม่ จึงเป็นคำประสม"},
+{q:"\"หมาวัด\" มีความหมายได้ 2 อย่าง ข้อใดจับคู่ความหมายกับลักษณะได้ถูกต้อง", choices:["ความหมายเฉพาะ = หมาที่อาศัยอยู่ในวัด, ความหมายเปรียบเทียบ = สุนัขพันธุ์ไทยเท่านั้น","ความหมายใกล้เคียงคำเดิม = หมาที่อาศัยอยู่ในวัด, ความหมายเปรียบเทียบ = ผู้ชายที่มีศักดิ์ต่ำกว่าผู้หญิงที่หมายปอง","ทั้งสองความหมายเหมือนกันทุกประการ","ความหมายเปรียบเทียบ = หมาที่อาศัยอยู่ในวัดเท่านั้น"], answer:1, explain:"หมาวัด: ความหมายใกล้เคียงคำเดิม = หมาที่อาศัยอยู่ในวัด, ความหมายเปรียบเทียบ = ผู้ชายที่มีศักดิ์ต่ำกว่าผู้หญิงที่ตนเองหมายปอง"},
+{q:"\"ตีนผี\" มีความหมายเฉพาะและความหมายเปรียบเทียบต่างกันอย่างไร", choices:["ความหมายเฉพาะ=ส่วนของจักรเย็บผ้าที่ใช้กดผ้า, ความหมายเปรียบเทียบ=คนขับรถเร็วจนน่าหวาดเสียว","ความหมายเฉพาะ=คนขับรถเร็ว ความหมายเปรียบเทียบ=ส่วนของจักร","ทั้งสองความหมายเหมือนกัน","ไม่มีความหมายเปรียบเทียบ"], answer:0, explain:"ตีนผี ความหมายเฉพาะ = ส่วนของจักรเย็บผ้าที่ใช้กดผ้าเวลาเดินจักร, ความหมายเปรียบเทียบ = เรียกผู้ที่ขับรถเร็วจนน่าหวาดเสียวและไม่รักษากฎจราจร"},
+{q:"เหตุใดนักเรียนจึงควรพิจารณาบริบทของประโยคก่อนตัดสินว่าคำประสมคำหนึ่งมีความหมายแบบใด", choices:["เพราะคำประสมบางคำมีความหมายได้มากกว่า 1 อย่าง ต้องดูบริบทจึงจะทราบความหมายที่ถูกต้อง","เพราะคำประสมทุกคำมีความหมายเดียวเสมอ","เพราะบริบทไม่มีผลต่อความหมายของคำประสม","เพราะคำประสมไม่สามารถมีความหมายเปรียบเทียบได้"], answer:0, explain:"คำประสมบางคำ เช่น หมาวัด ตีนผี มีความหมายได้มากกว่า 1 อย่าง ต้องอาศัยบริบทของประโยคเพื่อทราบความหมายที่ถูกต้อง"},
+{q:"ข้อใดคือความแตกต่างสำคัญระหว่างคำประสมความหมายใกล้เคียงคำเดิมกับความหมายเฉพาะ", choices:["ความหมายใกล้เคียงคำเดิมยังคงเค้าความหมายของคำมูลชัดเจน ส่วนความหมายเฉพาะห่างจากคำมูลมากจนต้องอาศัยคำอธิบายเพิ่ม","ทั้งสองแบบไม่มีความแตกต่างกัน","ความหมายเฉพาะจะตรงข้ามกับคำมูลเสมอ","ความหมายใกล้เคียงคำเดิมใช้กับคำนามเท่านั้น"], answer:0, explain:"ความหมายใกล้เคียงคำเดิม เช่น ยางลบ ยังคงเค้าความหมายของคำมูลชัดเจน ส่วนความหมายเฉพาะ เช่น กันสาด ห่างจากคำมูลมากจนต้องอาศัยคำอธิบายเพิ่มเพื่อให้เข้าใจ"},
+{q:"\"นั่งร้าน\" และ \"ม้าเร็ว\" ต่างกันอย่างไรในแง่โครงสร้างคำชนิด", choices:["นั่งร้าน=คำกริยา+คำนาม, ม้าเร็ว=คำนาม+คำวิเศษณ์","ทั้งสองคำเป็นคำนาม+คำนามเหมือนกัน","ทั้งสองคำเป็นคำกริยา+คำกริยา","นั่งร้าน=คำนาม+คำนาม, ม้าเร็ว=คำกริยา+คำนาม"], answer:0, explain:"นั่งร้าน ประกอบจากคำกริยา (นั่ง) + คำนาม (ร้าน) ส่วนม้าเร็ว ประกอบจากคำนาม (ม้า) + คำวิเศษณ์ (เร็ว)"}
+]
+},
+saun: {
+easy: [
+{q:"คำซ้อน คือคำที่เกิดจากการนำคำมูลตั้งแต่กี่คำขึ้นไปมารวมกัน", choices:["1 คำ","2 คำขึ้นไป","3 คำขึ้นไปเท่านั้น","ไม่จำกัดจำนวน"], answer:1, explain:"คำซ้อน คือ คำที่เกิดจากการนำคำมูลตั้งแต่ 2 คำขึ้นไปมารวมกัน"},
+{q:"คำที่นำมาซ้อนกันอาจมีความหมายอย่างไรได้บ้าง", choices:["เหมือนกันเท่านั้น","เหมือนกัน คล้ายกัน หรือตรงข้ามกันก็ได้","ตรงข้ามกันเท่านั้น","ไม่มีความเกี่ยวข้องกันเลย"], answer:1, explain:"คำที่นำมารวมกันเป็นคำซ้อนอาจมีความหมายเหมือนกัน คล้ายคลึงกัน หรือตรงกันข้ามก็ได้"},
+{q:"\"สูญหาย\" เกิดจากคำมูลใด", choices:["สูญ+หาย","สูญ+เสีย","หาย+ไป","สูญ+สิ้น"], answer:0, explain:"สูญหาย เกิดจากการนำคำว่า สูญ และ หาย มาซ้อนกัน"},
+{q:"\"ชั่วดี\" เกิดจากคำมูลที่มีความหมายอย่างไร", choices:["เหมือนกัน","คล้ายกัน","ตรงกันข้ามกัน","ไม่เกี่ยวข้องกัน"], answer:2, explain:"ชั่ว หมายถึง เลว ทราม ร้าย ส่วน ดี หมายถึง มีลักษณะที่เป็นไปในทางที่ต้องการ ทั้งสองคำมีความหมายตรงกันข้ามกันโดยสิ้นเชิง"},
+{q:"คำซ้อนที่มีความหมายเหมือนกัน ได้แก่ข้อใด", choices:["ทุกข์สุข","ดูแล","เล็กน้อย","อ้วนผอม"], answer:1, explain:"\"ดูแล\" เป็นคำซ้อนความหมายเหมือนกัน ส่วนตัวเลือกอื่นเป็นความหมายตรงข้ามหรือคล้ายกัน"},
+{q:"คำซ้อนที่มีความหมายตรงข้ามกัน ได้แก่ข้อใด", choices:["เร็วไว","ทุกข์สุข","เหนื่อยล้า","ทรัพย์สิน"], answer:1, explain:"\"ทุกข์สุข\" เป็นคำซ้อนความหมายตรงข้ามกัน"},
+{q:"คำซ้อนที่มีความหมายคล้ายกัน ได้แก่ข้อใด", choices:["เหตุผล","เล็กน้อย","สูญหาย","บวกลบ"], answer:1, explain:"\"เล็กน้อย\" เป็นคำซ้อนความหมายคล้ายกัน"},
+{q:"การสร้างคำซ้อนมีจุดมุ่งหมายสำคัญคืออะไร", choices:["ทำให้คำสั้นลง","เน้นความหมายของคำที่เกิดขึ้นใหม่ให้ชัดเจนขึ้น","ทำให้คำอ่านยากขึ้น","ลดจำนวนคำในภาษา"], answer:1, explain:"การสร้างคำซ้อนมีจุดมุ่งหมายสำคัญคือการเน้นความหมายของคำที่เกิดขึ้นใหม่ให้ชัดเจนขึ้น"},
+{q:"\"ข้าไท\" หมายถึงอะไร", choices:["บริวารของผู้เป็นใหญ่","ของมีค่าทั้งหมด","สูงอายุ","สิ่งปลูกสร้าง"], answer:0, explain:"ข้าไท หมายถึง บริวารของผู้เป็นใหญ่"},
+{q:"\"ถ้วยชาม\" หมายถึงอะไร", choices:["ภาชนะต่าง ๆ ไม่ได้หมายถึงเฉพาะถ้วยหรือชามเท่านั้น","ถ้วยเท่านั้น","ชามเท่านั้น","เครื่องครัว"], answer:0, explain:"ถ้วยชาม หมายถึง ภาชนะต่าง ๆ มิได้หมายถึงเฉพาะถ้วยหรือชามเท่านั้น"}
+],
+medium: [
+{q:"คำว่า \"สูญ\" และ \"หาย\" เมื่อแยกกันมีความหมายอย่างไร", choices:["ต่างกันโดยสิ้นเชิง","ใกล้เคียงกันมาก","ตรงกันข้าม","ไม่มีความหมาย"], answer:1, explain:"สูญ หมายถึงทำให้หายสิ้นไป ที่หมดไป และ หาย หมายถึง สูญ หาไม่พบ ไม่ปรากฏ หมด สิ้น ทั้งสองคำมีความหมายใกล้เคียงกันมาก"},
+{q:"เมื่อนำ \"สูญ\" และ \"หาย\" มาซ้อนกันเป็น \"สูญหาย\" เกิดความหมายอย่างไร", choices:["ความหมายใหม่ที่เฉพาะเจาะจงและชัดเจนขึ้นคือ หายไป","ความหมายตรงข้ามกับเดิม","ไม่มีความหมายใหม่","ความหมายกว้างขึ้นกว่าเดิมมาก"], answer:0, explain:"เมื่อนำมารวมกันเป็นคำว่า \"สูญหาย\" จึงเกิดความหมายว่า หายไป ซึ่งเป็นความหมายใหม่ที่มีความเฉพาะเจาะจงและชัดเจนขึ้น"},
+{q:"\"ชั่ว\" และ \"ดี\" เมื่อแยกกันมีความหมายอย่างไร", choices:["ใกล้เคียงกัน","ตรงกันข้ามกันโดยสิ้นเชิง","เหมือนกันทุกประการ","ไม่เกี่ยวข้องกัน"], answer:1, explain:"ชั่ว หมายถึง เลว ทราม ร้าย ส่วน ดี หมายถึง มีลักษณะที่เป็นไปในทางที่ต้องการ น่าปรารถนา ทั้งสองคำตรงกันข้ามกันโดยสิ้นเชิง"},
+{q:"เมื่อนำ \"ชั่ว\" และ \"ดี\" มาซ้อนกันเป็น \"ชั่วดี\" เกิดความหมายใหม่อย่างไร", choices:["ยังคงหมายถึงเลวทรามเท่านั้น","ลักษณะที่เป็นกลาง ๆ อาจดีหรือไม่ดีก็ได้","หมายถึงดีเท่านั้น","ไม่มีความหมายเลย"], answer:1, explain:"\"ชั่วดี\" เกิดความหมายใหม่คือลักษณะที่เป็นกลาง ๆ อาจจะประสบความดีหรือไม่ดีก็ได้ เช่น \"ชั่วดีอย่างไร ฉันก็จะพยายามทำต่อไป\""},
+{q:"\"เจ็บไข้\" หมายถึงอะไร", choices:["เฉพาะการเป็นไข้เท่านั้น","อาการเจ็บป่วยทั่ว ๆ ไป ไม่ได้หมายถึงเฉพาะเป็นไข้","เฉพาะอาการเจ็บเท่านั้น","โรคติดต่อ"], answer:1, explain:"เจ็บไข้ หมายถึง อาการเจ็บป่วยทั่ว ๆ ไป มิได้หมายถึงเฉพาะเป็นไข้"},
+{q:"\"ทุบตี\" หมายถึงอะไร", choices:["เฉพาะการทุบเท่านั้น","ทำร้ายร่างกายด้วยการทุบ ตี ชก ต่อย เตะ ไม่ได้หมายถึงการทุบหรือตีเท่านั้น","เฉพาะการตีเท่านั้น","การเล่นกีฬา"], answer:1, explain:"ทุบตี หมายถึง ทำร้ายร่างกายด้วยการทุบ ตี ชก ต่อย เตะ มิได้หมายถึงการทุบหรือตีเท่านั้น"},
+{q:"คำซ้อนที่นำคำภาษาไทยมาตรฐานมาซ้อนกับคำภาษาไทยถิ่นอีสาน ได้แก่ข้อใด", choices:["ภู(เขา)","(ข่ม)เหง","(พบ)ปะ","ชะ(ล้าง)"], answer:0, explain:"ภู(เขา) เป็นตัวอย่างคำซ้อนของภาษาถิ่นอีสาน"},
+{q:"คำซ้อนที่นำคำภาษาไทยมาตรฐานมาซ้อนกับคำภาษาไทยถิ่นใต้ ได้แก่ข้อใด", choices:["แปด(เปื้อน)","(ข่ม)เหง","(เสื่อ)สาด","ชะ(ล้าง)"], answer:1, explain:"(ข่ม)เหง เป็นตัวอย่างคำซ้อนของภาษาถิ่นใต้"},
+{q:"ข้อใดเป็นคำซ้อนความหมายคล้ายกันทั้งหมด", choices:["แข้งขา ไร่นา ห้างร้าน","ทุกข์สุข เท็จจริง อ้วนผอม","ดูแล เลือกสรร นุ่มนิ่ม","บวกลบ ใกล้ไกล เป็นตาย"], answer:0, explain:"แข้งขา ไร่นา ห้างร้าน เป็นคำซ้อนความหมายคล้ายกันทั้งหมด ส่วนข้ออื่นเป็นความหมายตรงข้ามหรือเหมือนกัน"},
+{q:"ข้อใดเป็นคำซ้อนความหมายตรงข้ามทั้งหมด", choices:["เหนื่อยล้า ชักจูง แน่นหนา","เท็จจริง อ้วนผอม บวกลบ","กักขัง พบปะ ภูเขา","เก็บเกี่ยว ติดตาม อดทน"], answer:1, explain:"เท็จจริง อ้วนผอม บวกลบ เป็นคำซ้อนความหมายตรงข้ามทั้งหมด"}
+],
+hard: [
+{q:"คำซ้อนที่มีความหมายเหมือนกัน ต่างจากคำซ้อนที่มีความหมายตรงข้ามกันอย่างไรในแง่ความหมายที่เกิดขึ้นใหม่", choices:["คำซ้อนความหมายเหมือนกันจะเน้นย้ำความหมายเดิมให้ชัดเจนขึ้น ส่วนคำซ้อนความหมายตรงข้ามมักเกิดความหมายใหม่ที่เป็นกลาง ๆ ครอบคลุมทั้งสองด้าน","ทั้งสองแบบให้ผลลัพธ์เหมือนกันทุกประการ","คำซ้อนความหมายตรงข้ามจะไม่มีความหมายใหม่เกิดขึ้นเลย","คำซ้อนความหมายเหมือนกันจะกลายเป็นความหมายตรงข้ามเสมอ"], answer:0, explain:"เช่น สูญหาย (คำมูลใกล้เคียงกัน) เน้นย้ำความหมายให้ชัดเจนว่าหายไป ส่วน ชั่วดี (คำมูลตรงข้าม) เกิดความหมายใหม่ที่เป็นกลาง ๆ ครอบคลุมทั้งดีและไม่ดี"},
+{q:"เพราะเหตุใด \"สูญหาย\" กับ \"ชั่วดี\" จึงถูกใช้เป็นตัวอย่างเปรียบเทียบกันในการอธิบายลักษณะความหมายของคำซ้อน", choices:["เพราะทั้งสองคำมีจำนวนพยางค์เท่ากัน","เพราะคำมูลของ \"สูญหาย\" มีความหมายใกล้เคียงกันมาก ในขณะที่คำมูลของ \"ชั่วดี\" มีความหมายตรงข้ามกันโดยสิ้นเชิง แต่รวมกันแล้วต่างก็เกิดความหมายใหม่","เพราะทั้งสองคำเป็นคำยืมจากภาษาบาลี","เพราะทั้งสองคำใช้ในบริบทเดียวกันเสมอ"], answer:1, explain:"หนังสือใช้ทั้งสองคำนี้เพื่อแสดงว่าไม่ว่าคำมูลจะมีความหมายใกล้เคียงกันหรือตรงข้ามกัน เมื่อนำมาซ้อนกันก็เกิดความหมายใหม่ได้เช่นกัน"},
+{q:"ข้อใดอธิบายความแตกต่างระหว่างคำซ้อนกับคำประสมได้ถูกต้องที่สุด", choices:["คำซ้อนเกิดจากคำที่มีความหมายเหมือนกัน คล้ายกัน หรือตรงข้ามกันมารวมกัน ส่วนคำประสมเกิดจากคำที่มีความหมายต่างกันมารวมกัน แต่ทั้งสองแบบความหมายใหม่ที่เกิดขึ้นยังมีเค้าความหมายเดิมอยู่บ้าง","คำซ้อนกับคำประสมเป็นคำประเภทเดียวกันไม่มีความแตกต่าง","คำซ้อนใช้กับคำนามเท่านั้น ส่วนคำประสมใช้กับคำกริยาเท่านั้น","คำซ้อนต้องมีคำมูล 3 คำขึ้นไปเสมอ"], answer:0, explain:"ความแตกต่างสำคัญคือความสัมพันธ์ของคำมูลที่นำมารวมกัน คำซ้อนใช้คำที่มีความหมายเหมือน คล้าย หรือตรงข้าม ส่วนคำประสมใช้คำที่มีความหมายต่างกัน"},
+{q:"เหตุใดคำซ้อนบางคำจึงเกิดจากการนำคำไทยมาตรฐานมาซ้อนกับคำภาษาไทยถิ่น", choices:["เพื่อช่วยให้ผู้ฟังที่ไม่รู้ความหมายของคำภาษาถิ่นเข้าใจความหมายได้จากคำมาตรฐานที่ซ้อนอยู่ด้วย","เพราะเป็นข้อบังคับทางไวยากรณ์","เพราะคำภาษาถิ่นไม่มีความหมาย","เพราะต้องการให้คำยาวขึ้นเท่านั้น"], answer:0, explain:"การนำคำมาตรฐานมาซ้อนกับคำถิ่นช่วยให้ผู้ฟังเข้าใจความหมายของคำถิ่นได้จากคำมาตรฐานที่ซ้อนอยู่ด้วย"},
+{q:"\"ถ้วยชาม\" และ \"เจ็บไข้\" มีลักษณะร่วมกันอย่างไรในการขยายความหมาย", choices:["ทั้งสองคำความหมายแคบลงเฉพาะคำใดคำหนึ่ง","ทั้งสองคำความหมายขยายกว้างขึ้นครอบคลุมสิ่งที่เกี่ยวข้องทั้งหมด ไม่ได้จำกัดเฉพาะคำใดคำหนึ่งในคำมูล","ทั้งสองคำไม่มีความหมายใหม่เกิดขึ้น","ทั้งสองคำกลายเป็นคำตรงข้ามกับคำเดิม"], answer:1, explain:"ถ้วยชาม = ภาชนะต่าง ๆ ไม่ใช่แค่ถ้วยหรือชาม, เจ็บไข้ = อาการเจ็บป่วยทั่วไป ไม่ใช่แค่การเป็นไข้ ทั้งสองความหมายขยายกว้างขึ้นครอบคลุมสิ่งที่เกี่ยวข้อง"},
+{q:"ข้อใดสรุปความสัมพันธ์ระหว่างคำซ้อนความหมายเหมือนกันกับความหมายคล้ายกันได้ถูกต้อง", choices:["ทั้งสองแบบเหมือนกันทุกประการ ไม่มีความแตกต่าง","ความหมายเหมือนกันคือคำมูลหมายถึงสิ่งเดียวกันหรืออย่างเดียวกัน ส่วนความหมายคล้ายกันคือคำมูลใกล้เคียงหรือเป็นไปในทำนองเดียวกันแต่ไม่ใช่สิ่งเดียวกันทีเดียว","ความหมายคล้ายกันจะต้องตรงข้ามกันเสมอ","ความหมายเหมือนกันใช้ได้กับคำกริยาเท่านั้น"], answer:1, explain:"ความหมายเหมือนกัน (เช่น ดูแล) คำมูลหมายถึงสิ่งเดียวกัน ส่วนความหมายคล้ายกัน (เช่น เล็กน้อย) คำมูลใกล้เคียงกันแต่ไม่ใช่สิ่งเดียวกันทีเดียว"},
+{q:"เพราะเหตุใดจึงต้องพิจารณาความหมายของคำมูลแต่ละคำก่อนตัดสินว่าคำซ้อนนั้นจัดอยู่ในลักษณะความหมายใด", choices:["เพราะการจัดประเภทคำซ้อน (เหมือน คล้าย ตรงข้าม) ต้องอาศัยการเปรียบเทียบความหมายของคำมูลแต่ละคำเป็นหลัก","เพราะไม่มีวิธีอื่นในการแยกแยะคำซ้อน","เพราะคำมูลทุกคำมีความหมายเหมือนกันอยู่แล้ว","เพราะกฎเกณฑ์นี้ใช้ได้เฉพาะบางคำเท่านั้น"], answer:0, explain:"การจัดประเภทคำซ้อนต้องอาศัยการเปรียบเทียบความหมายของคำมูลแต่ละคำว่าเหมือนกัน คล้ายกัน หรือตรงข้ามกันเป็นหลัก"},
+{q:"\"ทุกข์สุข\" ต่างจาก \"เท็จจริง\" อย่างไรในแง่โครงสร้างความหมาย ทั้งที่ทั้งคู่เป็นคำซ้อนความหมายตรงข้าม", choices:["ไม่ต่างกันเลย ทั้งสองคำเป็นคำมูลที่มีความหมายตรงกันข้ามกันโดยตรงและรวมกันเป็นคำใหม่ในทำนองเดียวกัน","\"ทุกข์สุข\" เป็นคำนาม ส่วน \"เท็จจริง\" เป็นคำกริยาเท่านั้น","\"ทุกข์สุข\" ไม่ใช่คำซ้อน","ทั้งสองคำไม่มีคำมูลที่ตรงข้ามกัน"], answer:0, explain:"ทั้งสองคำมีโครงสร้างเดียวกันคือนำคำมูลที่มีความหมายตรงกันข้ามกันมารวมกัน จึงไม่มีความแตกต่างในเชิงโครงสร้าง"},
+{q:"ข้อใดอธิบายจุดมุ่งหมายของการสร้างคำซ้อนได้ครบถ้วนที่สุด", choices:["เพื่อเน้นความหมายของคำที่เกิดขึ้นใหม่ให้ชัดเจนขึ้น โดยอาศัยคำมูลที่มีความหมายเหมือน คล้าย หรือตรงข้ามกันมาสนับสนุนกัน","เพื่อทำให้คำสั้นลงเท่านั้น","เพื่อสร้างคำตรงข้ามใหม่เท่านั้น","เพื่อยืมคำจากภาษาต่างประเทศเท่านั้น"], answer:0, explain:"จุดมุ่งหมายสำคัญของการสร้างคำซ้อนคือการเน้นความหมายของคำที่เกิดขึ้นใหม่ให้ชัดเจนขึ้น"},
+{q:"หากพบคำที่ประกอบด้วยคำมูล 2 คำซึ่งมีความหมายตรงข้ามกันอย่างชัดเจน เช่น \"อ้วนผอม\" ควรตีความความหมายของคำใหม่อย่างไรตามหลักคำซ้อน", choices:["ความหมายใหม่มักเป็นภาพรวมหรือลักษณะที่เป็นกลางซึ่งครอบคลุมทั้งสองด้านของคำมูล ไม่เจาะจงไปทางใดทางหนึ่ง","ความหมายใหม่จะเท่ากับความหมายของคำแรกเสมอ","ความหมายใหม่จะเท่ากับความหมายของคำหลังเสมอ","ไม่สามารถมีความหมายใหม่เกิดขึ้นได้เลย"], answer:0, explain:"เช่นเดียวกับ ชั่วดี, ทุกข์สุข คำซ้อนที่มีคำมูลตรงข้ามกันมักให้ความหมายใหม่ที่เป็นภาพรวมหรือกลาง ๆ ครอบคลุมทั้งสองด้าน"}
+]
+},
+sam: {
+easy: [
+{q:"คำซ้ำ คือคำที่เกิดจากอะไร", choices:["การนำคำมูลคำเดิมมากล่าวหรือเขียนซ้ำอีกครั้ง","การนำคำสองคำที่ต่างกันมารวมกัน","การนำคำมูลที่มีความหมายตรงข้ามมารวมกัน","การยืมคำจากภาษาต่างประเทศ"], answer:0, explain:"คำซ้ำ คือ คำที่เกิดจากการนำคำมูลคำเดิมมากล่าวหรือเขียนซ้ำอีกครั้งหนึ่ง"},
+{q:"ในการเขียนคำซ้ำ ใช้เครื่องหมายใดแทนคำที่ซ้ำ", choices:["ไม้ยมก (ๆ)","ไม้ไต่คู้","ไม้หันอากาศ","ไม้ทัณฑฆาต"], answer:0, explain:"ในการเขียนคำซ้ำจะใช้ไม้ยมก (ๆ) แทนคำที่ซ้ำ"},
+{q:"\"เพื่อน ๆ มาแล้ว\" ต่างจาก \"เพื่อนมาแล้ว\" อย่างไร", choices:["ไม่ต่างกันเลย","\"เพื่อน ๆ\" บ่งบอกจำนวนเพื่อนที่มามากกว่า (พหูพจน์)","\"เพื่อน ๆ\" หมายถึงเพื่อนคนเดียว","\"เพื่อน ๆ\" เป็นคำประสม"], answer:1, explain:"คำว่า \"เพื่อน ๆ\" ในรูปคำซ้ำบ่งบอกจำนวนเพื่อนที่มากกว่าประโยคแรก หรือเป็นพหูพจน์นั่นเอง"},
+{q:"คำซ้ำแบ่งประเภทตามเกณฑ์ใด", choices:["การออกเสียง","ความยาวของคำ","จำนวนพยางค์","ชนิดของคำ"], answer:0, explain:"การแบ่งประเภทของคำซ้ำใช้เกณฑ์การออกเสียง"},
+{q:"คำซ้ำไม่เปลี่ยนเสียง ได้แก่ข้อใด", choices:["ดี๊ดี","พี่ๆ","เปรี้ยวเปรี้ยว","ฮิ้วหิว"], answer:1, explain:"\"พี่ๆ\" เป็นคำซ้ำไม่เปลี่ยนเสียง ส่วนตัวเลือกอื่นเป็นคำซ้ำเปลี่ยนเสียง"},
+{q:"คำซ้ำเปลี่ยนเสียง ได้แก่ข้อใด", choices:["สาวๆ","หนุ่มๆ","ช้อบชอบ","เด็กๆ"], answer:2, explain:"\"ช้อบชอบ\" เป็นคำซ้ำเปลี่ยนเสียง (เน้นเสียงวรรณยุกต์พยางค์แรก)"},
+{q:"คำซ้ำมีลักษณะความหมายกี่แบบ", choices:["3 แบบ","4 แบบ","5 แบบ","6 แบบ"], answer:2, explain:"คำซ้ำมีลักษณะความหมาย 5 แบบ ได้แก่ เปลี่ยนไป พหูพจน์ แยกจำนวน เน้นหนักขึ้น และอ่อนลง"},
+{q:"\"เด็ก ๆ ทุกคนในห้อง\" เป็นคำซ้ำที่มีลักษณะความหมายแบบใด", choices:["ความหมายเปลี่ยนไป","ความหมายเป็นพหูพจน์","ความหมายแยกจำนวน","ความหมายอ่อนลง"], answer:1, explain:"\"เด็ก ๆ\" ในที่นี้แสดงจำนวนที่เพิ่มมากขึ้น จึงเป็นความหมายพหูพจน์"},
+{q:"\"กล้วย ๆ\" ในประโยค \"เรื่องกล้วย ๆ แบบนี้ฉันทำได้สบายมาก\" หมายถึงอะไร", choices:["ผลไม้ชนิดหนึ่ง","ง่ายมาก ไม่เกี่ยวข้องกับผลไม้","จำนวนกล้วยหลายลูก","กล้วยที่เน่าเสีย"], answer:1, explain:"กล้วยๆ ในที่นี้หมายถึง ง่ายมาก ไม่ได้หมายถึงผลไม้เลย เป็นตัวอย่างของความหมายเปลี่ยนไป"},
+{q:"\"จะจะ\" และ \"นานา\" เป็นคำซ้ำหรือไม่", choices:["เป็นคำซ้ำทั้งคู่","ไม่ใช่คำซ้ำ เพราะเป็นคำมูล 2 พยางค์ที่มีความหมายของตัวเอง","เป็นคำซ้ำเฉพาะ \"จะจะ\"","เป็นคำซ้ำเฉพาะ \"นานา\""], answer:1, explain:"จะจะ เป็นคำมูล 2 พยางค์ หมายถึง ชัดเจน กระจ่าง และนานา เป็นคำภาษาบาลี 2 พยางค์ หมายถึง ต่าง ๆ ทั้งสองคำไม่ใช่คำซ้ำ"}
+],
+medium: [
+{q:"\"เขียว ๆ\" ในประโยค \"เธอเห็นคนที่ใส่เสื้อสีเขียว ๆ ไหม\" มีความหมายอย่างไรเทียบกับ \"เขียว\" เฉย ๆ", choices:["เจาะจงมากกว่าเดิมว่าต้องเป็นสีเขียวล้วน","ความหมายอ่อนลง แสดงความไม่แน่ใจหรือไม่เจาะจง","ไม่มีความแตกต่างกันเลย","หมายถึงสีอื่นที่ไม่ใช่เขียว"], answer:1, explain:"\"เขียว ๆ\" ความหมายอ่อนลง แสดงความไม่ชัดเจนหรือไม่เจาะจงว่าเป็นสีเขียวล้วนหรือมีสีอื่นปนอยู่บ้าง"},
+{q:"\"ผักๆ\" ในประโยค \"ช่วยกรุณาตักแต่ผักๆ ให้ผมหน่อยนะครับ\" เป็นคำซ้ำลักษณะความหมายแบบใด", choices:["ความหมายเปลี่ยนไป","ความหมายเน้นหนักขึ้น","ความหมายแยกจำนวน","ความหมายอ่อนลง"], answer:1, explain:"\"ผักๆ\" ในที่นี้เน้นย้ำให้มีความชัดเจนขึ้นว่าต้องการแต่ผัก จึงเป็นความหมายเน้นหนักขึ้น"},
+{q:"\"เรื่อง ๆ ไป\" ในประโยค \"ขอให้นักเรียนอ่านเอกสารเป็นเรื่อง ๆ ไป\" เป็นคำซ้ำลักษณะความหมายแบบใด", choices:["ความหมายเปลี่ยนไป","ความหมายเป็นพหูพจน์","ความหมายแยกจำนวน","ความหมายเน้นหนักขึ้น"], answer:2, explain:"\"เรื่อง ๆ\" แสดงการแยกเป็นส่วน ๆ จึงเป็นความหมายแยกจำนวน"},
+{q:"\"โขลง ๆ\" ในประโยค \"หมู่บ้านที่จังหวัดสุรินทร์เลี้ยงช้างเป็นโขลง ๆ\" เป็นคำซ้ำลักษณะความหมายแบบใด", choices:["ความหมายเปลี่ยนไป","ความหมายเป็นพหูพจน์","ความหมายอ่อนลง","ความหมายเน้นหนักขึ้น"], answer:1, explain:"\"โขลง ๆ\" แสดงจำนวนที่เพิ่มมากขึ้น จึงเป็นความหมายพหูพจน์"},
+{q:"\"คล้าย ๆ\" ในประโยค \"เช้าวันนี้ผมรู้สึกคล้าย ๆ จะเป็นไข้\" เป็นคำซ้ำลักษณะความหมายแบบใด", choices:["ความหมายเปลี่ยนไป","ความหมายแยกจำนวน","ความหมายอ่อนลง","ความหมายเน้นหนักขึ้น"], answer:2, explain:"\"คล้าย ๆ\" แสดงความไม่ชัดเจนหรือไม่แน่ใจ จึงเป็นความหมายอ่อนลง"},
+{q:"เพราะเหตุใด \"ฉอด ๆ, ปาว ๆ, หลัด ๆ, หยก ๆ\" จึงถูกจัดเป็นคำซ้ำ ทั้งที่นำคำมูลเดิมมาใช้เดี่ยว ๆ ไม่ได้", choices:["เพราะคำเหล่านี้ไม่ใช่คำซ้ำ","เพราะคำเหล่านี้เป็นคำซ้ำที่ต้องใช้อยู่ในรูปที่ซ้ำเท่านั้น จึงจะมีความหมาย","เพราะเป็นคำประสม","เพราะเป็นคำยืมจากภาษาบาลี"], answer:1, explain:"คำเหล่านี้เป็นคำซ้ำ แต่มีลักษณะพิเศษคือไม่สามารถนำคำมูลมาใช้เดี่ยว ๆ ได้ ต้องใช้อยู่ในรูปที่ซ้ำเท่านั้นจึงจะมีความหมาย"},
+{q:"คำซ้ำเปลี่ยนเสียงมีลักษณะการเปลี่ยนแปลงอย่างไร", choices:["เปลี่ยนพยัญชนะต้น","เน้นเสียงวรรณยุกต์ของพยางค์แรกให้เป็นพิเศษ","เปลี่ยนสระทั้งคำ","เปลี่ยนตัวสะกด"], answer:1, explain:"คำซ้ำเปลี่ยนเสียงคือคำซ้ำที่เน้นเสียงวรรณยุกต์พยางค์แรกเป็นพิเศษ เช่น ดี๊ดี ช้อบชอบ"},
+{q:"\"ราว ๆ 170 เซนติเมตร\" เป็นคำซ้ำลักษณะความหมายแบบใด", choices:["ความหมายเปลี่ยนไป","ความหมายเป็นพหูพจน์","ความหมายอ่อนลง แสดงการประมาณไม่เจาะจง","ความหมายแยกจำนวน"], answer:2, explain:"\"ราว ๆ\" แสดงการประมาณ ไม่เจาะจงตัวเลขที่แน่นอน จึงเป็นความหมายอ่อนลง"},
+{q:"\"ช้า ๆ เมื่อขึ้นเขา\" เป็นคำซ้ำลักษณะความหมายแบบใด", choices:["ความหมายเปลี่ยนไป","ความหมายเน้นหนักขึ้นให้ชัดเจน","ความหมายแยกจำนวน","ความหมายเป็นพหูพจน์"], answer:1, explain:"\"ช้า ๆ\" เน้นย้ำให้ขับรถช้าอย่างชัดเจน จึงเป็นความหมายเน้นหนักขึ้น"},
+{q:"เพราะเหตุใดนักเรียนจึงต้องระวังไม่ใช้ \"จะจะ\" หรือ \"นานา\" ในรูปที่มีไม้ยมก", choices:["เพราะคำทั้งสองเป็นคำมูลที่มีความหมายของตัวเองอยู่แล้ว การใส่ไม้ยมกจะทำให้เข้าใจผิดว่าเป็นคำซ้ำ","เพราะไม้ยมกใช้ไม่ได้กับคำภาษาบาลี","เพราะคำทั้งสองเป็นคำต้องห้าม","เพราะจะทำให้อ่านออกเสียงไม่ได้"], answer:0, explain:"จะจะ และ นานา เป็นคำมูลที่มีความหมายของตัวเองอยู่แล้ว (ไม่ใช่คำซ้ำ) การใส่ไม้ยมกโดยไม่จำเป็นจะทำให้เกิดความผิดพลาดในการเขียนและสื่อความหมาย"}
+],
+hard: [
+{q:"ข้อใดสรุปโครงสร้างพื้นฐานร่วมกันของการสร้างคำทั้ง 3 ประเภท (คำประสม คำซ้อน คำซ้ำ) ได้ถูกต้องที่สุด", choices:["ทุกประเภทเกิดจากการนำคำมูลตั้งแต่ 2 คำขึ้นไปมารวมกัน โดยคำใหม่ที่เกิดขึ้นต้องมีความหมายใหม่ หรืออาจยังคงเค้าความหมายเดิมอยู่บ้าง","ทุกประเภทต้องใช้ไม้ยมกเสมอ","ทุกประเภทต้องเป็นคำนามเท่านั้น","ทุกประเภทไม่มีความสัมพันธ์กันเลย"], answer:0, explain:"การสร้างคำทุกประเภทเกิดจากการนำคำมูลตั้งแต่ 2 คำขึ้นไปมารวมกัน คำมูลอาจเป็นคำไทยแท้หรือคำจากภาษาต่างประเทศก็ได้ แต่คำใหม่ที่เกิดขึ้นต้องมีความหมายใหม่หรือยังคงเค้าความหมายเดิม"},
+{q:"เหตุใดคำว่า \"โบร้าณโบราณ\", \"ตล้าดตลาด\", \"นางเอ๊กนางเอก\" จึงถูกจัดเป็นคำซ้ำเปลี่ยนเสียงในลักษณะที่ต่างจากคำซ้ำเปลี่ยนเสียงทั่วไปอย่าง \"ดี๊ดี\"", choices:["เพราะเป็นคำ 2-3 พยางค์ที่นำมาซ้ำทั้งคำ โดยเปลี่ยนเสียงวรรณยุกต์ในพยางค์แรกของคำเดิมทั้งหมด ต่างจากคำซ้ำเปลี่ยนเสียงพยางค์เดียวทั่วไป","เพราะไม่ใช่คำซ้ำ เป็นคำประสม","เพราะเป็นคำที่ผิดหลักภาษาไทยทั้งหมด","เพราะไม่มีการเปลี่ยนเสียงใด ๆ"], answer:0, explain:"คำเหล่านี้เป็นคำที่มีมากกว่าหนึ่งพยางค์ โดยเปลี่ยนเสียงวรรณยุกต์ในพยางค์แรกของคำเดิมก่อนนำมาซ้ำทั้งคำ ต่างจากคำซ้ำเปลี่ยนเสียงพยางค์เดียวทั่วไป"},
+{q:"หากพบประโยคที่มีคำซ้ำแล้วความหมายของประโยคเปลี่ยนไปจากคำเดิมโดยสิ้นเชิง (ไม่ใช่พหูพจน์ ไม่ใช่การเน้นหรืออ่อนลง) ควรจัดความหมายของคำซ้ำนั้นเป็นลักษณะใด", choices:["ความหมายเปลี่ยนไป เช่น \"กล้วย ๆ\" ที่หมายถึงง่ายมาก ไม่เกี่ยวข้องกับผลไม้เลย","ความหมายเป็นพหูพจน์","ความหมายแยกจำนวน","ความหมายเน้นหนักขึ้น"], answer:0, explain:"ลักษณะความหมาย \"เปลี่ยนไป\" คือเมื่อซ้ำแล้วความหมายต่างไปจากคำเดิมโดยสิ้นเชิง ดังตัวอย่าง \"กล้วย ๆ\""},
+{q:"เพราะเหตุใดนักเรียนจึงต้องระมัดระวังในการใช้รูปไม้ยมกกับคำบางคำ ตามคำเตือนท้ายบทเรื่องคำซ้ำ", choices:["เพราะการใช้คำที่ไม่ใช่คำซ้ำแท้จริง (เช่น จะจะ นานา) ในรูปที่ใช้ไม้ยมก จะทำให้เกิดความผิดพลาดในการเขียนและสื่อความหมายผิดไปจากที่ต้องการ","เพราะไม้ยมกใช้ได้กับทุกคำโดยไม่มีข้อยกเว้น","เพราะไม้ยมกเป็นเครื่องหมายที่ห้ามใช้ในภาษาไทย","เพราะไม่มีเหตุผลใด เป็นเพียงธรรมเนียมปฏิบัติ"], answer:0, explain:"การใส่ไม้ยมกให้กับคำที่ไม่ใช่คำซ้ำแท้จริงจะทำให้เกิดความผิดพลาดในการเขียนและสื่อความหมายผิดไปจากที่ต้องการ"},
+{q:"เพราะเหตุใดรูปคำซ้ำที่เปลี่ยนเสียงวรรณยุกต์ในพยางค์หน้าส่วนใหญ่จึงพบในภาษาพูดมากกว่าภาษาเขียน", choices:["เพราะภาษาเขียนไม่อนุญาตให้ใช้คำซ้ำเลย","เพราะภาษาเขียนนิยมใช้รูปที่มีไม้ยมกเป็นหลักในการแสดงคำซ้ำ ส่วนการเปลี่ยนเสียงวรรณยุกต์เป็นลักษณะเฉพาะของการพูด","เพราะภาษาพูดไม่มีคำซ้ำ","เพราะเป็นคำผิดหลักภาษาไทยทั้งหมด"], answer:1, explain:"รูปของคำซ้ำมีหลายลักษณะ ทั้งที่ใช้ไม้ยมกและรูปที่เปลี่ยนเสียงวรรณยุกต์ ซึ่งส่วนใหญ่พบในภาษาพูด ส่วนภาษาเขียนจะใช้รูปที่มีไม้ยมกเป็นหลัก"},
+{q:"ข้อใดอธิบายความแตกต่างระหว่าง \"ผักๆ\" ที่แปลว่าเน้นย้ำ กับ \"เขียวๆ\" ที่แปลว่าอ่อนลง ได้ถูกต้องที่สุด", choices:["ทั้งสองคำมีความหมายเดียวกันคือทำให้ชัดเจนขึ้น","คำซ้ำแบบเดียวกัน (การซ้ำคำ) สามารถให้ผลลัพธ์ทางความหมายต่างกันได้ ขึ้นอยู่กับบริบทของประโยคที่ใช้ ไม่ใช่ตัวรูปคำซ้ำเพียงอย่างเดียว","\"ผักๆ\" ต้องแปลว่าอ่อนลงเสมอ","\"เขียวๆ\" ต้องแปลว่าเน้นย้ำเสมอ"], answer:1, explain:"คำซ้ำรูปแบบเดียวกันสามารถให้ความหมายต่างกันได้ ขึ้นอยู่กับบริบทของประโยค ไม่ใช่เพียงรูปคำซ้ำเพียงอย่างเดียว"},
+{q:"เหตุใดการสังเกตบริบทของประโยคจึงสำคัญมากในการวิเคราะห์ความหมายของคำซ้ำ", choices:["เพราะคำซ้ำคำเดียวกันอาจมีความหมายได้หลายลักษณะ ขึ้นอยู่กับบริบทที่ใช้ในประโยคนั้น ๆ","เพราะคำซ้ำทุกคำมีความหมายเดียวตายตัวไม่เปลี่ยนแปลง","เพราะบริบทไม่มีผลต่อคำซ้ำเลย","เพราะคำซ้ำใช้ได้ในบริบทเดียวเท่านั้น"], answer:0, explain:"คำซ้ำบางคำอาจมีความหมาย 2 อย่างขึ้นไป ต้องสังเกตจากบริบทในประโยคจึงจะทราบความหมายที่ถูกต้อง"},
+{q:"ข้อใดสรุปความสัมพันธ์ระหว่างคำประสม คำซ้อน และคำซ้ำได้ถูกต้องและครบถ้วนที่สุด", choices:["ทั้งสามประเภทเป็นวิธีการสร้างคำในภาษาไทยที่เกิดจากคำมูลตั้งแต่ 2 คำขึ้นไปมารวมกัน แต่ต่างกันที่ความสัมพันธ์ของคำมูล (ต่างกัน/เหมือนคล้ายหรือตรงข้าม/คำเดิมซ้ำ) และคำใหม่ที่เกิดขึ้นต้องมีความหมายใหม่หรือคงเค้าความหมายเดิมไว้บ้าง","ทั้งสามประเภทเหมือนกันทุกประการไม่มีความแตกต่าง","มีเพียงคำซ้ำเท่านั้นที่ใช้คำมูล 2 คำขึ้นไป","คำประสมและคำซ้อนต้องใช้ไม้ยมกเสมอ"], answer:0, explain:"ทั้งสามประเภทมีโครงสร้างพื้นฐานร่วมกันคือใช้คำมูลตั้งแต่ 2 คำมารวมกัน แต่ต่างกันที่ความสัมพันธ์ของคำมูลที่นำมารวม"},
+{q:"เพราะเหตุใดคำมูลที่นำมาสร้างคำ (ประสม ซ้อน ซ้ำ) จึงไม่จำเป็นต้องเป็นคำไทยแท้เท่านั้น", choices:["เพราะคำมูลอาจเป็นคำไทยแท้หรือคำที่มาจากภาษาต่างประเทศก็ได้ ตราบใดที่นำมารวมกันแล้วเกิดความหมายใหม่หรือคงเค้าความหมายเดิมไว้บ้าง","เพราะภาษาไทยไม่มีคำไทยแท้เหลืออยู่แล้ว","เพราะคำต่างประเทศมีความหมายชัดเจนกว่าเสมอ","เพราะกฎการสร้างคำบังคับให้ใช้คำต่างประเทศเท่านั้น"], answer:0, explain:"คำมูลที่นำมาสร้างคำในภาษาไทยอาจเป็นคำไทยแท้หรือคำที่มาจากภาษาต่างประเทศก็ได้ ตราบใดที่รวมกันแล้วเกิดความหมายใหม่หรือคงเค้าความหมายเดิม"},
+{q:"หากนักเรียนพบคำใหม่ที่มีรูปเหมือนคำซ้ำ (มีไม้ยมกหรือคำซ้ำกัน) แต่คำมูลเดี่ยวไม่มีความหมายเมื่อใช้ตามลำพัง นักเรียนควรวิเคราะห์อย่างไรตามหลักที่เรียนมา", choices:["สรุปว่าเป็นคำซ้ำที่ต้องใช้ในรูปซ้ำเท่านั้นจึงจะมีความหมาย (เช่น ฉอดๆ ปาวๆ) และควรแยกออกจากคำที่หน้าตาคล้ายคำซ้ำแต่จริง ๆ เป็นคำมูลหลายพยางค์ที่มีความหมายอยู่แล้ว (เช่น จะจะ นานา)","สรุปว่าไม่ใช่คำซ้ำเสมอ","สรุปว่าเป็นคำประสมเสมอ","ไม่สามารถวิเคราะห์ได้เลย"], answer:0, explain:"ต้องแยกระหว่างคำซ้ำที่คำมูลเดี่ยวใช้ตามลำพังไม่ได้ (เช่น ฉอดๆ) กับคำที่หน้าตาคล้ายคำซ้ำแต่จริง ๆ เป็นคำมูลหลายพยางค์ที่มีความหมายอยู่แล้ว (เช่น จะจะ นานา) ซึ่งไม่ใช่คำซ้ำ"}
+]
+},
+kapyhe: {
+easy: [
+{q:"กาพย์เห่ชมเครื่องคาวหวานเป็นบทพระราชนิพนธ์ของใคร", choices:["รัชกาลที่ 1","พระบาทสมเด็จพระพุทธเลิศหล้านภาลัย (รัชกาลที่ 2)","รัชกาลที่ 3","รัชกาลที่ 4"], answer:1, explain:"กาพย์เห่ชมเครื่องคาวหวานเป็นบทพระราชนิพนธ์ในพระบาทสมเด็จพระพุทธเลิศหล้านภาลัย"},
+{q:"พระราชประสงค์ของการแต่งกาพย์เห่ชมเครื่องคาวหวานคืออะไร", choices:["เพื่อสอนทำอาหาร","เพื่อชมฝีพระหัตถ์การทำเครื่องเสวยของเจ้าฟ้าหญิงบุญรอด","เพื่อใช้ในพิธีศพ","เพื่อสอนภาษาบาลี"], answer:1, explain:"ทรงพระราชนิพนธ์เพื่อชมฝีพระหัตถ์การทำเครื่องเสวยของเจ้าฟ้าหญิงบุญรอด"},
+{q:"เจ้าฟ้าหญิงบุญรอด ภายหลังทรงเป็นใคร", choices:["สมเด็จพระศรีสุริเยนทราบรมราชินี","สมเด็จพระเทพรัตนราชสุดาฯ","พระราชชายา","สมเด็จพระนางเจ้าสิริกิติ์"], answer:0, explain:"เจ้าฟ้าหญิงบุญรอดภายหลังคือสมเด็จพระศรีสุริเยนทราบรมราชินี ในรัชกาลที่ 2"},
+{q:"กาพย์เห่ชมเครื่องคาวหวานมีอีกชื่อหนึ่งว่าอะไร", choices:["กาพย์เห่ชมไม้","กาพย์เห่ชมเครื่องคาวหวานและว่าด้วยงานนักขัตฤกษ์","กาพย์เห่เรือ","กาพย์พระไชยสุริยา"], answer:1, explain:"เนื่องจากเนื้อความประกอบด้วยบทเห่ชมเครื่องคาว ผลไม้ เครื่องหวาน บทเห่ครวญเข้ากับนักขัตฤกษ์ และบทเห่เจ้าเซ็น"},
+{q:"ตอนที่นักเรียนศึกษาในบทเรียนนี้คือตอนอะไร", choices:["ตอนเห่ชมเครื่องคาว","ตอนเห่ชมผลไม้","ตอนเห่ครวญ","ตอนเห่เจ้าเซ็น"], answer:0, explain:"ตอนที่นำมาให้นักเรียนศึกษาคือตอนชมเครื่องคาว"},
+{q:"ลักษณะคำประพันธ์ของกาพย์เห่ชมเครื่องคาวหวานคืออะไร", choices:["กลอนสุภาพ","โคลงสี่สุภาพและกาพย์ยานี 11","ฉันท์","ร่าย"], answer:1, explain:"แต่ละตอนขึ้นต้นด้วยโคลงสี่สุภาพ 1 บท ตามด้วยกาพย์ยานี 11"},
+{q:"โคลงสี่สุภาพ 1 บท มีกี่บาท", choices:["2 บาท","3 บาท","4 บาท","5 บาท"], answer:2, explain:"โคลงสี่สุภาพ 1 บท มี 4 บาท"},
+{q:"กาพย์ยานี 11 หนึ่งบท ประกอบด้วยกี่บาท", choices:["1 บาท","2 บาท","3 บาท","4 บาท"], answer:1, explain:"กาพย์ยานี 11 หนึ่งบท ประกอบด้วย 2 บาท คือ บาทเอกและบาทโท"},
+{q:"เดิมกาพย์เห่ชมเครื่องคาวหวานแต่งไว้เพื่อจุดประสงค์ใด", choices:["เห่เรือเป็นการส่วนพระองค์ (เห่เรือเล่น)","ใช้ในราชพิธีตั้งแต่แรก","สอนวิชาทำอาหาร","แต่งเพื่อประกวด"], answer:0, explain:"เดิมทรงพระราชนิพนธ์ไว้สำหรับเห่เรือเป็นการส่วนพระองค์ หรือเรียกว่าเห่เรือเล่น"},
+{q:"ในรัชสมัยใดที่นำกาพย์เห่ชมเครื่องคาวหวานมาใช้เห่ในพระราชพิธีขบวนพยุหยาตราทางชลมารค", choices:["รัชกาลที่ 2","รัชกาลที่ 3","รัชกาลที่ 4","รัชกาลที่ 5"], answer:2, explain:"ในรัชสมัยพระบาทสมเด็จพระจอมเกล้าเจ้าอยู่หัว (รัชกาลที่ 4) โปรดเกล้าฯ ให้นำมาใช้เห่ในพระราชพิธี"}
+],
+medium: [
+{q:"\"ยี่หร่า\" ในกาพย์เห่ชมเครื่องคาวหวาน หมายถึงอะไร", choices:["ผักชนิดหนึ่ง","ชื่อเรียกผลแก่แห้งของไม้ล้มลุก ใช้เป็นเครื่องเทศ กลิ่นหอมฉุน รสเผ็ดร้อน","ชื่อขนมไทย","เครื่องปรุงรสหวาน"], answer:1, explain:"ยี่หร่า คือ ชื่อเรียกผลแก่แห้งของไม้ล้มลุก ใช้เป็นเครื่องเทศ เม็ดเล็ก กลิ่นหอมฉุน รสเผ็ดร้อน"},
+{q:"\"ลูกเอ็น\" ในกาพย์เห่ชมเครื่องคาวหวาน หมายถึงอะไร", choices:["ลูกกระวานเทศ มาจากประเทศอินเดียตอนใต้ กลิ่นหอมฉุน","เมล็ดถั่ว","ลูกมะนาว","เนื้อสัตว์"], answer:0, explain:"ลูกเอ็น คือ ลูกกระวานเทศ (ลูกเอ็ล หรือเอลา) มาจากอินเดียตอนใต้ กลิ่นหอมฉุน"},
+{q:"\"ไฟฟอน\" หมายถึงอะไร", choices:["กองไฟที่ลุกโชน","กองไฟที่ดับแล้วแต่ยังมีความร้อนระอุอยู่","เตาไฟสมัยใหม่","ไฟฟ้า"], answer:1, explain:"ไฟฟอน หมายถึง กองไฟที่ดับแล้วแต่ยังมีความร้อนระอุอยู่"},
+{q:"\"ใบทองหลาง\" ในเรื่อง มีลักษณะและใช้อย่างไร", choices:["ใบรูปหอก ปลายเรียวแหลม รสฝาดเล็กน้อย รับประทานกับเมี่ยงคำ ปลาแนม","ใบไม้ประดับเท่านั้น","ใบชาชนิดหนึ่ง","ใบตองสำหรับห่อขนม"], answer:0, explain:"ใบทองหลาง มีลักษณะเหมือนรูปหอก ปลายใบเรียวแหลม รสฝาดเล็กน้อย เป็นผักรับประทานกับเมี่ยงคำ ปลาแนม"},
+{q:"คำประพันธ์ \"มัสมั่นแกงแก้วตา ชายใดได้กลืนแกง หอมยี่หร่ารสร้อนแรง แรงอยากให้ใฝ่ฝันหา\" สะท้อนคุณค่าด้านใด", choices:["คุณค่าด้านสังคม — เสน่ห์ปลายจวักของผู้หญิง","คุณค่าด้านสังคม — ความเชื่อเรื่องสวรรค์","ไม่เกี่ยวข้องกับเนื้อหาใด","ไม่มีคุณค่าใด"], answer:0, explain:"บทนี้สะท้อนเสน่ห์ปลายจวักของผู้หญิงไทย ผ่านฝีมือการทำอาหารที่ทำให้ผู้ชายอยากพบนางอีก"},
+{q:"คำประพันธ์ \"เห็นหรุ่มรุมทรวงเศร้า เจ็บไกลใจอาวรณ์ รุ่มรุ่มเร้าคือไฟฟอน ร้อนรุ่มรุ่มกลุ้มกลางทรวง\" ใช้กลวิธีทางวรรณศิลป์ใดเด่นชัด", choices:["การเล่นเสียงสัมผัสและคำซ้ำ (หรุ่ม-รุม-รุ่ม)","การใช้อติพจน์","การใช้อุปมา","การใช้สัทพจน์"], answer:0, explain:"บทนี้เล่นเสียงวรรณยุกต์ หรุ่ม-รุม-รุ่ม และใช้คำซ้ำ \"รุ่มรุ่ม\" เพื่อเน้นย้ำความหมายและความไพเราะ"},
+{q:"คำประพันธ์ \"รังนกนึ่งน่าซด โอชารสกว่าทั้งปวง เหมือนเรียมร้างห่างห้องหวน นกพรากจากรังรวง\" ใช้ภาพพจน์ประเภทใด", choices:["อติพจน์","อุปมา (เปรียบเทียบนกที่พรากจากรังกับกวีที่พรากจากนางอันเป็นที่รัก)","บุคคลวัต","สัญลักษณ์"], answer:1, explain:"ใช้คำว่า \"เหมือน\" เปรียบเทียบนกที่ต้องพรากจากรังกับกวีที่ต้องพรากจากน้องอันเป็นที่รัก จึงเป็นอุปมา"},
+{q:"คำประพันธ์ \"ก้อยกุ้งปรุงประทิ่น รสทิพย์หยิบมาโปรย วางถึงลิ้นดิ้นแดโดย ฤาจะเปรียบเทียบทันขวัญ\" ใช้ภาพพจน์ประเภทใด", choices:["อติพจน์ (ความเปรียบเกินจริง)","อุปมา","บุคคลวัต","สัมผัสอักษรเท่านั้น"], answer:0, explain:"เป็นการใช้ความเปรียบที่เกินจริงว่าไม่มีสิ่งใดเทียบรสชาติได้ จึงเป็นอติพจน์"},
+{q:"กาพย์เห่ชมเครื่องคาวหวานสะท้อนความเชื่อเรื่องสวรรค์จากคำใด", choices:["เมืองบน (เมืองฟ้า เมืองสวรรค์)","แกงมัสมั่น","ยี่หร่า","ลูกเอ็น"], answer:0, explain:"สังเกตจากคำว่า \"เมืองบน\" ในคำประพันธ์ \"นอนเตียงทองทำเมืองบน\" ซึ่งหมายถึงเมืองฟ้า เมืองสวรรค์"},
+{q:"คำประพันธ์ \"ข้าวหุงปรุงอย่างเทศ ใครหุงปรุงไม่เป็น รสพิเศษใส่ลูกเอ็น เช่นเชิงมิตรประดิษฐ์ทำ\" สะท้อนคุณค่าด้านสังคมเรื่องใด", choices:["การติดต่อกับชาวต่างชาติ (นำวัฒนธรรมอาหารต่างชาติเข้ามา)","ความเชื่อเรื่องสวรรค์","เสน่ห์ปลายจวัก","กรรมวิธีการทำขนมไทย"], answer:0, explain:"การหุงข้าวใส่ลูกเอ็นหรือกระวานเทศ เป็นวิธีหุงข้าวอย่างต่างชาติ สะท้อนการติดต่อกับชาวต่างชาติ"}
+],
+hard: [
+{q:"เหตุใดบทพระราชนิพนธ์นี้จึงมีชื่อขึ้นต้นว่า \"กาพย์เห่\" ทั้งที่ประกอบด้วยทั้งโคลงและกาพย์", choices:["เพราะเนื้อความของโคลงบทแรกคล้ายกับกาพย์ในบทแรก ซึ่งเป็นลักษณะกาพย์เห่ตามแบบฉบับกาพย์เห่เรือ","เพราะไม่มีโคลงเลย มีแต่กาพย์","เพราะเป็นกฎบังคับของฉันทลักษณ์ไทยทุกเรื่อง","เพราะกวีตั้งชื่อตามใจชอบไม่มีเหตุผล"], answer:0, explain:"เนื้อความของโคลงบทแรกคล้ายกับกาพย์ในบทแรก ซึ่งเป็นลักษณะกาพย์เห่ตามแบบฉบับของกาพย์เห่เรือ จึงมีชื่อขึ้นต้นว่ากาพย์เห่"},
+{q:"ข้อใดอธิบายความสัมพันธ์ระหว่างโคลงบทแรกกับกาพย์บทแรกในแต่ละตอนได้ถูกต้อง", choices:["เนื้อความของโคลงบทแรกคล้ายกับกาพย์ในบทแรก เป็นการแต่งเลียนความกัน","โคลงกับกาพย์มีเนื้อหาตรงข้ามกันเสมอ","โคลงไม่เกี่ยวข้องกับกาพย์เลย","กาพย์ต้องแต่งก่อนโคลงเสมอ"], answer:0, explain:"เนื้อความของโคลงบทแรกคล้ายกับกาพย์ในบทแรก เป็นลักษณะเฉพาะของกาพย์เห่ตามแบบฉบับกาพย์เห่เรือ"},
+{q:"เพราะเหตุใดกาพย์เห่ชมเครื่องคาวหวานจึงถูกยกย่องว่าแสดงพระอัจฉริยภาพทางการกวีของพระบาทสมเด็จพระพุทธเลิศหล้านภาลัย", choices:["เพราะทรงกล่าวถึงอาหารคาวหวานหลายชนิดอย่างละเอียดถี่ถ้วน ทำให้รู้จักชื่ออาหารไทยโบราณหลายชนิดพร้อมใช้ถ้อยคำไพเราะ","เพราะเป็นบทประพันธ์ที่สั้นที่สุดในวรรณคดีไทย","เพราะไม่มีผู้ใดเคยแต่งกาพย์เห่มาก่อน","เพราะใช้ภาษาอังกฤษปนในบทประพันธ์"], answer:0, explain:"การกล่าวถึงอาหารไทยหลายชนิดอย่างละเอียดถี่ถ้วนพร้อมใช้ถ้อยคำที่ไพเราะ แสดงถึงพระอัจฉริยภาพทางการกวี"},
+{q:"คำประพันธ์ \"มัสมั่นแกงแก้วตา ชายใดได้กลืนแกง หอมยี่หร่ารสร้อนแรง แรงอยากให้ใฝ่ฝันหา\" ให้ข้อคิดสำคัญเรื่องใดตามที่หนังสือสรุปไว้", choices:["การรู้จักดูแลเอาใจใส่คนรัก ผ่านการทำอาหารด้วยความประณีต","การใช้สติเมื่อมีความรัก","การนำความรู้เรื่องอาหารไปปรับใช้ในชีวิตจริง","ไม่มีข้อคิดใดเกี่ยวข้อง"], answer:0, explain:"บทนี้แสดงถึงการรู้จักดูแลเอาใจใส่คนรักผ่านฝีมือการทำอาหาร ซึ่งเป็นข้อคิดข้อที่ 1"},
+{q:"คำประพันธ์ \"เห็นหรุ่มรุมทรวงเศร้า เจ็บไกลใจอาวรณ์ รุ่มรุ่มเร้าคือไฟฟอน ร้อนรุ่มรุ่มกลุ้มกลางทรวง\" สะท้อนข้อคิดเรื่องใด", choices:["เราควรใช้สติเมื่อมีความรัก เพราะความรักมีทั้งสุขและทุกข์","การทำอาหารต้องมีความประณีต","การนำความรู้เรื่องอาหารไปปรับใช้","การติดต่อกับต่างชาติ"], answer:0, explain:"บทนี้สะท้อนความรุ่มร้อนใจเมื่อพลัดพรากจากคนรัก จึงให้ข้อคิดว่าควรใช้สติเมื่อมีความรัก เพราะความรักมีทั้งสุขและทุกข์"},
+{q:"เพราะเหตุใดการเปรียบเทียบ \"รังนกนึ่งน่าซด...เหมือนเรียมร้างห่างห้องหวน นกพรากจากรังรวง\" จึงจัดเป็นการใช้อุปมา ไม่ใช่อติพจน์", choices:["เพราะเป็นการเปรียบเทียบสิ่งหนึ่งเหมือนกับอีกสิ่งหนึ่งโดยใช้คำเชื่อมเปรียบเทียบ (เหมือน) ไม่ใช่การพูดเกินจริง","เพราะเป็นการพูดเกินจริงเพื่อเน้นอารมณ์","เพราะไม่มีคำเปรียบเทียบเลย","เพราะเป็นการเล่นเสียงสัมผัสเท่านั้น"], answer:0, explain:"การใช้คำว่า \"เหมือน\" เพื่อเปรียบเทียบสิ่งหนึ่งกับอีกสิ่งหนึ่งโดยตรง คือลักษณะของอุปมา ต่างจากอติพจน์ที่เป็นการพูดเกินจริง"},
+{q:"ข้อใดสรุปความแตกต่างระหว่างการใช้อติพจน์กับอุปมาในกาพย์เห่ชมเครื่องคาวหวานได้ถูกต้อง", choices:["อติพจน์คือการเปรียบเทียบที่เกินจริงเพื่อถ่ายทอดอารมณ์ให้เข้มข้น ส่วนอุปมาคือการเปรียบเทียบสิ่งหนึ่งเหมือนกับอีกสิ่งหนึ่งโดยตรง","ทั้งสองแบบเหมือนกันทุกประการ","อติพจน์ใช้ได้กับอาหารเท่านั้น","อุปมาต้องมีคำว่า \"เกิน\" เสมอ"], answer:0, explain:"อติพจน์เน้นความเปรียบเกินจริง ส่วนอุปมาเปรียบเทียบสิ่งหนึ่งเหมือนกับอีกสิ่งหนึ่งโดยตรงผ่านคำเชื่อม เช่น เหมือน"},
+{q:"เพราะเหตุใดพระบาทสมเด็จพระพุทธเลิศหล้านภาลัยจึงทรงนำเนื้อหาเกี่ยวกับอาหารมาพระราชนิพนธ์เป็นกาพย์เห่เรือ", choices:["เพื่อชมฝีพระหัตถ์การทำเครื่องเสวยของเจ้าฟ้าหญิงบุญรอด สื่อถึงความรักความผูกพัน ผ่านฝีมือการทำอาหาร","เพราะไม่มีเนื้อหาอื่นให้แต่ง","เพื่อสอนการทำอาหารแก่ประชาชน","เพราะเป็นธรรมเนียมบังคับของกาพย์เห่เรือทุกเรื่อง"], answer:0, explain:"ทรงมีพระราชประสงค์เพื่อชมฝีพระหัตถ์การทำเครื่องเสวยของเจ้าฟ้าหญิงบุญรอด ซึ่งสื่อถึงความรักความผูกพัน"},
+{q:"ข้อใดสรุปคุณค่าด้านสังคมและวัฒนธรรมของกาพย์เห่ชมเครื่องคาวหวานได้ครบถ้วนที่สุด", choices:["สะท้อนกรรมวิธีปรุงอาหารไทย เสน่ห์ปลายจวักของผู้หญิง การติดต่อกับชาวต่างชาติ และความเชื่อเรื่องสวรรค์","สะท้อนเฉพาะเรื่องอาหารเท่านั้น ไม่เกี่ยวกับสังคม","สะท้อนเฉพาะความเชื่อทางศาสนาพุทธเท่านั้น","ไม่มีคุณค่าด้านสังคมเลย"], answer:0, explain:"คุณค่าด้านสังคมและวัฒนธรรมครอบคลุมทั้ง 4 ประเด็นดังกล่าว"},
+{q:"ข้อคิดข้อที่ว่า \"เราควรนำความรู้เกี่ยวกับอาหารไทยในเรื่องไปปรับใช้ในชีวิตจริง\" มีเหตุผลสนับสนุนอย่างไรตามที่หนังสือกล่าวไว้", choices:["เพราะอาหารไทยต่าง ๆ ล้วนมีคุณค่าและคุณประโยชน์ต่อร่างกาย เช่น แกงมัสมั่นมียี่หร่าเป็นส่วนประกอบซึ่งมีประโยชน์หากรับประทานในปริมาณที่เหมาะสม","เพราะอาหารไทยไม่มีคุณค่าทางโภชนาการ","เพราะกวีสั่งให้ทำเช่นนั้น","เพราะเป็นกฎหมายกำหนดไว้"], answer:0, explain:"เพราะอาหารไทยต่าง ๆ ล้วนมีคุณค่าและคุณประโยชน์ต่อร่างกาย เช่น ยี่หร่าในแกงมัสมั่น หากรับประทานในปริมาณที่เหมาะสม"}
+]
+},
+marayat: {
+easy: [
+{q:"ข้อใดเป็นมารยาทในการพูดที่ถูกต้อง", choices:["แต่งกายให้สุภาพเรียบร้อย","พูดข่มขู่ให้กลัว","พูดแทรกตลอดเวลา","ไม่สบตาผู้ฟัง"], answer:0, explain:"การแต่งกายให้สุภาพเรียบร้อยเป็นมารยาทในการพูดข้อแรก"},
+{q:"มารยาทการพูดข้อใดเกี่ยวกับการเตรียมตัวก่อนพูด", choices:["เตรียมข้อมูลให้พร้อม เช่น เตรียมเรื่อง ซักซ้อม","พูดโดยไม่เตรียมตัว","มาสายกว่ากำหนด","พูดเรื่องอะไรก็ได้ไม่ต้องเตรียม"], answer:0, explain:"ควรเตรียมข้อมูลให้พร้อมก่อนพูด เช่น เตรียมเรื่องและซักซ้อม"},
+{q:"ข้อใดเป็นมารยาทในการฟังที่ถูกต้อง", choices:["จดบันทึกข้อความสำคัญ","คุยโทรศัพท์ระหว่างฟัง","นอนหลับขณะฟัง","พูดแทรกผู้พูด"], answer:0, explain:"การจดบันทึกข้อความสำคัญเป็นมารยาทในการฟังที่ถูกต้อง"},
+{q:"เมื่อฟังจบ ควรปฏิบัติอย่างไรตามมารยาทการฟัง", choices:["ปรบมือ","เดินออกทันทีไม่มีปฏิกิริยา","วิจารณ์เสียงดัง","เงียบไม่แสดงออกใด ๆ"], answer:0, explain:"เมื่อฟังจบควรปรบมือ ตามมารยาทการฟัง"},
+{q:"ข้อใดเป็นมารยาทในการดูที่ถูกต้อง", choices:["ดูอย่างสงบ ไม่ส่งเสียงดัง","คุยหรือเล่นระหว่างดู","นำอาหารเครื่องดื่มเข้าไป","เดินไปมาระหว่างการแสดง"], answer:0, explain:"ควรดูอย่างสงบ ไม่ส่งเสียงดัง ตามมารยาทการดู"},
+{q:"ข้อใดเป็นมารยาทในการเขียนที่ถูกต้อง", choices:["เขียนด้วยลายมือที่อ่านง่าย","เขียนสะกดคำผิดโดยไม่แก้ไข","เขียนใส่ร้ายผู้อื่น","ไม่ต้องอ้างอิงงานของผู้อื่น"], answer:0, explain:"ควรเขียนด้วยลายมือที่อ่านง่าย เป็นมารยาทในการเขียน"},
+{q:"เมื่อนำงานเขียนของผู้อื่นมาใช้ ควรทำอย่างไรตามมารยาทการเขียน", choices:["ต้องมีการอ้างอิง เขียนชื่อเจ้าของ","คัดลอกโดยไม่อ้างอิง","ลบชื่อเจ้าของออก","ไม่ต้องทำอะไร"], answer:0, explain:"เมื่อนำงานเขียนของผู้อื่นมาใช้ ต้องมีการอ้างอิงและเขียนชื่อเจ้าของ"},
+{q:"ข้อใดเป็นมารยาทในการอ่านที่ถูกต้อง", choices:["อ่านอย่างตั้งใจ มีสมาธิ","ขีดเขียนในหนังสือส่วนรวม","ฉีกหน้าหนังสือที่ต้องการ","พับหน้ากระดาษเก็บไว้"], answer:0, explain:"ควรอ่านอย่างตั้งใจ มีสมาธิ ตามมารยาทการอ่าน"},
+{q:"เมื่ออ่านหนังสือเสร็จแล้ว ควรปฏิบัติอย่างไรตามมารยาทการอ่าน", choices:["เก็บหนังสือเข้าที่","ทิ้งไว้ที่ใดก็ได้","ฉีกหน้าที่ชอบเก็บไว้","ไม่ต้องดูแลรักษา"], answer:0, explain:"เมื่ออ่านเสร็จควรเก็บหนังสือเข้าที่ ตามมารยาทการอ่าน"},
+{q:"การเขียนแสดงความคิดเห็นที่ดีต้องมีองค์ประกอบใดบ้าง", choices:["ประเด็นสำคัญและข้อมูลสนับสนุน","เฉพาะความรู้สึกส่วนตัวเท่านั้น","คำหยาบเพื่อเน้นย้ำ","ไม่ต้องมีข้อมูลสนับสนุนใด ๆ"], answer:0, explain:"องค์ประกอบสำคัญของการเขียนแสดงความคิดเห็นคือประเด็นสำคัญและข้อมูลสนับสนุน"}
+],
+medium: [
+{q:"เหตุใดจึงควรรู้จักกาลเทศะในการพูด", choices:["เพื่อให้การพูดเหมาะสมกับสถานการณ์และบุคคล","เพื่อให้พูดได้นานที่สุด","เพื่อให้ผู้ฟังหลับ","ไม่มีเหตุผลใด"], answer:0, explain:"การรู้จักกาลเทศะช่วยให้การพูดเหมาะสมกับสถานการณ์และบุคคล"},
+{q:"ทำไมจึงไม่ควรพูดแทรกผู้อื่น", choices:["เพราะเป็นการไม่ให้เกียรติผู้พูดและรบกวนบทสนทนา","เพราะจะทำให้พูดเก่งขึ้น","เพราะเป็นกฎหมาย","ไม่มีเหตุผลพิเศษ"], answer:0, explain:"การพูดแทรกเป็นการไม่ให้เกียรติผู้พูดและรบกวนบทสนทนา"},
+{q:"เหตุใดจึงควรมีสติและคิดก่อนพูดตามหลักมารยาทการพูด", choices:["เพื่อป้องกันการพูดผิดพลาดหรือทำร้ายความรู้สึกผู้อื่น","เพื่อให้พูดได้เร็วขึ้น","เพราะไม่มีผลต่อการสื่อสาร","เพื่อให้เสียงดังขึ้น"], answer:0, explain:"การมีสติคิดก่อนพูดช่วยป้องกันการพูดผิดพลาดหรือทำร้ายความรู้สึกผู้อื่น"},
+{q:"การฟังในที่ประชุมควรปฏิบัติอย่างไรตามมารยาทการฟัง", choices:["เข้าไปนั่งก่อนผู้พูดเริ่มพูด","มาสายกว่าผู้พูด","ยืนอยู่นอกห้อง","ไม่จำเป็นต้องเข้าร่วม"], answer:0, explain:"ควรเข้าไปนั่งก่อนผู้พูดเริ่มพูด ตามมารยาทการฟังในที่ประชุม"},
+{q:"เหตุใดการฟังด้วยความไม่มีอคติจึงสำคัญ", choices:["เพื่อให้เข้าใจเนื้อหาที่ผู้พูดสื่อสารอย่างเป็นธรรมและถูกต้อง","เพื่อให้จับผิดผู้พูดได้ง่ายขึ้น","ไม่มีความสำคัญใด","เพื่อให้สามารถโต้แย้งได้ทุกเรื่อง"], answer:0, explain:"การฟังโดยไม่มีอคติช่วยให้เข้าใจเนื้อหาอย่างเป็นธรรมและถูกต้อง"},
+{q:"เพราะเหตุใดจึงไม่ควรนำอาหารเครื่องดื่มเข้าไปในสถานที่ชมการแสดง", choices:["เพราะอาจก่อความรำคาญและรบกวนผู้อื่น","เพราะไม่มีที่นั่งเพียงพอ","เพราะกฎหมายห้ามการรับประทานอาหารทุกที่","ไม่มีเหตุผลใด"], answer:0, explain:"การนำอาหารเครื่องดื่มเข้าไปอาจก่อความรำคาญและรบกวนผู้อื่น"},
+{q:"ทำไมการเขียนหนังสือจึงต้องรักษาความสะอาด", choices:["เพื่อให้งานเขียนดูเป็นระเบียบและน่าอ่าน แสดงความรับผิดชอบของผู้เขียน","เพราะเป็นกฎที่ไม่มีเหตุผล","เพื่อประหยัดกระดาษ","ไม่มีความสำคัญ"], answer:0, explain:"การรักษาความสะอาดในการเขียนทำให้งานเขียนดูเป็นระเบียบและแสดงความรับผิดชอบ"},
+{q:"เพราะเหตุใดจึงไม่ควรขีดเขียนหรือขีดเส้นในหนังสือส่วนรวม", choices:["เพราะเป็นทรัพยากรที่ต้องใช้ร่วมกับผู้อื่น การขีดเขียนจะทำให้ผู้อื่นอ่านลำบากและเสียสภาพหนังสือ","เพราะทำให้อ่านง่ายขึ้น","เพราะเป็นการแสดงความคิดสร้างสรรค์","ไม่มีเหตุผลใด"], answer:0, explain:"หนังสือส่วนรวมต้องใช้ร่วมกับผู้อื่น การขีดเขียนจะทำให้ผู้อื่นอ่านลำบากและเสียสภาพหนังสือ"},
+{q:"เหตุใดการเขียนแสดงความคิดเห็นจึงต้องใช้ข้อมูลสนับสนุนที่น่าเชื่อถือ", choices:["เพื่อให้ความคิดเห็นมีน้ำหนักและเป็นประโยชน์ต่อผู้อ่าน ไม่ใช่เพียงความรู้สึกส่วนตัว","เพราะกฎหมายบังคับ","เพื่อให้เนื้อหายาวขึ้น","ไม่มีความจำเป็น"], answer:0, explain:"ข้อมูลสนับสนุนที่น่าเชื่อถือทำให้ความคิดเห็นมีน้ำหนักและเป็นประโยชน์ต่อผู้อ่าน"},
+{q:"ขั้นตอนแรกของการเขียนแสดงความคิดเห็นตามที่กำหนดคืออะไร", choices:["สรุปประเด็นสำคัญ","เขียนบทสรุปทันที","แสดงอารมณ์ส่วนตัว","ไม่ต้องมีขั้นตอนใด"], answer:0, explain:"ขั้นตอนแรกคือการสรุปประเด็นสำคัญของเรื่องก่อน"}
+],
+hard: [
+{q:"เพราะเหตุใดการรู้จักกาลเทศะและการใช้คำสุภาพจึงถือเป็นหัวใจสำคัญของมารยาทการพูด มากกว่าทักษะการพูดเพียงอย่างเดียว", choices:["เพราะการพูดที่เหมาะสมกับสถานการณ์และให้เกียรติผู้ฟังช่วยให้การสื่อสารมีประสิทธิภาพและไม่สร้างความขัดแย้ง แม้เนื้อหาจะดีเพียงใดก็ตาม","เพราะทักษะการพูดไม่มีความสำคัญเลย","เพราะกาลเทศะเป็นเรื่องเดียวที่ข้อสอบจะถาม","เพราะไม่มีความเกี่ยวข้องกัน"], answer:0, explain:"การพูดที่เหมาะสมกับสถานการณ์และให้เกียรติผู้ฟังช่วยให้การสื่อสารมีประสิทธิภาพ แม้เนื้อหาจะดีเพียงใดก็ตาม"},
+{q:"ข้อใดอธิบายความสัมพันธ์ระหว่างมารยาทการฟังกับมารยาทการพูดได้ถูกต้องที่สุด", choices:["ทั้งสองฝ่ายต้องให้เกียรติซึ่งกันและกัน ผู้พูดต้องพูดอย่างเหมาะสม ผู้ฟังต้องตั้งใจฟังโดยไม่มีอคติและไม่พูดแทรก การสื่อสารจึงจะมีประสิทธิภาพ","มารยาทการฟังไม่เกี่ยวข้องกับมารยาทการพูดเลย","ผู้ฟังไม่จำเป็นต้องมีมารยาทใด ๆ","ผู้พูดสามารถพูดอย่างไรก็ได้หากผู้ฟังมีมารยาทดี"], answer:0, explain:"การสื่อสารที่มีประสิทธิภาพต้องอาศัยมารยาทที่ดีจากทั้งสองฝ่าย ทั้งผู้พูดและผู้ฟัง"},
+{q:"เหตุใดการอ้างอิงแหล่งที่มาเมื่อนำงานเขียนของผู้อื่นมาใช้จึงเป็นมารยาทสำคัญในการเขียน", choices:["เพื่อให้เกียรติเจ้าของผลงานและป้องกันการคัดลอกผลงานผู้อื่นโดยไม่ได้รับอนุญาต ซึ่งเป็นการรักษาความซื่อสัตย์ทางวิชาการ","เพราะทำให้เนื้อหายาวขึ้นเท่านั้น","เพราะเป็นธรรมเนียมที่ไม่มีเหตุผล","เพราะช่วยประหยัดเวลาในการเขียน"], answer:0, explain:"การอ้างอิงช่วยให้เกียรติเจ้าของผลงานและรักษาความซื่อสัตย์ทางวิชาการ"},
+{q:"ข้อใดสรุปความแตกต่างของมารยาทการอ่านหนังสือส่วนตัวกับหนังสือส่วนรวมได้ถูกต้องที่สุด", choices:["หนังสือส่วนรวมต้องระมัดระวังเป็นพิเศษ ไม่ขีดเขียน ไม่พับหน้า ไม่ฉีก เพราะต้องใช้ร่วมกับผู้อื่นในอนาคต ต่างจากหนังสือส่วนตัวที่เป็นกรรมสิทธิ์ของตนเอง","ไม่มีความแตกต่างกันเลย","หนังสือส่วนตัวต้องระวังมากกว่าหนังสือส่วนรวม","มารยาทการอ่านใช้ได้กับหนังสือส่วนรวมเท่านั้น"], answer:0, explain:"หนังสือส่วนรวมต้องดูแลเป็นพิเศษเพราะต้องใช้ร่วมกับผู้อื่นในอนาคต"},
+{q:"เพราะเหตุใดการเขียนแสดงความคิดเห็นที่ดีจึงต้อง \"ไม่ยึดถือความคิดของตัวเองเป็นหลัก\" ตามที่หลักการกำหนดไว้", choices:["เพราะการเปิดรับมุมมองที่หลากหลายและใช้เหตุผลประกอบ ทำให้ความคิดเห็นมีความสมดุลและน่าเชื่อถือมากกว่าการยึดติดกับความคิดเดียว","เพราะความคิดของตัวเองไม่มีค่าเลย","เพราะกฎหมายห้ามแสดงความคิดเห็นส่วนตัว","ไม่มีเหตุผลใด"], answer:0, explain:"การเปิดรับมุมมองที่หลากหลายทำให้ความคิดเห็นมีความสมดุลและน่าเชื่อถือมากขึ้น"},
+{q:"ข้อใดอธิบายความสำคัญของขั้นตอน \"สรุปประเด็นสำคัญ\" ก่อนการเขียนแสดงความคิดเห็นได้ถูกต้องที่สุด", choices:["ช่วยให้ผู้เขียนเข้าใจแก่นของเรื่องก่อนแสดงความคิดเห็น ทำให้เนื้อหาที่เขียนตรงประเด็นและมีเหตุผลรองรับ","ไม่มีความจำเป็นต้องทำขั้นตอนนี้","เพื่อให้เขียนได้ยาวขึ้นเท่านั้น","เพราะเป็นกฎที่ไม่มีประโยชน์ใด"], answer:0, explain:"การสรุปประเด็นสำคัญช่วยให้ผู้เขียนเข้าใจแก่นของเรื่อง ทำให้เนื้อหาที่เขียนตรงประเด็น"},
+{q:"เหตุใดมารยาทในการดู เช่น การไปตรงเวลาและไม่ส่งเสียงดัง จึงมีความสำคัญต่อผู้อื่นในสถานที่เดียวกัน", choices:["เพราะการชมสิ่งต่าง ๆ ร่วมกันในที่สาธารณะต้องคำนึงถึงสิทธิและความสะดวกของผู้อื่นด้วย ไม่ใช่เพียงความพอใจของตนเอง","เพราะไม่มีผลกระทบต่อผู้อื่นเลย","เพราะเป็นกฎที่ไม่มีเหตุผลรองรับ","เพราะช่วยให้ตนเองดูสิ่งต่าง ๆ ได้ชัดเจนขึ้นเท่านั้น"], answer:0, explain:"การชมสิ่งต่าง ๆ ร่วมกันในที่สาธารณะต้องคำนึงถึงสิทธิและความสะดวกของผู้อื่นด้วย"},
+{q:"ข้อใดสรุปหลักการร่วมของมารยาทในการสื่อสารทุกด้าน (พูด ฟัง ดู เขียน อ่าน) ได้ถูกต้องที่สุด", choices:["ทุกด้านเน้นความเคารพผู้อื่น ความรับผิดชอบต่อสังคม และความเหมาะสมกับกาลเทศะ","ทุกด้านไม่มีความเกี่ยวข้องกัน","มีเพียงมารยาทการพูดเท่านั้นที่สำคัญ","มารยาทแต่ละด้านใช้กฎเกณฑ์ตรงข้ามกัน"], answer:0, explain:"มารยาททุกด้านตั้งอยู่บนพื้นฐานความเคารพผู้อื่น ความรับผิดชอบต่อสังคม และความเหมาะสมกับกาลเทศะ"},
+{q:"เพราะเหตุใดการฟังด้วยความพินิจและไม่มีอคติจึงช่วยให้การสื่อสารมีประสิทธิภาพมากขึ้น", choices:["เพราะช่วยให้ผู้ฟังเข้าใจสารที่แท้จริงโดยไม่บิดเบือนด้วยความรู้สึกส่วนตัว ทำให้ตอบสนองหรือประเมินเนื้อหาได้อย่างเป็นธรรม","เพราะทำให้ผู้ฟังหลับง่ายขึ้น","เพราะไม่มีผลต่อการสื่อสารเลย","เพราะช่วยให้จำเนื้อหาได้น้อยลง"], answer:0, explain:"การฟังโดยไม่มีอคติช่วยให้เข้าใจสารที่แท้จริงและประเมินเนื้อหาได้อย่างเป็นธรรม"},
+{q:"ข้อใดอธิบายว่าเหตุใดมารยาทในการเขียนและการอ่านจึงมีความเชื่อมโยงกันในแง่ \"ความรับผิดชอบต่อทรัพยากรร่วม\"", choices:["ทั้งสองด้านเกี่ยวข้องกับการดูแลรักษาหนังสือหรือสิ่งพิมพ์ให้อยู่ในสภาพดีสำหรับผู้ใช้คนต่อไป เช่น การไม่ขีดเขียนและการรักษาความสะอาดในการเขียน","ไม่มีความเชื่อมโยงกันเลย","การเขียนสำคัญกว่าการอ่านเสมอ","การอ่านไม่เกี่ยวข้องกับทรัพยากรใด ๆ"], answer:0, explain:"ทั้งการเขียนและการอ่านเกี่ยวข้องกับการดูแลรักษาทรัพยากรร่วม เช่น หนังสือส่วนรวม ให้อยู่ในสภาพดี"}
+]
+},
+classify: {
+easy: [
+{q:"\"หัวใจ\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"หัว และ ใจ เป็นคำมูลที่มีความหมายต่างกันมารวมกันเกิดความหมายใหม่ จึงเป็นคำประสม"},
+{q:"\"สูญหาย\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:1, explain:"สูญ และ หาย มีความหมายใกล้เคียงกันมาก จึงเป็นคำซ้อน"},
+{q:"\"พี่ๆ\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:2, explain:"เป็นการนำคำมูลเดิม (พี่) มาซ้ำโดยใช้ไม้ยมก จึงเป็นคำซ้ำ"},
+{q:"\"แม่น้ำ\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"แม่ และ น้ำ มีความหมายต่างกันมารวมกันเกิดความหมายใหม่ จึงเป็นคำประสม"},
+{q:"\"ทุกข์สุข\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:1, explain:"ทุกข์ และ สุข มีความหมายตรงข้ามกัน จึงเป็นคำซ้อน"},
+{q:"\"เด็กๆ\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:2, explain:"เป็นการนำคำมูลเดิม (เด็ก) มาซ้ำ จึงเป็นคำซ้ำ"},
+{q:"\"ลูกน้ำ\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"ลูก และ น้ำ มีความหมายต่างกันมารวมกันเกิดความหมายใหม่ จึงเป็นคำประสม"},
+{q:"\"บ้านเรือน\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:1, explain:"บ้าน และ เรือน มีความหมายเหมือนกัน จึงเป็นคำซ้อน"},
+{q:"\"ราวๆ\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:2, explain:"เป็นการนำคำมูลเดิม (ราว) มาซ้ำ จึงเป็นคำซ้ำ"},
+{q:"\"กันสาด\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"กัน และ สาด มีความหมายต่างกันมารวมกันเกิดความหมายใหม่เฉพาะเจาะจง จึงเป็นคำประสม"}
+],
+medium: [
+{q:"\"ตีนแมว\" (ความหมายเปรียบเทียบ = นักย่องเบา) จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"ตีน และ แมว มีความหมายต่างกัน รวมกันเกิดความหมายเปรียบเทียบใหม่ จึงเป็นคำประสม"},
+{q:"\"ชั่วดี\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:1, explain:"ชั่ว และ ดี มีความหมายตรงข้ามกัน จึงเป็นคำซ้อน"},
+{q:"\"ดี๊ดี\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:2, explain:"เป็นคำซ้ำที่เปลี่ยนเสียงวรรณยุกต์พยางค์แรก (ดี๊-ดี)"},
+{q:"\"ดอกฟ้า\" (ความหมายเปรียบเทียบ = ผู้หญิงฐานะสูงศักดิ์) จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"ดอก และ ฟ้า มีความหมายต่างกัน รวมกันเกิดความหมายเปรียบเทียบใหม่ จึงเป็นคำประสม"},
+{q:"\"เหตุผล\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:1, explain:"เหตุ และ ผล มีความหมายตรงข้ามกัน จึงเป็นคำซ้อน"},
+{q:"\"กล้วยๆ\" (ความหมาย = ง่ายมาก) จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:2, explain:"เป็นการนำคำมูลเดิม (กล้วย) มาซ้ำ แม้ความหมายจะเปลี่ยนไปจากเดิมโดยสิ้นเชิง ก็ยังเป็นคำซ้ำ"},
+{q:"\"งูพิษ\" (ความหมายเปรียบเทียบ = คนมีพิษสง) จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"งู และ พิษ มีความหมายต่างกัน รวมกันเกิดความหมายเปรียบเทียบใหม่ จึงเป็นคำประสม"},
+{q:"\"อดทน\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:1, explain:"อด และ ทน มีความหมายคล้ายกัน จึงเป็นคำซ้อน"},
+{q:"\"เกือบๆ\" (ความหมายอ่อนลง) จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:2, explain:"เป็นการนำคำมูลเดิม (เกือบ) มาซ้ำ จึงเป็นคำซ้ำ"},
+{q:"\"จนตรอก\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"จน และ ตรอก มีความหมายต่างกันมารวมกันเกิดความหมายใหม่ จึงเป็นคำประสม"}
+],
+hard: [
+{q:"\"จะจะ\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ","คำมูล (ไม่ใช่คำสร้าง)"], answer:3, explain:"จะจะ เป็นคำมูล 2 พยางค์ หมายถึง ชัดเจน กระจ่าง มีความหมายในตัวเองอยู่แล้ว ไม่ใช่การนำคำมูลมาซ้ำ จึงไม่ใช่คำซ้ำและไม่ใช่การสร้างคำแบบใดเลย"},
+{q:"\"นานา\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ","คำมูล (ไม่ใช่คำสร้าง)"], answer:3, explain:"นานา เป็นคำภาษาบาลี 2 พยางค์ หมายถึง ต่าง ๆ มีความหมายในตัวเองอยู่แล้ว ไม่ใช่คำซ้ำ"},
+{q:"\"ฉอด ๆ\" จัดเป็นคำชนิดใด แม้คำมูลเดี่ยว (ฉอด) จะใช้ตามลำพังไม่ได้", choices:["คำประสม","คำซ้อน","คำซ้ำ","คำมูล (ไม่ใช่คำสร้าง)"], answer:2, explain:"ฉอด ๆ เป็นคำซ้ำชนิดพิเศษที่ต้องใช้อยู่ในรูปที่ซ้ำเท่านั้นจึงจะมีความหมาย"},
+{q:"คำว่า \"คนใช้\" ในประโยค \"คนใช้บ้านนี้ชื่อแจ๋ว\" (หมายถึงคนที่มีหน้าที่คอยรับใช้) จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"ในบริบทนี้ \"คนใช้\" เกิดความหมายใหม่ (คนที่มีหน้าที่คอยรับใช้) ต่างจากความหมายตรงตัว จึงเป็นคำประสม"},
+{q:"\"ตีนผี\" ในความหมายเปรียบเทียบ (คนขับรถเร็วจนน่าหวาดเสียว) จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:0, explain:"ตีน และ ผี มีความหมายต่างกัน รวมกันเกิดความหมายเปรียบเทียบใหม่ จึงเป็นคำประสม ไม่ว่าจะใช้ในความหมายเฉพาะหรือความหมายเปรียบเทียบ"},
+{q:"\"ได้อย่างเสียอย่าง\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:1, explain:"ได้ และ เสีย มีความหมายตรงข้ามกัน นำมารวมกันเป็นคำซ้อนความหมายตรงข้าม"},
+{q:"\"โบร้าณโบราณ\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:2, explain:"เป็นคำซ้ำเปลี่ยนเสียง โดยเปลี่ยนเสียงวรรณยุกต์พยางค์แรกของคำเดิม (โบราณ) แล้วนำมาซ้ำทั้งคำ"},
+{q:"ข้อใดคือข้อแตกต่างสำคัญระหว่าง \"คำประสม\" กับ \"คำซ้อน\"", choices:["คำประสมใช้คำมูลที่มีความหมายต่างกัน ส่วนคำซ้อนใช้คำมูลที่มีความหมายเหมือนกัน คล้ายกัน หรือตรงข้ามกัน","คำประสมใช้คำมูลเดียวกันซ้ำ ส่วนคำซ้อนใช้คำมูลต่างกัน","ทั้งสองแบบไม่มีความแตกต่างกัน","คำประสมใช้ได้กับคำนามเท่านั้น"], answer:0, explain:"ความแตกต่างหลักอยู่ที่ความสัมพันธ์ของความหมายคำมูล: คำประสมใช้คำมูลต่างความหมาย ส่วนคำซ้อนใช้คำมูลที่มีความหมายเหมือน คล้าย หรือตรงข้ามกัน"},
+{q:"ข้อใดคือข้อแตกต่างสำคัญระหว่าง \"คำซ้อน\" กับ \"คำซ้ำ\"", choices:["คำซ้อนใช้คำมูลสองคำที่ต่างกันแต่ความหมายสัมพันธ์กัน (เหมือน/คล้าย/ตรงข้าม) ส่วนคำซ้ำใช้คำมูลเดิมคำเดียวมาซ้ำกัน","คำซ้อนใช้ไม้ยมกเสมอ ส่วนคำซ้ำไม่ใช้", "ทั้งสองแบบเหมือนกันทุกประการ","คำซ้อนใช้ได้กับคำกริยาเท่านั้น"], answer:0, explain:"คำซ้อนต้องมีคำมูล 2 คำที่ต่างกันแต่ความหมายสัมพันธ์กัน ส่วนคำซ้ำเป็นการนำคำมูลเดิมคำเดียวมาซ้ำ"},
+{q:"\"ห่วงหน้าพะวงหลัง\" จัดเป็นคำชนิดใด", choices:["คำประสม","คำซ้อน","คำซ้ำ"], answer:1, explain:"ห่วงหน้า และ พะวงหลัง มีความหมายคล้ายกัน (กังวลทั้งข้างหน้าและข้างหลัง) นำมารวมกันเป็นคำซ้อน"}
+]
+}
+};
+
+/* ============================================================
+   RENDER + INTERACTION LOGIC
+   ============================================================ */
+const TOPICS = ["prasom","saun","sam","kapyhe","marayat","classify"];
+const state = {}; // state[topic][diff] = { answered: {idx: choiceIdx} }
+TOPICS.forEach(t=>{ state[t] = {easy:{}, medium:{}, hard:{}}; });
+
+function renderQuiz(topic, diff){
+  const list = document.getElementById("qlist-"+topic);
+  const data = QUIZ[topic][diff];
+  list.innerHTML = "";
+  data.forEach((item, idx)=>{
+    const qDiv = document.createElement("div");
+    qDiv.className = "q-item";
+    const qText = document.createElement("div");
+    qText.className = "q-text";
+    qText.textContent = (idx+1) + ". " + item.q;
+    qDiv.appendChild(qText);
+
+    item.choices.forEach((choiceText, cIdx)=>{
+      const btn = document.createElement("button");
+      btn.className = "choice";
+      btn.textContent = String.fromCharCode(3585+cIdx) + ". " + choiceText; // ก ข ค ง
+      const already = state[topic][diff][idx];
+      if(already !== undefined){
+        btn.disabled = true;
+        if(cIdx === item.answer) btn.classList.add("correct");
+        else if(cIdx === already) btn.classList.add("wrong");
+        else btn.classList.add("dim");
+      }
+      btn.addEventListener("click", ()=>{
+        if(state[topic][diff][idx] !== undefined) return;
+        state[topic][diff][idx] = cIdx;
+        renderQuiz(topic, diff);
+        updateScore(topic, diff);
+        const exp = qDiv.querySelector(".explain");
+        if(exp) exp.classList.add("show");
+      });
+      qDiv.appendChild(btn);
+    });
+
+    const explain = document.createElement("div");
+    explain.className = "explain" + (state[topic][diff][idx] !== undefined ? " show" : "");
+    explain.innerHTML = "<b>เฉลย:</b> " + String.fromCharCode(3585+item.answer) + ". " + item.choices[item.answer] + "<br><b>คำอธิบาย:</b> " + item.explain;
+    qDiv.appendChild(explain);
+
+    list.appendChild(qDiv);
+  });
+}
+
+function updateScore(topic, diff){
+  const data = QUIZ[topic][diff];
+  const answered = state[topic][diff];
+  let correct = 0, total = 0;
+  Object.keys(answered).forEach(idx=>{
+    total++;
+    if(answered[idx] === data[idx].answer) correct++;
+  });
+  const scoreEl = document.getElementById("score-"+topic);
+  scoreEl.querySelector("b").textContent = correct;
+  scoreEl.querySelector(".qcount").textContent = data.length;
+}
+
+function getCurrentDiff(topic){
+  const active = document.querySelector("#diff-"+topic+" button.active");
+  return active ? active.dataset.diff : "easy";
+}
+
+// Topic tab switching
+document.querySelectorAll(".topic-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".topic-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    const topic = btn.dataset.topic;
+    document.querySelectorAll(".topic-panel").forEach(p=>p.classList.remove("active"));
+    document.querySelector(".topic-panel[data-topic='"+topic+"']").classList.add("active");
+  });
+});
+
+// Mode tab switching (summary/quiz) within each topic panel
+document.querySelectorAll(".topic-panel").forEach(panel=>{
+  panel.querySelectorAll(".mode-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      panel.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      const mode = btn.dataset.mode;
+      panel.querySelectorAll(".mode-panel").forEach(p=>p.classList.remove("active"));
+      panel.querySelector(".mode-panel[data-mode='"+mode+"']").classList.add("active");
+    });
+  });
+});
+
+// Difficulty tab switching + reset buttons, per topic
+TOPICS.forEach(topic=>{
+  const diffContainer = document.getElementById("diff-"+topic);
+  diffContainer.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      diffContainer.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      renderQuiz(topic, btn.dataset.diff);
+      updateScore(topic, btn.dataset.diff);
+    });
+  });
+  document.querySelector("[data-reset='"+topic+"']").addEventListener("click", ()=>{
+    const diff = getCurrentDiff(topic);
+    state[topic][diff] = {};
+    renderQuiz(topic, diff);
+    updateScore(topic, diff);
+  });
+  // initial render
+  renderQuiz(topic, "easy");
+  updateScore(topic, "easy");
+});
+</script>
+</body>
+</html>

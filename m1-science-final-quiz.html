@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M.1 Science Final Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;
+  --navy-light:#CADCFC;
+  --ink:#1A1A1A;
+  --border:#D9DEEA;
+  --green:#1E7A34;
+  --green-bg:#E7F5EA;
+  --red:#B3261E;
+  --red-bg:#FCEAE9;
+}
+*{box-sizing:border-box;}
+body{
+  font-family:'Sarabun','TH Sarabun New',Arial,sans-serif;
+  color:var(--ink);
+  margin:0;
+  background:#FFFFFF;
+  line-height:1.6;
+  font-size:11pt;
+}
+header{
+  background:var(--navy);
+  color:#fff;
+  padding:28px 24px 22px;
+}
+header .inner{max-width:900px;margin:0 auto;}
+.backlink{color:var(--navy-light);text-decoration:none;font-size:9.5pt;margin-right:18px;}
+.backlink:hover{text-decoration:underline;}
+header h1{font-size:18pt;margin:14px 0 4px;font-weight:700;}
+header p{margin:0;font-size:10.5pt;color:var(--navy-light);}
+
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 80px;}
+
+.setbar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.setbtn{
+  flex:1;min-width:140px;padding:12px 10px;border:1px solid var(--border);
+  background:#fff;color:var(--navy);font-family:inherit;font-size:10.5pt;font-weight:600;
+  border-radius:4px;cursor:pointer;transition:.15s;
+}
+.setbtn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.setbtn:hover{border-color:var(--navy);}
+
+.scorebar{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#F5F6FA;border:1px solid var(--border);border-radius:4px;
+  padding:10px 14px;margin-bottom:16px;font-size:10pt;color:var(--navy);font-weight:600;
+}
+.progresswrap{background:#E4E7EE;border-radius:3px;height:6px;overflow:hidden;flex:1;margin:0 14px;}
+.progressbar{background:var(--navy);height:100%;width:0%;transition:width .2s;}
+
+.shufflebtn{
+  display:block;margin:0 0 18px auto;padding:8px 16px;border:1px solid var(--navy);
+  background:#fff;color:var(--navy);font-family:inherit;font-size:9.5pt;font-weight:600;
+  border-radius:4px;cursor:pointer;
+}
+.shufflebtn:hover{background:var(--navy-light);}
+
+.section-label{
+  font-size:9.5pt;font-weight:700;color:#fff;background:var(--navy);
+  display:inline-block;padding:3px 10px;border-radius:3px;margin:22px 0 8px;
+}
+.qcard{
+  border:1px solid var(--border);border-radius:5px;padding:16px 18px;margin-bottom:14px;background:#fff;
+}
+.qtext{font-weight:600;margin-bottom:12px;font-size:11pt;}
+.opt{
+  display:block;width:100%;text-align:left;padding:9px 12px;margin-bottom:8px;
+  border:1px solid var(--border);border-radius:4px;background:#FAFBFD;color:var(--ink);
+  font-family:inherit;font-size:10.5pt;cursor:pointer;transition:.12s;
+}
+.opt:hover{border-color:var(--navy);}
+.opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:600;}
+.opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:600;}
+.opt.disabled{cursor:default;}
+.explain{
+  display:none;margin-top:8px;padding:10px 12px;background:#F2F4F8;
+  border-left:3px solid var(--navy);border-radius:2px;font-size:10pt;line-height:1.55;color:#333;
+}
+.explain.show{display:block;}
+.explain b{color:var(--navy);}
+
+.summarybox{
+  display:none;text-align:center;padding:26px;margin-top:10px;
+  border:1px solid var(--navy);border-radius:6px;background:#F5F6FA;
+}
+.summarybox.show{display:block;}
+.summarybox .big{font-size:22pt;font-weight:700;color:var(--navy);}
+.summarybox p{color:#555;font-size:10pt;}
+
+footer{text-align:center;color:#888;font-size:9pt;padding:24px 20px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <a href="index.html" class="backlink">&larr; Back to subjects</a>
+    <a href="m1-science-final-summary.html" class="backlink">Read the summary</a>
+    <h1>M.1 Science — Final Exam Quiz</h1>
+    <p>Chapter 2: Cells as the Unit of Life &nbsp;|&nbsp; Chapter 3: Plants</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="setbar">
+    <button class="setbtn active" data-set="easy">Easy (33 items)</button>
+    <button class="setbtn" data-set="medium">Medium (33 items)</button>
+    <button class="setbtn" data-set="hard">Hard (22 items)</button>
+  </div>
+
+  <div class="scorebar">
+    <span id="scoretext">Score: 0 / 0</span>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <span id="progresstext">0%</span>
+  </div>
+
+  <button class="shufflebtn" id="shufflebtn">&#8635; Shuffle again</button>
+
+  <div id="quizhost"></div>
+
+  <div class="summarybox" id="summarybox">
+    <div class="big" id="summarybig">0 / 0</div>
+    <p>You've answered every question in this set. Switch tiers above or shuffle to try again.</p>
+  </div>
+</div>
+
+<footer>Questions and answer order shuffle every time you open this page or press "Shuffle again." Chapter 2 &amp; 3, Science M.1 Final Exam — Thu 17 Sep 2026.</footer>
+
+<script>
+const SECTION_LABEL = {
+  1:"1. Cell Organization &amp; Levels",
+  2:"2. Specialized Cells",
+  3:"3. Cell Structure &amp; Organelles",
+  4:"4. Animal vs Plant Cells",
+  5:"5. Diffusion &amp; Osmosis",
+  6:"6. Microscope",
+  7:"7. Photosynthesis",
+  8:"8. Vascular Tissue &amp; Transpiration",
+  9:"9. Flower Structure &amp; Pollination",
+  10:"10. Fertilization, Fruits &amp; Seeds",
+  11:"11. Asexual Reproduction &amp; Minerals"
+};
+
+const QUESTION_DATA = {
+easy:[
+{section:1,q:'What does "unicellular" mean?',options:['Consists of one cell only','Consists of many cells','Has no nucleus','Can only live in soil'],correct:0,explain:'"Uni" means one — unicellular organisms consist of one cell only, e.g. Amoeba and Paramecium.'},
+{section:1,q:'Which of the following is an example of a unicellular organism?',options:['Amoeba','Hydra','Earthworm','Grass'],correct:0,explain:'Amoeba is unicellular. Hydra, earthworm and grass are multicellular organisms.'},
+{section:1,q:'What comes right after "Cell" in the correct order of organization?',options:['Tissue','Organism','System','Organ'],correct:0,explain:'The correct order is Cell &rarr; Tissue &rarr; Organ &rarr; System &rarr; Organism.'},
+{section:2,q:'Which specialized cell has a long, thin extension to absorb water and minerals from the soil?',options:['Root hair cell','Guard cell','Palisade cell','Epithelial cell'],correct:0,explain:'Root hair cells have a long thin extension that increases the surface area for absorbing water and minerals.'},
+{section:2,q:'Guard cells regulate gas exchange by controlling the opening and closing of the:',options:['Stoma','Nucleus','Vacuole','Chloroplast'],correct:0,explain:'A pair of bean-shaped guard cells bounds each stoma and controls its opening and closing.'},
+{section:2,q:'Mature red blood cells do NOT have a:',options:['Nucleus','Cell membrane','Cytoplasm','Store of hemoglobin'],correct:0,explain:'Mature red blood cells have no nucleus — this gives them more space to carry oxygen.'},
+{section:3,q:'Which organelle controls all cellular activities?',options:['Nucleus','Mitochondrion','Vacuole','Cell wall'],correct:0,explain:'The nucleus controls all cellular activities in almost every cell.'},
+{section:3,q:'Which structure produces energy for the cell from digested food?',options:['Mitochondrion','Chloroplast','Cell wall','Nucleus'],correct:0,explain:'The mitochondrion produces energy from digested food and is present in all cells.'},
+{section:3,q:'Protoplasm consists of:',options:['Nucleus and cytoplasm','Cell wall and vacuole','Chloroplast and mitochondrion','Cell membrane and cell wall'],correct:0,explain:'A typical cell is made up of a cell membrane containing protoplasm, which consists of a nucleus and cytoplasm.'},
+{section:4,q:'Which structure is found ONLY in plant cells, not animal cells?',options:['Cell wall','Cell membrane','Cytoplasm','Mitochondrion'],correct:0,explain:'The cell wall is a non-living cellulose layer found only in plant cells; it gives them an almost fixed shape.'},
+{section:4,q:'Animal cells usually have:',options:['Many small vacuoles','One large vacuole','No cytoplasm','A cell wall'],correct:0,explain:'Plant cells often have one large vacuole, whereas animal cells usually have many small ones.'},
+{section:4,q:'Which statement is TRUE about animal cells?',options:['They do not have a cell wall or chloroplasts','They have a fixed shape','They contain chlorophyll','They have one large vacuole'],correct:0,explain:'Animal cells lack a cell wall and chloroplasts — features found in plant cells.'},
+{section:5,q:'Diffusion is the movement of molecules from a:',options:['Region of higher concentration to a region of lower concentration','Region of lower to higher concentration','Fixed point only','Solid to a liquid only'],correct:0,explain:'Diffusion is the movement of molecules from a region of higher concentration to a region of lower concentration.'},
+{section:5,q:'Osmosis is the net movement of:',options:['Water molecules across a semipermeable membrane','Sugar molecules only','Air molecules','Blood cells'],correct:0,explain:'Osmosis is the net movement of water molecules across a semipermeable membrane.'},
+{section:5,q:'In osmosis, water moves from a region of:',options:['Higher water potential to lower water potential','Lower to higher water potential','High solute concentration only','No net direction'],correct:0,explain:'Water moves by osmosis from a region of higher water potential to a region of lower water potential.'},
+{section:6,q:'Which part of the microscope magnifies the specimen?',options:['Objective lens','Stage','Diaphragm','Base'],correct:0,explain:'The objective lens magnifies the specimen; the eyepiece further magnifies that image.'},
+{section:6,q:'Which part holds the slide in position on the stage?',options:['Clip','Mirror','Condenser','Arm'],correct:0,explain:'The clip holds the slide in position on the stage.'},
+{section:6,q:'What is the function of the diaphragm?',options:['To control the amount of light entering the lens','To magnify the image','To hold the slide','To focus light onto the specimen'],correct:0,explain:'The diaphragm controls the amount of light entering the lens.'},
+{section:7,q:'Photosynthesis is the process by which green plants:',options:['Absorb solar energy to produce food from carbon dioxide and water','Absorb oxygen to produce carbon dioxide','Break down glucose to release energy','Absorb minerals from the soil'],correct:0,explain:'Photosynthesis is the process in which green plants absorb solar energy to make food from carbon dioxide and water.'},
+{section:7,q:'Which gas is released as a by-product of photosynthesis?',options:['Oxygen','Carbon dioxide','Nitrogen','Hydrogen'],correct:0,explain:'Oxygen is released into the air as a by-product of photosynthesis.'},
+{section:7,q:"Chlorophyll's main role in photosynthesis is to:",options:['Trap light energy','Absorb carbon dioxide','Release oxygen','Store water'],correct:0,explain:'Chlorophyll is the green pigment in leaves that traps light energy for photosynthesis.'},
+{section:8,q:'Xylem transports:',options:['Water and minerals from the roots to other parts of the plant','Food (glucose) from the leaves to other parts','Oxygen only','Pollen grains'],correct:0,explain:'Xylem transports water and mineral salts from the roots to the stem and leaves.'},
+{section:8,q:'Phloem transports:',options:['Food (mainly glucose) from the leaves to other parts of the plant','Water only','Carbon dioxide','Minerals from the soil only'],correct:0,explain:'Phloem transports synthesized food substances (mainly glucose) from one part of the plant to another.'},
+{section:8,q:'Transpiration is best defined as:',options:['The evaporation of water from the aerial parts of a plant','The absorption of water by roots','The production of glucose in leaves','The release of carbon dioxide by leaves'],correct:0,explain:'Transpiration is the evaporation of water from the aerial parts of plants, mainly through the stomata.'},
+{section:9,q:'The male part of a flower is called the:',options:['Stamen','Pistil','Sepal','Receptacle'],correct:0,explain:'The stamen is the male part of the flower, consisting of the anther and filament.'},
+{section:9,q:'The female part of a flower is called the:',options:['Pistil (or carpel)','Stamen','Petal','Anther'],correct:0,explain:'The pistil (or carpel) is the female part, consisting of the stigma, style, ovary and ovules.'},
+{section:9,q:'Which part of the flower protects the young flower in the budding stage?',options:['Sepals','Petals','Stigma','Ovary'],correct:0,explain:'Sepals are usually small, green and leaf-like, and protect the young flower in the budding stage.'},
+{section:10,q:'Fertilization in plants occurs when:',options:['The male gamete fuses with the female gamete to form a zygote','Pollen lands on the stigma','The petals fall off','Water is absorbed by the roots'],correct:0,explain:'Fertilization is the fusion of the male gamete and female gamete (egg) to form a zygote.'},
+{section:10,q:'The pollen tube enters the ovule through a tiny hole called the:',options:['Micropyle','Hilum','Testa','Pericarp'],correct:0,explain:'The pollen tube grows through the style and enters the ovule through the micropyle.'},
+{section:10,q:'The protective outer covering of a seed is called the:',options:['Testa','Cotyledon','Radicle','Plumule'],correct:0,explain:'The testa is the protective covering that prevents the seed from drying up.'},
+{section:11,q:'Vegetative reproduction is a form of:',options:['Asexual reproduction','Sexual reproduction','Fertilization','Pollination'],correct:0,explain:'Vegetative reproduction is a natural form of asexual reproduction in plants.'},
+{section:11,q:'In vegetative reproduction, the offspring:',options:['Have the exact genetic make-up as the parent','Are genetically different from the parent','Cannot survive','Always die within a year'],correct:0,explain:'In vegetative reproduction, the new plant grows from a part of the parent plant and has the exact genetic make-up as the parent.'},
+{section:11,q:'Onions and garlics propagate vegetatively from:',options:['Bulbs','Underground stems','Stolons','Leaves'],correct:0,explain:'Onions, garlics, lilies and tulips are examples of plants that grow from bulbs.'}
+],
+medium:[
+{section:1,q:'Which best describes a "tissue"?',options:['A group of specialized cells with a similar function','A single cell performing all life processes','A group of organs working together','An organism made of many systems'],correct:0,explain:'A tissue is a group of specialized cells with a similar function, e.g. epithelial tissue.'},
+{section:1,q:'In the diagram of organization, which pairing correctly matches an organ with its system?',options:['Leaf &rarr; Transportation system','Stomach &rarr; Transportation system','Epithelial tissue &rarr; Organism','Digestive system &rarr; Cell'],correct:0,explain:'The leaf (organ) is part of the plant transportation system, which moves water and food throughout the plant.'},
+{section:1,q:'Why are unicellular organisms also called microorganisms?',options:['They are very tiny and can only be seen under a microscope','They cannot reproduce','They live only in the human body','They lack cell membranes'],correct:0,explain:'Unicellular organisms are also known as microorganisms because they are extremely tiny and require a microscope to be seen.'},
+{section:2,q:'Which specialized cell contains lots of chlorophyll to carry out photosynthesis?',options:['Palisade cell','Root hair cell','Guard cell','Red blood cell'],correct:0,explain:'Palisade cells contain lots of chlorophyll to carry out photosynthesis efficiently.'},
+{section:2,q:'Sperm cells have a long tail mainly to:',options:['Allow them to swim to the ovum','Store genetic material','Absorb nutrients','Produce hemoglobin'],correct:0,explain:'Sperm cells (male reproductive cells) have a long tail that allows them to swim to the ova (female reproductive cells).'},
+{section:2,q:'Which statement correctly describes a specialized cell?',options:['Guard cells are shaped like kidneys','Red blood cells have a large nucleus','Epithelial cells are thick and opaque','Root hair cells are round with no extension'],correct:0,explain:'Guard cells are kidney-shaped; mature red blood cells have no nucleus, and epithelial cells are flat and transparent.'},
+{section:3,q:'Which structure encloses the cytoplasm and controls the movement of materials in and out of the cell?',options:['Cell membrane','Cell wall','Nucleus','Vacuole'],correct:0,explain:'The cell membrane encloses the cytoplasm and controls what moves in and out of the cell — present in all cells.'},
+{section:3,q:'Chloroplasts are present in:',options:['Most plant cells that are under the light','All cells','Only root hair cells','Only guard cells'],correct:0,explain:'Chloroplasts, which contain chlorophyll, are present in most plant cells that are exposed to light.'},
+{section:3,q:'What does the vacuole do in a plant cell?',options:['Holds useful substances, water and wastes, and supports the plant when full of water','Produces energy for the cell','Controls all cellular activities','Encloses the cytoplasm'],correct:0,explain:'The vacuole (cell sap) holds useful substances, water and wastes, and supports the plant when it is full of water.'},
+{section:4,q:'What gives plant cells their almost fixed shape?',options:['The cell wall','The nucleus','The mitochondrion','The cytoplasm'],correct:0,explain:'The cell wall, a non-living layer of cellulose, gives plant cells their almost fixed shape.'},
+{section:4,q:'Which feature is shared by BOTH animal and plant cells?',options:['Cell membrane, cytoplasm, mitochondria and nucleus','Cell wall','Chloroplast','A single large vacuole'],correct:0,explain:'Plant cells are similar to animal cells in having a cell membrane, cytoplasm, mitochondria and a nucleus.'},
+{section:4,q:'Onion cells observed under a microscope are best described as:',options:['Regular in shape, with a nucleus, cell membrane, cytoplasm, cell wall and big vacuoles','Irregular in shape with no nucleus','Round with no cell wall','Having many mitochondria but no cytoplasm'],correct:0,explain:'The shape of onion cells is regular, and they contain a nucleus, cell membrane, cytoplasm, cell wall and big vacuoles.'},
+{section:5,q:'Which example illustrates diffusion?',options:['Smelling perfume spreading across a room','Water entering a plant root cell through a semipermeable membrane','Blood clotting','Muscle contraction'],correct:0,explain:'Diffusion happens when we smell perfume or cigarette smoke spreading through the air.'},
+{section:5,q:'When an animal cell (e.g. a red blood cell) is placed in a hypotonic solution, it will:',options:['Swell and may burst','Shrink and shrivel','Stay unchanged','Immediately divide'],correct:0,explain:'In a hypotonic solution, water moves into the cell by osmosis, causing it to swell and possibly burst, since animal cells lack a cell wall.'},
+{section:5,q:'When a cell is placed in a hypertonic solution, it will:',options:['Lose water and shrink','Gain water and swell','Stay unchanged','Undergo mitosis'],correct:0,explain:'In a hypertonic solution, water leaves the cell by osmosis, causing the cell to shrink.'},
+{section:6,q:'In the correct procedure, what should be done just BEFORE placing the slide on the stage?',options:['Position the low-power objective lens above the hole of the stage and raise the condenser','Turn to the high-power objective lens first','Adjust the fine focus knob first','Lower the objective lens using the coarse focus knob'],correct:0,explain:'Steps (b) and (c) — positioning the low-power lens and raising the condenser — come before placing the slide on the stage in step (e).'},
+{section:6,q:'Which knob is used to raise or lower the body tube quickly for initial focusing?',options:['Coarse focus knob','Fine focus knob','Diaphragm','Condenser'],correct:0,explain:'The coarse focus knob raises or lowers the body tube (or stage) quickly for initial focusing.'},
+{section:6,q:'In the cheek cell slide preparation activity, methylene blue solution is used to:',options:['Stain the cells so they can be seen more clearly','Kill the cells','Increase magnification','Clean the toothpick'],correct:0,explain:'Methylene blue is a stain that makes cell structures easier to see under the microscope.'},
+{section:7,q:'Complete the equation: Water + Carbon dioxide &mdash;(sunlight, chlorophyll)&rarr; ___ + ___',options:['Glucose + Oxygen','Starch + Nitrogen','Oxygen + Carbon dioxide','Water + Minerals'],correct:0,explain:'Water + Carbon dioxide, using sunlight and chlorophyll, produces Glucose + Oxygen.'},
+{section:7,q:'The glucose produced during photosynthesis is typically converted into ___ for storage in the plant.',options:['Starch','Protein','Cellulose only','Chlorophyll'],correct:0,explain:'Glucose is converted into starch and stored in the stems, fruits or roots of plants.'},
+{section:7,q:'Which cell type contains many chloroplasts and is the main site of photosynthesis in leaves?',options:['Palisade cell','Guard cell','Root hair cell','Red blood cell'],correct:0,explain:'Palisade cells are packed with chloroplasts and are the main site of photosynthesis in the leaf.'},
+{section:8,q:'Which factor INCREASES the rate of transpiration?',options:['Higher temperature','High relative humidity','Low wind speed','Water shortage causing stomata to close'],correct:0,explain:'Higher temperature makes water molecules move faster, increasing the rate of transpiration.'},
+{section:8,q:'Xylem vessels are dead structures strengthened with a substance called:',options:['Lignin','Cellulose only','Chlorophyll','Hemoglobin'],correct:0,explain:'Xylem vessel walls are strengthened with lignin, making them dead, rigid structures without protoplasmic contents.'},
+{section:8,q:'The transverse walls of sieve tubes in phloem are perforated by pores called:',options:['Sieve plates','Stomata','Guard plates','Xylem plates'],correct:0,explain:'The perforated transverse walls of sieve tubes are called sieve plates.'},
+{section:9,q:'A stamen consists of:',options:['Anther and filament','Stigma and style','Ovary and ovule','Sepal and petal'],correct:0,explain:'A stamen consists of an anther (which produces pollen grains) at the end of a filament.'},
+{section:9,q:'Which structure receives pollen grains during pollination?',options:['Stigma','Anther','Ovule','Filament'],correct:0,explain:'The stigma receives pollen grains during pollination.'},
+{section:9,q:'Which is a key difference between insect-pollinated and wind-pollinated flowers?',options:['Insect-pollinated flowers are large, brightly colored and scented, while wind-pollinated flowers are small and dull-colored','Insect-pollinated flowers have no nectar','Wind-pollinated flowers have sticky stigmas','Insect-pollinated flowers produce very light, smooth pollen grains'],correct:0,explain:'Insect-pollinated flowers are large, brightly colored, scented and have nectaries, while wind-pollinated flowers are small, dull, scentless and lack nectaries.'},
+{section:10,q:'After fertilization, the ovule develops into a ___ and the ovary develops into a ___.',options:['Seed; fruit','Fruit; seed','Flower; leaf','Root; stem'],correct:0,explain:'The fertilized ovule develops into a seed, and the ovary as a whole develops into the fruit.'},
+{section:10,q:'Seeds with two cotyledons (such as soya bean and broad bean) are called:',options:['Dicotyledonous seeds','Monocotyledonous seeds','Endosperm seeds','Testa seeds'],correct:0,explain:'Seeds with two cotyledons are dicotyledonous seeds; those with one (like paddy and wheat) are monocotyledonous.'},
+{section:10,q:'In epigeal germination (e.g. mung bean), the cotyledons:',options:['Rise above the ground','Remain below the ground','Never develop','Turn into the radicle'],correct:0,explain:'In epigeal germination, the cotyledons rise above the ground, as seen in mung bean and sunflower.'},
+{section:11,q:'Which macronutrient deficiency causes stunted growth with leaves turning yellow and dropping?',options:['Nitrogen','Phosphorus','Potassium','Sulphur'],correct:0,explain:'Nitrogen deficiency causes stunted growth and yellowing, dropping leaves.'},
+{section:11,q:'Potatoes, yams and gingers are examples of plants that propagate vegetatively from:',options:['Underground stems','Bulbs','Stolons','Seeds'],correct:0,explain:'Potatoes, yams and gingers grow from underground stems.'},
+{section:11,q:'Micronutrients such as boron, ferum (iron) and zinc are needed by plants in:',options:['Much smaller quantities than macronutrients','Larger quantities than macronutrients','Equal quantities to macronutrients','No quantity at all'],correct:0,explain:'Micronutrients (trace minerals) are needed in much smaller quantities than macronutrients like N, P and K.'}
+],
+hard:[
+{section:1,q:'Which statement is INCORRECT about unicellular organisms?',options:['They cannot carry out excretion since they have only one cell','They carry out all life processes such as movement, respiration and reproduction','They are also known as microorganisms','They usually live in seas, rivers and lakes'],correct:0,explain:'This is incorrect — unicellular organisms DO carry out excretion, along with all other life processes, within their single cell.'},
+{section:1,q:'According to the textbook, which is described as "the most complex multicellular organism"?',options:['Man','Hydra','Amoeba','Grass'],correct:0,explain:'Man is described as the most complex multicellular organism, made up of many specialized cell types.'},
+{section:2,q:'Nerve cells and root hair cells are similar in that both:',options:['Have long, thin extensions suited to their signaling/absorption function','Contain chlorophyll','Have biconcave shapes','Lack a cell membrane'],correct:0,explain:'Both nerve cells (long thin fibers for carrying impulses) and root hair cells (long thin extension for absorption) rely on an elongated shape for their function.'},
+{section:2,q:'Which statement about epithelial cells is correct?',options:['They are flat, have a large vacuole, and are transparent to allow light to enter','They are shaped like kidneys to regulate stomata','They contain hemoglobin to carry oxygen','They have long tails for locomotion'],correct:0,explain:'Epithelial cells are flat, have a large vacuole and are transparent so light can pass through them.'},
+{section:3,q:'Which of the following is present in almost all cells, EXCEPT mature red blood cells?',options:['Nucleus','Cell membrane','Cytoplasm','Mitochondrion'],correct:0,explain:'The nucleus is present in almost all cells, but mature red blood cells do not have a nucleus.'},
+{section:3,q:'A cell observed under the microscope has a cell wall, chloroplasts and one large vacuole. This cell is most likely from:',options:['A plant','An animal','A bacterium only','A red blood cell'],correct:0,explain:'A cell wall, chloroplasts and a large vacuole are all typical features of a plant cell.'},
+{section:4,q:'A student compares two cells: Cell A has no cell wall and many small vacuoles; Cell B has a cell wall and one large vacuole. Cell A and Cell B are most likely:',options:['Animal cell and plant cell respectively','Plant cell and animal cell respectively','Both animal cells','Both plant cells'],correct:0,explain:'No cell wall with many small vacuoles is typical of an animal cell; a cell wall with one large vacuole is typical of a plant cell.'},
+{section:4,q:'Which statement correctly distinguishes plant and animal cells?',options:['Plant cells have chloroplasts and a cell wall; animal cells typically lack both','Animal cells have a cell wall but no cell membrane','Plant cells never have mitochondria','Both cells always have identically sized vacuoles'],correct:0,explain:'Chloroplasts and a cell wall are typical plant-cell features that animal cells generally lack.'},
+{section:5,q:'A red blood cell placed in an isotonic solution will:',options:['Remain the same size, since there is no net movement of water','Swell and burst','Shrink significantly','Lose its cell membrane'],correct:0,explain:'In an isotonic solution, the water potential inside and outside the cell is equal, so there is no net movement of water and the cell stays the same size.'},
+{section:5,q:"Which best explains why a wilted plant's cells regain firmness (turgor) after watering?",options:['Water moves into the cells by osmosis, restoring turgor pressure','Water diffuses out of the cells','Minerals evaporate from the leaves','The cell wall dissolves'],correct:0,explain:'Watering raises the water potential around the root cells, so water moves in by osmosis and restores turgor pressure.'},
+{section:6,q:'When switching from the low-power to the high-power objective lens, which focus knob should be used to fine-tune the image, to avoid damaging the slide?',options:['Fine focus knob','Coarse focus knob','Diaphragm','Mirror'],correct:0,explain:'The fine focus knob gently adjusts the image and is safer to use with the high-power lens, which sits very close to the slide.'},
+{section:6,q:'Why must you not scrape the cheek too hard when preparing a cheek cell slide?',options:['It may injure the cheek','It will produce too many cells','It reduces magnification','It damages the microscope'],correct:0,explain:'Scraping too hard can injure the inside of the cheek — the activity caution specifically warns against this.'},
+{section:7,q:'In the balanced equation 6CO&#8322; + 12H&#8322;O &rarr; C&#8326;H&#8321;&#8322;O&#8326; + 6O&#8322; + 6H&#8322;O (using sunlight and chlorophyll), the extra 6H&#8322;O on the product side represents:',options:['Water regenerated during the reaction, alongside the glucose and oxygen produced','Water that plays no role in the reaction','An error, since water should not appear on both sides','Water used only to dilute the glucose'],correct:0,explain:'In the detailed/balanced photosynthesis equation, more water is used as a reactant than ends up in the glucose, so some water is regenerated as a product.'},
+{section:7,q:'Carbon dioxide enters the leaf mainly through the:',options:['Stomata','Cuticle','Xylem','Petals'],correct:0,explain:'Carbon dioxide enters the leaves through the stomata for use in photosynthesis.'},
+{section:8,q:'Guard cells surrounding a stoma will close when:',options:['Transpiration exceeds water absorption, so the plant conserves water','Light intensity increases','Humidity is very high','Wind speed is very low'],correct:0,explain:'Stomata close when transpiration exceeds water absorption, helping the plant conserve water.'},
+{section:8,q:'Which best describes the difference between vascular bundle arrangement in dicot and monocot stems?',options:['Dicot stems have vascular bundles arranged in a ring, while monocot stems have them scattered throughout the stem','Both dicot and monocot stems have identical vascular arrangements','Monocot stems have no phloem','Dicot stems have no xylem'],correct:0,explain:'In dicot stems, xylem and phloem bundles form a ring near the outer part of the stem; in monocot stems, the bundles are scattered throughout.'},
+{section:9,q:'Cross-pollination is defined as the transfer of pollen grains from:',options:['The anther of one plant to the stigma of another plant of the same species','The anther to the stigma of the same flower only','One species to a completely different species','The stigma back to the anther'],correct:0,explain:'Cross-pollination is the transfer of pollen grains from the anther of one plant to the stigma of another plant of the same species.'},
+{section:9,q:'A flower containing only stamens (no pistil) is called a:',options:['Unisexual (male) flower','Bisexual flower','Unisexual (female) flower','Sterile flower'],correct:0,explain:'A flower with only stamens is a unisexual male flower; one with only a pistil is a unisexual female flower.'},
+{section:10,q:'On the testa, the scar marking where the seed was attached to the ovary wall is called the:',options:['Hilum','Micropyle','Pericarp','Endosperm'],correct:0,explain:'The hilum is the scar on the testa where the seed was attached to the ovary wall; the micropyle lies just above it.'},
+{section:10,q:'Which sequence correctly describes fertilization in plants?',options:['Pollen lands on stigma &rarr; pollen tube grows through style &rarr; male gamete passes through micropyle &rarr; fuses with female gamete to form a zygote','Zygote forms first, then the pollen tube grows and pollen lands on the stigma','The ovule fertilizes the anther, and a seed forms directly','The fruit forms first, then pollination occurs'],correct:0,explain:'The correct sequence is: pollination &rarr; pollen tube growth through the style &rarr; male gamete passing through the micropyle &rarr; fertilization forming a zygote.'},
+{section:11,q:'A plant shows poor root growth and leaves that are dark green with red or purple spots. Which mineral is most likely deficient?',options:['Phosphorus','Nitrogen','Potassium','Magnesium'],correct:0,explain:'Phosphorus deficiency causes poor root growth and leaves turning dark green with red or purple spots.'},
+{section:11,q:'Compared to sexual reproduction by seeds, the main disadvantage of vegetative (asexual) reproduction is:',options:['Loss of genetic diversity, making offspring less likely to resist pests and diseases','Offspring take much longer to mature','Offspring cannot flower at all','It cannot be used by farmers'],correct:0,explain:'Because offspring are genetically identical to the parent in vegetative reproduction, this causes a loss of diversity, making them less likely to resist pests and diseases.'}
+]
+};
+
+var currentSet = 'easy';
+var currentQuestions = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j = Math.floor(Math.random()*(i+1));
+    var tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+  }
+  return a;
+}
+
+function prepareQuestions(setName){
+  var base = QUESTION_DATA[setName];
+  var shuffledBase = shuffle(base);
+  var result = [];
+  for(var k=0;k<shuffledBase.length;k++){
+    var q = shuffledBase[k];
+    var idxs = shuffle([0,1,2,3]);
+    var newOptions = [];
+    for(var n=0;n<idxs.length;n++){ newOptions.push(q.options[idxs[n]]); }
+    var newCorrect = idxs.indexOf(q.correct);
+    result.push({section:q.section, q:q.q, options:newOptions, correct:newCorrect, explain:q.explain, answered:false, chosen:-1});
+  }
+  return result;
+}
+
+function render(){
+  var host = document.getElementById('quizhost');
+  host.innerHTML='';
+  document.getElementById('summarybox').className = 'summarybox';
+  var lastSection = null;
+  for(var idx=0; idx<currentQuestions.length; idx++){
+    (function(idx){
+      var item = currentQuestions[idx];
+      if(item.section !== lastSection){
+        var lbl = document.createElement('div');
+        lbl.className='section-label';
+        lbl.innerHTML = SECTION_LABEL[item.section];
+        host.appendChild(lbl);
+        lastSection = item.section;
+      }
+      var card = document.createElement('div');
+      card.className='qcard';
+      card.setAttribute('data-idx', idx);
+      var qtext = document.createElement('div');
+      qtext.className='qtext';
+      qtext.innerHTML = (idx+1)+'. '+item.q;
+      card.appendChild(qtext);
+      for(var oi=0; oi<item.options.length; oi++){
+        (function(oi){
+          var btn = document.createElement('button');
+          btn.className='opt';
+          btn.innerHTML = item.options[oi];
+          btn.onclick = function(){ answer(idx, oi); };
+          card.appendChild(btn);
+        })(oi);
+      }
+      var ex = document.createElement('div');
+      ex.className='explain';
+      ex.innerHTML = '<b>Explanation: </b>'+item.explain;
+      card.appendChild(ex);
+      host.appendChild(card);
+    })(idx);
+  }
+  updateScore();
+}
+
+function answer(qIdx, optIdx){
+  var item = currentQuestions[qIdx];
+  if(item.answered) return;
+  item.answered = true;
+  item.chosen = optIdx;
+  var card = document.querySelectorAll('.qcard')[qIdx];
+  var opts = card.querySelectorAll('.opt');
+  for(var i=0;i<opts.length;i++){
+    var o = opts[i];
+    o.className = o.className + ' disabled';
+    o.onclick = null;
+    if(i===item.correct) o.className = o.className + ' correct';
+    else if(i===optIdx) o.className = o.className + ' wrong';
+  }
+  var ex = card.querySelector('.explain');
+  ex.className = ex.className + ' show';
+  updateScore();
+}
+
+function updateScore(){
+  var total = currentQuestions.length;
+  var answered = 0, correct = 0;
+  for(var i=0;i<currentQuestions.length;i++){
+    if(currentQuestions[i].answered){
+      answered++;
+      if(currentQuestions[i].chosen===currentQuestions[i].correct) correct++;
+    }
+  }
+  document.getElementById('scoretext').textContent = 'Score: '+correct+' / '+answered;
+  var pct = total? Math.round((answered/total)*100) : 0;
+  document.getElementById('progressbar').style.width = pct+'%';
+  document.getElementById('progresstext').textContent = pct+'%';
+  if(answered===total && total>0){
+    document.getElementById('summarybox').className = 'summarybox show';
+    document.getElementById('summarybig').textContent = correct+' / '+total;
+  }
+}
+
+function loadSet(setName){
+  currentSet = setName;
+  currentQuestions = prepareQuestions(setName);
+  render();
+}
+
+var setBtns = document.querySelectorAll('.setbtn');
+for(var s=0; s<setBtns.length; s++){
+  (function(btn){
+    btn.addEventListener('click', function(){
+      for(var b=0;b<setBtns.length;b++){ setBtns[b].className = setBtns[b].className.replace(' active',''); }
+      btn.className = btn.className + ' active';
+      loadSet(btn.getAttribute('data-set'));
+    });
+  })(setBtns[s]);
+}
+
+document.getElementById('shufflebtn').addEventListener('click', function(){ loadSet(currentSet); });
+
+loadSet('easy');
+</script>
+</body>
+</html>
